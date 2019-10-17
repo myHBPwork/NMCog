@@ -5,7 +5,7 @@ class NealFunctions(object):
     """Function to isolate differences between different list synapse constructors.
     """
     def __init__(self, delay):
-        self.delay = delay
+        self.DELAY = delay
     
     def nealprojection(self, pre_neurons, post_neurons, connector_list, inh_exc):
         #projection method for SpiNNaker
