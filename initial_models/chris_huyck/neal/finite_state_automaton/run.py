@@ -16,7 +16,7 @@ class RunFunctions(object):
     
     def setup_recording(self, cells):
         # only for SpiNNaker
-        return cells.record()
+        return cells.record("spikes")
     
     def create_inputs(self):
         # two inputs
