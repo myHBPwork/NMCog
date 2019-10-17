@@ -29,7 +29,7 @@ class FSAFunctions(object):
     def make_ca(self, start, neurons):
         # creates a cell assembly assuming one kind of neuron in same population connected with intra_ca_weight
         connector = []
-        from from_offset in range(0, self.ca_size):
+        for from_offset in range(0, self.ca_size):
             from_neuron = from_offset + (start*self.ca_size)
             for to_offset in range(0, self.ca_size):
                 to_neuron = to_offset + (start*self.ca_size)
@@ -42,7 +42,7 @@ class FSAFunctions(object):
         # one of the two states that connects one of the inputs to the third state
         # only difference w/ make_ca() is use of parameters: finish, halfon_weight
         connector = []
-        from from_offset in range(0, self.ca_size):
+        for from_offset in range(0, self.ca_size):
             from_neuron = from_offset + (start*self.ca_size)
             for to_offset in range(0, self.ca_size):
                 to_neuron = to_offset + (finish*self.ca_size)
@@ -55,7 +55,7 @@ class FSAFunctions(object):
         # one of the two states that connects one of the inputs to the third state
         # only difference w/ state_turn_halfon() is use of parameters: fulloff_weight & inhibitory connection
         connector = []
-        from from_offset in range(0, self.ca_size):
+        for from_offset in range(0, self.ca_size):
             from_neuron = from_offset + (start*self.ca_size)
             for to_offset in range(0, self.ca_size):
                 to_neuron = to_offset + (finish*self.ca_size)
