@@ -1,9 +1,10 @@
 # fsa.py
-from neal import NealFunctions as ncf
+from neal import NealFunctions
 
 class FSAFunctions(object):
     def __init__(self):
         self.initial_parameters()
+        ncf = NealFunctions(self.delay)
     
     def initial_parameters(self):
         self.delay = 1.
