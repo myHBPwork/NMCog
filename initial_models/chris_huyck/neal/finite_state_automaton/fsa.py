@@ -4,7 +4,7 @@ from neal import NealFunctions
 class FSAFunctions(object):
     def __init__(self):
         self.initial_parameters()
-        ncf = NealFunctions(self.delay)
+        self.ncf = NealFunctions(self.delay)
     
     def initial_parameters(self):
         self.delay = 1.
@@ -24,7 +24,7 @@ class FSAFunctions(object):
         for to_offset in range(0, self.ca_size):
             to_neuron = to_offset + (start*self.ca_size)
             connector = connector + [(0, to_neuron, self.input_weight, self.delay)]
-        ncf.nealprojection(spike_source, neurons, connector, 'excitatory')
+        self.ncf.nealprojection(spike_source, neurons, connector, 'excitatory')
     
     
     def make_ca(self, start, neurons):
@@ -37,7 +37,7 @@ class FSAFunctions(object):
                 if (to_neuron != from_neuron):
                     connector = connector + [(from_neuron, to_neuron,
                                               self.intra_ca_weight, self.delay)]
-        ncf.nealprojection(neurons, neurons, connector, 'excitatory')
+        self.ncf.nealprojection(neurons, neurons, connector, 'excitatory')
     
     def state_turn_halfon(self, start, finish, neurons):
         # one of the two states that connects one of the inputs to the third state
@@ -50,7 +50,7 @@ class FSAFunctions(object):
                 if (to_neuron != from_neuron):
                     connector = connector + [(from_neuron, to_neuron,
                                               self.halfon_weight, self.delay)]
-        ncf.nealprojection(neurons, neurons, connector, 'excitatory')
+        self.ncf.nealprojection(neurons, neurons, connector, 'excitatory')
 
     def state_turn_off(self, start, finish, neurons):
         # one of the two states that connects one of the inputs to the third state
@@ -63,5 +63,5 @@ class FSAFunctions(object):
                 if (to_neuron != from_neuron):
                     connector = connector + [(from_neuron, to_neuron,
                                               self.fulloff_weight, self.delay)]
-        ncf.nealprojection(neurons, neurons, connector, 'inhibitory')
+        self.ncf.nealprojection(neurons, neurons, connector, 'inhibitory')
     
