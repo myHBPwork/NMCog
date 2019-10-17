@@ -1,5 +1,5 @@
 # run.py
-import pyNN.spinNNaker as spinn
+import pyNN.spiNNaker as spinn
 
 from fsa import FSAFunctions
 
