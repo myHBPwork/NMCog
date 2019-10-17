@@ -11,7 +11,7 @@ class RunFunctions(object):
 
     def create_neurons(self):
         # only for SpiNNaker
-        cells = Population(100, spinn.IF_cond_exp, self.fsaf.cell_params)
+        cells = spinn.Population(100, spinn.IF_cond_exp, self.fsaf.cell_params)
         return cells
     
     def setup_recording(self, cells):
