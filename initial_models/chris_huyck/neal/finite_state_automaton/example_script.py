@@ -8,9 +8,9 @@ fsaf = FSAFunctions()
 runf = RunFunctions()
 
 # setup input
-#spike_gens = runf.create_inputs()
-#first_spike_gen = spike_gens[0]
-#secnd_spike_gen = spike_gens[1]
+spike_gens = runf.create_inputs()
+first_spike_gen = spike_gens[0]
+secnd_spike_gen = spike_gens[1]
 
 # setup cells and record
 #state_cells = runf.create_neurons()
