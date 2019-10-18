@@ -10,4 +10,4 @@ class NealFunctions(object):
     def nealprojection(self, pre_neurons, post_neurons, connector_list, inh_exc):
         #projection method for SpiNNaker
         conn_list = spinn.FromListConnector( connector_list )
-        spinn.Projection(pre_neurons, post_neurons, conn_list, inh_exc)
+        spinn.Projection(pre_neurons, post_neurons, conn_list, receptor_type=inh_exc)
