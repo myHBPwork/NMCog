@@ -9,7 +9,7 @@
 import numpy as np
 import pickle
 
-from nealCoverClass import NealCoverFunctions
+from nmcog.spinnaker.neal.nealCoverClass import NealCoverFunctions
 
 # added for nmcog
 import spynnaker8 as sim

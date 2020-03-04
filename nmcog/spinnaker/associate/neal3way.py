@@ -6,7 +6,7 @@ from nealassoc.readInheritanceFile import InheritanceReaderClass
 from nealassoc.readUnitFile import UnitReaderClass
 #from readAssocFile import AssocReaderClass
 from nealassoc.make3Assoc import NeuralThreeAssocClass
-from nealassoc.nealCoverClass import NealCoverFunctions
+from nmcog.spinnaker.neal.nealCoverClass import NealCoverFunctions
 
 class NEAL3Way(object):
     

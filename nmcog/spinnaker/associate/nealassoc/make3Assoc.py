@@ -13,7 +13,7 @@ from makeInheritanceHier import NeuralInheritanceClass
 
 # added for nmcog
 import spynnaker8 as sim
-from nealCoverClass import NealCoverFunctions
+from nmcog.spinnaker.neal.nealCoverClass import NealCoverFunctions
 
 class NeuralThreeAssocClass:
     #class variables
