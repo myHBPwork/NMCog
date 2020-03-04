@@ -14,7 +14,7 @@ import pickle # for Python3
 # added for nmcog
 import spynnaker8 as sim
 from nmcog.spinnaker.neal.nealCoverClass import NealCoverFunctions
-from nmcog.spinnaker.neal.stateMachineClass import FSAHelperFunctions
+from nmcog.spinnaker.specialfunctions.neal.stateMachineClass import FSAHelperFunctions
 
 class NeuralInheritanceClass:
     #constants
