@@ -8,7 +8,7 @@ able to get the (base) to spread up the inheritance hierarchy.
 Testing is weak.  It has only been tested in nest.
 """
 
-from stateMachineClass import FSAHelperFunctions
+from nmcog.spinnaker.specialfunctions.neal.stateMachineClass import FSAHelperFunctions
 from makeInheritanceHier import NeuralInheritanceClass
 
 # added for nmcog
