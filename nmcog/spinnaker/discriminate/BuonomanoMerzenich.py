@@ -22,6 +22,7 @@ class BuoMerz(object):
     n_inh3 = 50   # number of inhibitory units in layer-3
     #w_ex3_out = 0 # initial weight
     #d_ex3_out = 0.1 # delay
+    n_out = 100
     # Wiring of network components are done in __connect()
     # Unit (cell) parameters (see Buonomano & Merzenich 1995)
     ex_cell_parameters = {
@@ -39,9 +40,10 @@ class BuoMerz(object):
     inh_cell_parameters["v_thresh"] = -50.
     # output-layer receives input from excitatory population of layer 3
     # Buonomano and Merzenich tested the network for intervals between 30 and 330 ms with 10 ms steps
-    dual_pulse_intervals = np.linspace(30, 330, num=31) # 30ms : 10ms : 330ms => 300/10 + 1 = 31 ms
+    #dual_pulse_intervals = np.linspace(30, 330, num=31) # 30ms : 10ms : 330ms => 300/10 + 1 = 31 ms
 
     def __init__(self, intervals):
+        self.dual_pulse_intervals = intervals
         self.data_for_all_intervals = {}
         for self.inter_pulse_interval in intervals:
             sim.setup(1)
@@ -116,10 +118,11 @@ class BuoMerz(object):
 
         # output-layer receives input from excitatory population of layer 3
         output = {}
-        for i in np.nditer(BuoMerz.dual_pulse_intervals): # Buonomano and Merzenich tested the network for intervals between 30 and 330 ms with 10 ms steps
+        #for i in np.nditer(BuoMerz.dual_pulse_intervals): # Buonomano and Merzenich tested the network for intervals between 30 and 330 ms with 10 ms steps
+        for i in self.dual_pulse_intervals:
             unit_label = "output_for_"+str(i)
             unit_key = "out"+str(i)
-            unit_val = sim.Population( 1, sim.IF_curr_alpha(**BuoMerz.ex_cell_parameters), label= unit_label )
+            unit_val = sim.Population( BuoMerz.n_out, sim.IF_curr_alpha(**BuoMerz.ex_cell_parameters), label= unit_label )
             output.update( {unit_key: unit_val} )
         return [popIn, layer4, layer3, output]
 
@@ -156,7 +159,7 @@ class BuoMerz(object):
         wire_popIninh4 = sim.FixedProbabilityConnector(0.1, allow_self_connections=False)
         wire_inputpopIn = sim.FixedProbabilityConnector(0.25, allow_self_connections=False)
         # Below is custom made and not given by Buonomano & Merzenich
-        wire_ex3output = sim.FixedProbabilityConnector(1.0, allow_self_connections=False)
+        wire_ex3output = sim.FixedProbabilityConnector(0.15, allow_self_connections=False)
         ### NOW CONNECT
         connect_ex3ex3 = sim.Projection( self.layer3["exc"], self.layer3["exc"], wire_ex3ex3,
                                          sim.StaticSynapse(weight=5.), receptor_type="excitatory" )
@@ -185,14 +188,15 @@ class BuoMerz(object):
         connect_inputpopIn = sim.Projection( self.input_src, self.popIn, wire_inputpopIn,
                                              sim.StaticSynapse(weight=1.0), receptor_type="excitatory" )
         # connect the exc3 unit with output layer
-        for i in np.nditer(BuoMerz.dual_pulse_intervals): # Buonomano and Merzenich tested the network for intervals between 30 and 330 ms with 10 ms steps
-            unit_key = "out"+str(i)
+        #for i in np.nditer(BuoMerz.dual_pulse_intervals): # Buonomano and Merzenich tested the network for intervals between 30 and 330 ms with 10 ms steps
+        for i in self.dual_pulse_intervals:
             if i == self.inter_pulse_interval:
-                connect_ex3output = sim.Projection( self.layer3["exc"], self.output[unit_key], wire_ex3output,
-                                                    sim.StaticSynapse(weight=5.0), receptor_type="excitatory" )
-            else:
-                connect_ex3output = sim.Projection( self.layer3["exc"], self.output[unit_key], wire_ex3output,
-                                                    sim.StaticSynapse(weight=0.0), receptor_type="excitatory" )
+                unit_key = "out"+str(i)
+                prj = [ sim.Projection( self.layer3["exc"], self.output[unit_key], wire_ex3output,
+                                        sim.StaticSynapse(weight=10.0), receptor_type="excitatory" ) if k==unit_key else
+                        sim.Projection( self.layer3["exc"], self.output[unit_key], wire_ex3output,
+                                        sim.StaticSynapse(weight=0.0), receptor_type="inhibitory" ) for k in self.output.keys() ]
+        return prj
 
     # Private function for recording
     def __record(self):
@@ -211,12 +215,31 @@ class BuoMerz(object):
         neo_inh4 = self.layer4["inh"].get_data(variables=["spikes", "v"])
         neo_ex3 = self.layer3["exc"].get_data(variables=["spikes", "v"])
         neo_inh3 = self.layer3["inh"].get_data(variables=["spikes", "v"])
-        neo_out = []
-        for values in self.output.values():
-            neo_out.append( values.get_data(variables=["spikes", "v"]) )
+        #neo_out = []
+        #for values in self.output.values():
+        #    neo_out.append( values.get_data(variables=["spikes", "v"]) )
+        neo_out = {}
+        for key in self.output.keys():
+            neo_out.update( { key: self.output[key].get_data( variables=["spikes", "v"] ) } )
         return [neo_popIn, neo_ex4, neo_inh4, neo_ex3, neo_inh3, neo_out]
 
-    # Private
-    def get_stimseg( self, indx, pop ):
-        return pop.segments[0].time_slice( t_start = self.stim_origin[indx]*pq.ms,
-                                           t_stop = (self.stim_end[indx]+20)*pq.ms )
+    # Private function
+    def __adapted_output(self):
+        sim.setup(1)
+        t_initial = self.data_for_all_intervals[self.inter_pulse_interval]["end"][0] - 5
+        t_final = self.data_for_all_intervals[self.inter_pulse_interval]["end"][0] + 20
+        # get spikes from ex3 corresponding to last pulse
+        overall_spiketrains = self.data_for_all_intervals[self.inter_pulse_interval]["ex3"].segments[0].time_slice(
+                                                t_start = t_initial * pq.ms, t_stop = t_final * pq.ms ).spiketrains )
+        # self.inter_pulse_interval
+        learn_output = self.__create_output()
+        self.__connect_to_learn(laststim_ex3, learn_output)
+        # Record
+        [ subpop.record("all") for subpop in learn_output.values() ]
+        sim.run( runtime? )
+        neo_out = {}
+        [ neo_out.update( {key: learn_output[key].get_data( variables=["spikes"] )} ) for key in learn_output.keys() ]
+        sim.end()
+        # Finally append the above recorded spike train to appropriate position in self.data_for_all_intervals
+
+
