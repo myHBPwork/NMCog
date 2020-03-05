@@ -20,7 +20,7 @@ setup(
   author = "Lungsi Ngwua",
   author_email = "lungsi.ngwua@cnrs.fr",
   url = "https://github.com/myHBPwork/NMCog",
-  download_url = "https://github.com/NMCog/archive/v0.0.1.tar.gz",
+  download_url = "https://github.com/NMCog/archive/v0.0.2.tar.gz",
   keywords = ["NEUROMORPHIC", "COGNITIVE", "SPIKING", "NEURAL NETWORK", "SPINNAKER", "BRAINSCALES"],
   install_requires=[
           "numpy",
