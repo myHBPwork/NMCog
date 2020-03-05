@@ -9,6 +9,8 @@ setup(
       "nmcog",
       "nmcog.spinnaker",
       "nmcog.spinnaker.discriminate",
+      "nmcog.spinnaker.associate",
+      "nmcog.spinnaker.specialfunctions.neal",
       ],
   version = "0.0.1",
   license="BSD Clause-3",
