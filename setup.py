@@ -14,7 +14,7 @@ setup(
       ],
   version = "0.0.1",
   license="BSD Clause-3",
-  description = "Module (Library) for simulation cognitive models",
+  description = "Module (Library) for simulation cognitive models in Neuromorphic hardwares",
   long_description = long_description,
   long_description_content_type = "text/markdown",
   author = "Lungsi Ngwua",
