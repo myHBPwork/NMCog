@@ -2,7 +2,7 @@ from distutils.core import setup
 import os
 
 this_dir = os.getcwd()
-with open( path.join( os.path.dirname(this_dir), "README.md" ), encoding="utf-8" ) as fh:
+with open( os.path.join( os.path.dirname(this_dir), "README.md" ), encoding="utf-8" ) as fh:
     long_description = fh.read()
 
 setup(
