@@ -12,7 +12,7 @@ setup(
       "nmcog.spinnaker.associate",
       "nmcog.spinnaker.specialfunctions.neal",
       ],
-  version = "0.0.5",
+  version = "0.0.4",
   license="BSD Clause-3",
   description = "Module (Library) for simulation cognitive models in Neuromorphic hardwares.",
   long_description = long_description,
@@ -20,15 +20,15 @@ setup(
   author = "Lungsi Ngwua",
   author_email = "lungsi.ngwua@cnrs.fr",
   url = "https://github.com/myHBPwork/NMCog",
-  download_url = "https://github.com/NMCog/archive/v0.0.5.tar.gz",
+  download_url = "https://github.com/NMCog/archive/v0.0.4.tar.gz",
   keywords = ["NEUROMORPHIC", "COGNITIVE", "SPIKING", "NEURAL NETWORK", "SPINNAKER", "BRAINSCALES"],
-  install_requires=[
-          "numpy",
-          "quantities",
-          "spynnaker8",
-      ],
+  #install_requires=[
+  #        "numpy",
+  #        "quantities",
+  #        "spynnaker8",
+  #    ],
   classifiers=[
-    "Development Status :: 3 - Alpha",      # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
+    "Development Status :: 3 - Alpha",      # Choose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
     "Intended Audience :: Developers",      # Define that your audience are developers
     "Topic :: Software Development :: Build Tools",
     "License :: OSI Approved :: BSD License",
