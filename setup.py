@@ -1,8 +1,8 @@
 from distutils.core import setup
-from os import path
+import os
 
-this_dir = path.abspath( path.dirname(__file__) )
-with open( path.join( this_dir, "README.md" ), encoding="utf-8" ) as fh:
+this_dir = os.getcwd()
+with open( path.join( os.path.dirname(this_dir), "README.md" ), encoding="utf-8" ) as fh:
     long_description = fh.read()
 
 setup(
@@ -14,7 +14,7 @@ setup(
       "nmcog.spinnaker.associate",
       "nmcog.spinnaker.specialfunctions.neal",
       ],
-  version = "0.0.3",
+  version = "0.0.4",
   license="BSD Clause-3",
   description = "Module (Library) for simulation cognitive models in Neuromorphic hardwares.",
   long_description = long_description,
@@ -22,7 +22,7 @@ setup(
   author = "Lungsi Ngwua",
   author_email = "lungsi.ngwua@cnrs.fr",
   url = "https://github.com/myHBPwork/NMCog",
-  download_url = "https://github.com/NMCog/archive/v0.0.3.tar.gz",
+  download_url = "https://github.com/NMCog/archive/v0.0.4.tar.gz",
   keywords = ["NEUROMORPHIC", "COGNITIVE", "SPIKING", "NEURAL NETWORK", "SPINNAKER", "BRAINSCALES"],
   install_requires=[
           "numpy",
