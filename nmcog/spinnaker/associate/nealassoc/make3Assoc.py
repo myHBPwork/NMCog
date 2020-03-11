@@ -9,7 +9,7 @@ Testing is weak.  It has only been tested in nest.
 """
 
 from nmcog.spinnaker.specialfunctions.neal.stateMachineClass import FSAHelperFunctions
-from makeInheritanceHier import NeuralInheritanceClass
+from .makeInheritanceHier import NeuralInheritanceClass
 
 # added for nmcog
 import spynnaker8 as sim

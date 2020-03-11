@@ -6,8 +6,8 @@ states, spike sources and neurons.
 
 # added for nmcog
 import spynnaker8 as sim
-from nmcog.spinnaker.specialfunctions.neal.nealCoverClass import NealCoverFunctions
-from nmcog.spinnaker.specialfunctions.neal.stateMachineClass import FSAHelperFunctions
+from .nealCoverClass import NealCoverFunctions
+from .stateMachineClass import FSAHelperFunctions
 
 #---- Code
 class TimerClass:

@@ -2,10 +2,10 @@ from types import SimpleNamespace as structdata
 
 import spynnaker8 as sim
 
-from nealassoc.readInheritanceFile import InheritanceReaderClass
-from nealassoc.readUnitFile import UnitReaderClass
+from .nealassoc.readInheritanceFile import InheritanceReaderClass
+from .nealassoc.readUnitFile import UnitReaderClass
 #from readAssocFile import AssocReaderClass
-from nealassoc.make3Assoc import NeuralThreeAssocClass
+from .nealassoc.make3Assoc import NeuralThreeAssocClass
 from nmcog.spinnaker.specialfunctions.neal.nealCoverClass import NealCoverFunctions
 
 class NEAL3Way(object):
