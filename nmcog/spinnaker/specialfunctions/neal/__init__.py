@@ -2,5 +2,5 @@
 
 from .nealCoverClass import NealCoverFunctions
 from .stateMachineClass import FSAHelperFunctions
-from .timeClass import TimerClass
+from .timerClass import TimerClass
 from .cogmapClass import CogmapBaseClass
