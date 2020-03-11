@@ -8,12 +8,12 @@ able to get the (base) to spread up the inheritance hierarchy.
 Testing is weak.  It has only been tested in nest.
 """
 
-from nmcog.spinnaker.specialfunctions.neal import FSAHelperFunctions
+from nmcog.spinnaker.specialfunction.neal import FSAHelperFunctions
 from .makeInheritanceHier import NeuralInheritanceClass
 
 # added for nmcog
 import spynnaker8 as sim
-from nmcog.spinnaker.specialfunctions.neal import NealCoverFunctions
+from nmcog.spinnaker.specialfunction.neal import NealCoverFunctions
 
 class NeuralThreeAssocClass:
     #class variables

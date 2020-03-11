@@ -89,8 +89,7 @@ class TimerClass:
 
     #---create timer functions
     #The timer goes from state to state and the last stops on its own
-    def makeStopTimerSynapses(self):        if  ((self.neal.simulator == 'nest') or 
-             ((self.neal.simulator == 'spinnaker') and (self.neal.spinnVersion == 8))):
+    def makeStopTimerSynapses(self):
         for CA in range (0,self.numberStates-1):
             self.fsa.makeCA(self.timerCells,CA)
             self.fsa.stateStimulatesState(self.timerCells,CA,self.timerCells,
