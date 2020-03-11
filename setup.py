@@ -13,7 +13,7 @@ setup(
       "nmcog.spinnaker.associate.nealassoc",
       "nmcog.spinnaker.specialfunctions.neal",
       ],
-  version = "0.0.8",
+  version = "0.0.9",
   license="BSD Clause-3",
   description = "Module (Library) for simulation cognitive models in Neuromorphic hardwares.",
   long_description = long_description,
@@ -21,7 +21,7 @@ setup(
   author = "Lungsi Ngwua",
   author_email = "lungsi.ngwua@cnrs.fr",
   url = "https://github.com/myHBPwork/NMCog",
-  download_url = "https://github.com/NMCog/archive/v0.0.8.tar.gz",
+  download_url = "https://github.com/NMCog/archive/v0.0.9.tar.gz",
   keywords = ["NEUROMORPHIC", "COGNITIVE", "SPIKING", "NEURAL NETWORK", "SPINNAKER", "BRAINSCALES"],
   #install_requires=[
   #        "numpy",
