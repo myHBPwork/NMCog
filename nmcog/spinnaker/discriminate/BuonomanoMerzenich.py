@@ -222,24 +222,3 @@ class BuoMerz(object):
         for key in self.output.keys():
             neo_out.update( { key: self.output[key].get_data( variables=["spikes", "v"] ) } )
         return [neo_popIn, neo_ex4, neo_inh4, neo_ex3, neo_inh3, neo_out]
-
-    # Private function
-    def __adapted_output(self):
-        sim.setup(1)
-        t_initial = self.data_for_all_intervals[self.inter_pulse_interval]["end"][0] - 5
-        t_final = self.data_for_all_intervals[self.inter_pulse_interval]["end"][0] + 20
-        # get spikes from ex3 corresponding to last pulse
-        overall_spiketrains = self.data_for_all_intervals[self.inter_pulse_interval]["ex3"].segments[0].time_slice(
-                                                t_start = t_initial * pq.ms, t_stop = t_final * pq.ms ).spiketrains )
-        # self.inter_pulse_interval
-        learn_output = self.__create_output()
-        self.__connect_to_learn(laststim_ex3, learn_output)
-        # Record
-        [ subpop.record("all") for subpop in learn_output.values() ]
-        sim.run( runtime? )
-        neo_out = {}
-        [ neo_out.update( {key: learn_output[key].get_data( variables=["spikes"] )} ) for key in learn_output.keys() ]
-        sim.end()
-        # Finally append the above recorded spike train to appropriate position in self.data_for_all_intervals
-
-
