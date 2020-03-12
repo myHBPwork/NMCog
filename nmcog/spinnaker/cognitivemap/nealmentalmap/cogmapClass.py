@@ -17,12 +17,12 @@ Together these turn on retrievePlaceDone, which then goes back to startState
 
 A similar mechanism is used for retrieveObject.
 """
-from .nealCoverClass import NealCoverFunctions
-from .timerClass import TimerClass
+from nmcog.spinnaker.specialfunction.neal.nealCoverClass import NealCoverFunctions
+from nmcog.spinnaker.specialfunction.neal.timerClass import TimerClass
 
 # added for nmcog
 import spynnaker8 as sim
-from .stateMachineClass import FSAHelperFunctions
+from nmcog.spinnaker.specialfunction.neal.stateMachineClass import FSAHelperFunctions
 
 class CogmapBaseClass:
     numberAutomatonStates = 15
@@ -36,7 +36,21 @@ class CogmapBaseClass:
         self.neal = NealCoverFunctions()
         self.spinnVersion = spinnVersion
         self.fsa = FSAHelperFunctions()
-        self.automatonCells = self.createAutomaton()
+        # added for nmcog
+        self.tryToBindTimer = TimerClass(self.simName,self.sim,self.neal,
+                                         self.spinnVersion,self.fsa)
+        self.bindingTimer = TimerClass(self.simName,self.sim,self.neal,
+                                       self.spinnVersion,self.fsa)
+        self.bindDoneTimer = TimerClass(self.simName,self.sim,self.neal,
+                                        self.spinnVersion,self.fsa)
+        # this instantiates the three timers but the timercells are not created here
+        # they are created in self.createTimers where default values are used for the
+        # number of states but user can pass custom values.
+        # however, self.creteTimers is called by self.createAutomaton therefore
+        # these custom values must be passed into this function which takes effect on
+        # the self.createTimers function.
+        #
+        #self.automatonCells = self.createAutomaton() # commented out for nmcog
 
     #-----FSA functions and constants
     #state names
@@ -322,26 +336,34 @@ packages calling internal function
         self.connectRetrieveObjectDoneState()
         self.connectRetrievePlaceDoneState()
 
-    def createTimers(self):
-        self.tryToBindTimer = TimerClass(self.simName,self.sim,self.neal,
-                                         self.spinnVersion,self.fsa,10)
-        self.bindingTimer = TimerClass(self.simName,self.sim,self.neal,
-                                       self.spinnVersion,self.fsa,10)
-        self.bindDoneTimer = TimerClass(self.simName,self.sim,self.neal,
-                                        self.spinnVersion,self.fsa,6)
+    #def createTimers(self):
+        #self.tryToBindTimer = TimerClass(self.simName,self.sim,self.neal,
+        #                                 self.spinnVersion,self.fsa,10)
+        #self.bindingTimer = TimerClass(self.simName,self.sim,self.neal,
+        #                               self.spinnVersion,self.fsa,10)
+        #self.bindDoneTimer = TimerClass(self.simName,self.sim,self.neal,
+        #                                self.spinnVersion,self.fsa,6)
+    def createTimers(self, tryToBindStates=10, bindingStates=10, bindDoneStates=6):
+        # modified for nmcog
+        self.tryToBindTimer.createNeurons( tryToBindStates ) # although default values are set
+        self.bindingTimer.createNeurons( bindingStates )     # user can pass custom number of states
+        self.bindDoneTimer.createNeurons( bindDoneStates )
         #the timerClass sets recording
         self.tryToBindTimer.makeStopNoRestartTimerSynapses()
         self.bindingTimer.makeStopNoRestartTimerSynapses()
         self.bindDoneTimer.makeStopNoRestartTimerSynapses()
 
-    def createAutomaton(self):
+    #def createAutomaton(self): # commented out for nmcog
+    def createAutomaton(self, tryToBindStates=10, bindingStates=10, bindDoneStates=6):
         numNeurons = self.fsa.CA_SIZE * self.numberAutomatonStates
         
         cells=self.sim.Population(numNeurons,self.sim.IF_cond_exp,self.fsa.CELL_PARAMS)
         for stateNumber in range (0,self.numberAutomatonStates):
             self.fsa.makeCA(cells,stateNumber)
 
-        self.createTimers()
+        #self.createTimers() # commented out for nmcog
+        self.createTimers(tryToBindStates=tryToBindStates, bindingStates=bindingStates,
+                          bindDoneStates=bindDoneStates)
         return cells
 
     def createObjects(self, numberObjects):

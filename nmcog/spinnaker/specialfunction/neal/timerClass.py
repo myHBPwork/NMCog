@@ -16,20 +16,23 @@ class TimerClass:
     oneNeuronHalfWeight = 0.05#0.1#0.04
 
     #def __init__(self, simName,sim,neal,spinnVersion,fsa,numberStates):
-    def __init__(self, simName="spinnaker", spinnVersion=8, numberStates):
+    def __init__(self, simName="spinnaker", spinnVersion=8):
         self.simName = simName
         self.sim = sim
         self.neal = NealCoverFunctions()
         self.spinnVersion = spinnVersion
         self.fsa = FSAHelperFunctions()
-        self.numberStates = numberStates
-        self.timerCells = self.createNeurons(numberStates)
+        #self.numberStates = numberStates # commented out for nmcog
+        #self.timerCells = self.createNeurons(numberStates) # commented out for nmcog
 
     #create the neurons for the words and the states.
     def createNeurons(self,numberStates):
+        # added for nmcog
+        self.numberStates = numberStates # self.timerCells are no longer made at instantiation
+        #
         numberTimerCells = numberStates * self.fsa.CA_SIZE
-        self.timerCells=self.sim.Population(numberTimerCells,
-                self.sim.IF_cond_exp,self.fsa.CELL_PARAMS)
+        self.timerCells = self.sim.Population(numberTimerCells,self.sim.IF_cond_exp,
+                                              self.fsa.CELL_PARAMS)
         self.setupRecording()
         
         return self.timerCells
