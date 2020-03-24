@@ -154,11 +154,14 @@ class BuoMerz(object):
         
         The input channel is such that
         
-                       ___|-interval/stimulus-|___
-                      |   |                   |   |
-        origin________|   |___________________|   |________end
-             |---t0---|-T-|                   |-T-|---t0---|
-             |------------------runtime--------------------|
+        ::
+        
+                         ___|-interval/stimulus-|___
+                        |   |                   |   |
+          origin________|   |___________________|   |________end
+               |---t0---|-T-|                   |-T-|---t0---|
+               |------------------runtime--------------------|
+        
         
         Note that the above dual-pulse train represented in `self.input_channel` is used to create a spiking version using the private function `__gen_input_src()`.
         
