@@ -1,0 +1,153 @@
+import spynnaker8 as sim
+
+from .nealplanning.planBaseClass import PlanBaseClass
+from nmcog.spinnaker.specialfunction.neal import NealCoverFunctions
+from nmcog.spinnaker.specialfunction.neal.timerClass import TimerClass
+
+class NEALCogplan(PlanBaseClass):
+    def __init__(self, nobjects=2, nplaces=3, objectsTOplaces=None, findPlaceFor=None, findObjectFor=None):
+        """
+        Consider nobject = 2 and nplaces = 3
+        
+        +------------------+---------------------+------------------+-----------------+
+        | Example use case | objectsTOplaces     | findPlaceFor     | findObjectFor   |
+        +==================+=====================+==================+=================+
+        | 1 (default)      | None                | None             | None            |
+        +------------------+---------------------+------------------+-----------------+
+        | 2                | [(0,1),(1,0),(1,2)] | None             | None            |
+        +------------------+---------------------+------------------+-----------------+
+        | 3                | [(0,1),(1,0),(1,2)] | 1 (for object 1) | None            |
+        +------------------+---------------------+------------------+-----------------+
+        | 4                | [(0,1),(1,0),(1,2)] | None             | 2 (for place 2) |
+        +------------------+---------------------+------------------+-----------------+
+        
+        """
+        PlanBaseClass.__init__(self)
+        self.initializeBasePlanner()
+        #
+        neal = NealCoverFunctions()
+        sim.setup(timestep=neal.DELAY, min_delay=neal.DELAY, max_delay=neal.DELAY, debug=0)
+        #
+        inputTimes = self.generateSpikeTimes( objectsTOplaces )
+        spikeSource = self.makeSpikeSource( inputTimes )
+        self.createCogmap( nobjects, nplaces )
+        self.cogmap.sourceStartsAutomaton( spikeSource[0] )
+        #
+        self.bindObjectsToPlaces(spikeSource, objectsTOplaces)
+        self.retrievePlaceForObject(spikeSource, findPlaceFor)
+        self.retrieveObjectForPlace(spikeSource, findObjectFor)
+        #
+        neal.nealApplyProjections()
+        sim.run( inputTimes[-1]+500 )
+        #
+        #self.cogmap.printCogMapNets()
+        sim.end()
+        #
+        goals = {"right": 0, "left": 1, "forward": 2, "back": 3, "forward_and_right": 4, "forward_and_left": 5}
+        #
+        ngoals = len( goals )
+        self.goals_simple = {}
+        self.goals_compound = {}
+        for key in goals.keys():
+            if "and" not in key:
+                self.goals_simple.update( {key: goals[key]} )
+            else:
+                self.goals_compound.update( {key: goals[key]} )
+        #
+        self.modules = {}
+        self.modules.update( self.goals_simple )
+        i = len(self.modules)
+        for k in self.goals_compound.keys():
+            s = k.split("_")
+            self.modules.update( {s[0]+"_of_"+k: i} )
+            i += 1
+            self.modules.update( {s[-1]+"_of_"+k: i} )
+            i += 1
+        #
+        self.actions = {}
+        self.actions.update( self.goals_simple )
+    
+    def make_timers(self):
+        if not bool(self.goals_compound): # True => empty
+            pass
+        else:
+            for k in self.goals_compound.keys():
+                setattr( self, k+"Timer", TimerClass() )
+                getattr( self, k+"Timer" ).createNeurons( 10 )
+    
+    def create_simple_plans(self):
+        #self.makeTimers()
+        for k in self.goals_simple.keys(): # .makePrimitive() inherited from PlanBaseClass
+            self.makePrimitive( self.goals_simple[k], self.modules[k], self.actions[k] )
+    
+    def create_compound_plans(self):
+        if not bool(self.goals_compound): # True => empty
+            pass
+        else:
+            for k in self.goals_compound.keys():
+                getattr( self, k+"Timer" ).makeStopTimerSynapses()
+                s = k.split("_")
+                self.makeCompound( self.goals_compound[k],
+                                   self.modules[ s[0]+"_of_"+k ],
+                                   self.modules[ s[-1]+"_of_"+k ],
+                                   self.actions[ s[0] ],
+                                   self.actions[ s[-1] ],
+                                   getattr( self, k+"Timer" ) )
+        
+    
+    def createCogmap(self, nobjects, nplaces):
+        self.cogmap = CogmapBaseClass()
+        self.cogmap.createAutomaton()
+        self.cogmap.createObjects(nobjects)
+        self.cogmap.connectObjects()
+        self.cogmap.createPlaces(nplaces)
+        self.connectPlaces()
+        self.cogmap.setupCogMapRecording()
+        self.cogmap.makeLearningSynapses()
+        self.cogmap.connectAutomaton()
+    
+    def generateSpikeTimes(self, ojectsTOplaces):
+        inputTimes = [ 10. ]
+        if objectsTOplaces is not None:
+            for i in range( 1, len(objectsTOplaces) ):
+                if i==1:
+                    inputTimes.append( 50. )
+                elif i==2:
+                    inputTimes.append( inputTimes[-1] * inputTimes[0] )
+                else:
+                    inputTimes.append( inputTimes[-1] + 500. )
+        return inputTimes
+    
+    def makeSpikeSource(self, inputTimes):
+        spikeArrays = [ {"spike_times": [ anInputTime ]} for anInputTime in inputTimes ]
+        spikeGens = [ sim.Population( 1, sim.SpikeSourceArray, spikeArrays[i],
+                                      label="inputSpikes_"+str(i+1) )
+                        for i in range( len(spikeArrays) ) ]
+        return spikeGens
+    
+    def bindObjectsToPlaces(self, spikeGens, objectsTOplaces):
+        if objectsTOplaces in not None:
+            for i in range( len(objectsTOplaces) ):
+                sourceIndx = i+1
+                objPlacePair = objectsTOplaces[i]
+                self.cogmap.sourceTurnsOnBind( spikeGens[sourceIndx] )
+                self.cogmap.sourceTurnsOnPlaceOn( objPlacePair[-1], spikeGens[sourceIndx] )
+                self.cogmap.sourceTurnsOnObjectOn( objPlacePair[0], spikeGens[sourceIndx] )
+        else:
+            pass
+    
+    def retrievePlaceForObject(self, spikeGens, findPlaceFor):
+        "Where is the object?"
+        if findPlaceFor is not None:
+            self.cogmap.sourceTurnOnRetrievePlaceFromObject( spikeGens[-1] )
+            self.cogmap.sourceTurnsOnObjectQuery( spikeGens[-1], findPlaceFor )
+        else:
+            pass
+            
+    def retrieveObjectForPlace(self, spikeGens, findObjectFor):
+        "What object are in the place?"
+        if findObjectFor is not None:
+            self.cogmap.sourceTurnOnRetrievePlaceFromPlace( spikeGens[-1] )
+            self.cogmap.sourceTurnsOnPlaceQuery( spikeGens[-1], findObjectFor )
+        else:
+            pass

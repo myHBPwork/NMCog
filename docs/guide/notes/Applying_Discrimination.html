@@ -1,0 +1,2009 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" class="ixp-experience ixp-responsive ixp-mzr-js ixp-mzr-canvas ixp-mzr-no-touch ixp-mzr-rgba ixp-mzr-cssanimations ixp-mzr-csstransforms ixp-mzr-csstransforms3d ixp-mzr-csstransitions ixp-mzr-csscalc ixp-mzr-pointerevents ixp-mzr-mediaqueries ixp-mzr-no-mobiledevice ixp-mzr-no-ios" style="">
+
+<head id="ball_page_title">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--[if lt IE 9]><script>document.documentElement.className += ' ixp-lt-ie9 ixp-responsive-disabled';</script><![endif]-->
+    <link href="./css" rel="stylesheet">
+
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <!--[if lt IE 8]><script src="/Scripts/json3.min.js"></script><![endif]-->
+    <style type="text/css">
+        .agl-hover {
+            outline: 2px solid rgba(244, 67, 54, 0.99) !important;
+            background-color: rgba(244, 67, 54, 0.2) !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.8) !important;
+        }
+        
+        .agl-highlight-current {
+            outline: 2px solid rgba(255, 87, 34, 0.99) !important;
+            background-color: rgba(255, 87, 34, 0.4) !important;
+        }
+        
+        .agl-highlight-similar {
+            outline: 2px dashed rgba(255, 87, 34, 0.99) !important;
+            background-color: rgba(255, 87, 34, 0.4) !important;
+        }
+        
+        .agl-highlight-group {
+            outline: 4px double rgba(255, 87, 34, 0.99) !important;
+            background-color: rgba(255, 87, 34, 0.4) !important;
+        }
+        
+        .agl-cover-current {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            z-index: 9 !important;
+            outline: 2px solid rgba(33, 33, 33, 0.99) !important;
+            background-color: rgba(33, 33, 33, 0.6) !important;
+        }
+        
+        .agl-cover-similar {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            z-index: 9 !important;
+            outline: 2px dashed rgba(33, 33, 33, 0.99) !important;
+            background-color: rgba(33, 33, 33, 0.6) !important;
+        }
+        
+        .agl-cover-group {
+            position: absolute !important;
+            top: 0;
+            left: 0;
+            z-index: 9 !important;
+            outline: 4px double rgba(33, 33, 33, 0.99) !important;
+            background-color: rgba(33, 33, 33, 0.6) !important;
+        }
+        
+        .agl-cover-focus {
+            outline: 3px solid rgba(255, 165, 0, 0.99) !important;
+            background-color: rgba(255, 165, 0, 0.4) !important;
+        }
+    </style>
+    <script async="" src="./scripts/uwt.js.download"></script>
+    <script type="text/javascript" async="" src="./scripts/elqCfg.min.js.download"></script>
+    <script src="./scripts/quant.js.download" async="" type="text/javascript"></script>
+    <script type="text/javascript" async="" src="./scripts/fcagl.js.download"></script>
+    <script src="./scripts/bat.js.download" async=""></script>
+    <script async="" src="./scripts/fbevents.js.download"></script>
+    <script type="text/javascript">
+        var _lbapi_lb3id = "174927$UJ3OGV46$908206";
+        window.ixp = window.ixp || {};
+        window.ixp.runtime = window.ixp.runtime || {};
+        window.ixp.runtime.context = {
+            "id": "174927$UJ3OGV46$908206",
+            "token": "Lz8Pvv7sH_yzSk38HX5jYWYlncwnd5pEUQI2U5aFdT56KqSrbTU7XlamKPV4CuMxFf_mC14TwXkpC809tk61NVpwhadqHkNors9w9Idn_EQ-wY-iQnKS1KfzTLRzBpP-GaIeXxmcy6qQhZy3q_Y8cQ2"
+        };
+        window.ixp.runtime.components = window.ixp.runtime.components || {};
+        window.ixp.runtime.flags = window.ixp.runtime.flags || {};
+        window.ixp.runtime.dependencies = window.ixp.runtime.dependencies || {};
+        window.ixp.runtime.flags.nativeAnchorSupport = true;
+        window.ixp.runtime.anchors = {};
+        window.ixp.runtime.dependencies.jQueryUrl = "//code.jquery.com/jquery-1.11.1.min.js";
+    </script>
+    <script data-dapp-detection="">
+        (function() {
+            let alreadyInsertedMetaTag = false
+
+            function __insertDappDetected() {
+                if (!alreadyInsertedMetaTag) {
+                    const meta = document.createElement('meta')
+                    meta.name = 'dapp-detected'
+                    document.head.appendChild(meta)
+                    alreadyInsertedMetaTag = true
+                }
+            }
+
+            if (window.hasOwnProperty('web3')) {
+                // Note a closure can't be used for this var because some sites like
+                // www.wnyc.org do a second script execution via eval for some reason.
+                window.__disableDappDetectionInsertion = true
+                    // Likely oldWeb3 is undefined and it has a property only because
+                    // we defined it. Some sites like wnyc.org are evaling all scripts
+                    // that exist again, so this is protection against multiple calls.
+                if (window.web3 === undefined) {
+                    return
+                }
+                __insertDappDetected()
+            } else {
+                var oldWeb3 = window.web3
+                Object.defineProperty(window, 'web3', {
+                    configurable: true,
+                    set: function(val) {
+                        if (!window.__disableDappDetectionInsertion)
+                            __insertDappDetected()
+                        oldWeb3 = val
+                    },
+                    get: function() {
+                        if (!window.__disableDappDetectionInsertion)
+                            __insertDappDetected()
+                        return oldWeb3
+                    }
+                })
+            }
+        })()
+    </script>
+    <script src="./scripts/ixp-runtime.bundle.min.js.download"></script>
+    <script src="./scripts/jquery-1.11.1.min.js.download"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Applying Discrimination</title>
+    <meta id="ball_ixp_og_title" property="og:title" content="Neuromorphic computing with nmcog">
+    <meta id="ball_ixp_og_description" property="og:description" content="Machine learning teaches computers to do what comes naturally to humans and animals: learn from experience. Machine learning algorithms use computational methods to “learn” information directly from data without relying on a predetermined equation as a model. The algorithms adaptively improve their performance as the number of samples available for learning increases.">
+    <style type="text/css">
+        a[data-ixp-hidden-anchor] {
+            visibility: hidden;
+            position: absolute;
+            right: 0;
+        }
+    </style>
+    <link type="text/css" rel="stylesheet" href="./css/ixp-flow.min.css">
+    <link type="text/css" rel="stylesheet" href="./css/ixp-sticky_container.min.css">
+    <script type="text/javascript" src="./scripts/jquery-1.11.1.min.js.download"></script>
+    <script type="text/javascript">
+        window.ixp.runtime.components.dependencies.jQuery.v1_11 = jQuery.noConflict(true);
+    </script>
+    <script type="text/javascript" src="./scripts/jquery.ba-resize.min.js.download"></script>
+    <script type="text/javascript" src="./scripts/ixp-flow.min.js.download"></script>
+    <style type="text/css">
+        .ixp-grid-container,
+        .ixp-grid-container-fluid {
+            margin-right: auto;
+            margin-left: auto;
+            padding-left: 15px;
+            padding-right: 15px
+        }
+        
+        @media (min-width:768px) {
+            .ixp-grid-container {
+                width: 750px
+            }
+        }
+        
+        @media (min-width:992px) {
+            .ixp-grid-container {
+                width: 970px
+            }
+        }
+        
+        @media (min-width:1200px) {
+            .ixp-grid-container {
+                width: 1170px
+            }
+        }
+        
+        .ixp-grid-row {
+            margin-left: -15px;
+            margin-right: -15px
+        }
+        
+        .ixp-grid-col-lg-1,
+        .ixp-grid-col-lg-10,
+        .ixp-grid-col-lg-11,
+        .ixp-grid-col-lg-12,
+        .ixp-grid-col-lg-2,
+        .ixp-grid-col-lg-3,
+        .ixp-grid-col-lg-4,
+        .ixp-grid-col-lg-5,
+        .ixp-grid-col-lg-6,
+        .ixp-grid-col-lg-7,
+        .ixp-grid-col-lg-8,
+        .ixp-grid-col-lg-9,
+        .ixp-grid-col-md-1,
+        .ixp-grid-col-md-10,
+        .ixp-grid-col-md-11,
+        .ixp-grid-col-md-12,
+        .ixp-grid-col-md-2,
+        .ixp-grid-col-md-3,
+        .ixp-grid-col-md-4,
+        .ixp-grid-col-md-5,
+        .ixp-grid-col-md-6,
+        .ixp-grid-col-md-7,
+        .ixp-grid-col-md-8,
+        .ixp-grid-col-md-9,
+        .ixp-grid-col-sm-1,
+        .ixp-grid-col-sm-10,
+        .ixp-grid-col-sm-11,
+        .ixp-grid-col-sm-12,
+        .ixp-grid-col-sm-2,
+        .ixp-grid-col-sm-3,
+        .ixp-grid-col-sm-4,
+        .ixp-grid-col-sm-5,
+        .ixp-grid-col-sm-6,
+        .ixp-grid-col-sm-7,
+        .ixp-grid-col-sm-8,
+        .ixp-grid-col-sm-9,
+        .ixp-grid-col-xs-1,
+        .ixp-grid-col-xs-10,
+        .ixp-grid-col-xs-11,
+        .ixp-grid-col-xs-12,
+        .ixp-grid-col-xs-2,
+        .ixp-grid-col-xs-3,
+        .ixp-grid-col-xs-4,
+        .ixp-grid-col-xs-5,
+        .ixp-grid-col-xs-6,
+        .ixp-grid-col-xs-7,
+        .ixp-grid-col-xs-8,
+        .ixp-grid-col-xs-9 {
+            position: relative;
+            min-height: 1px;
+            padding-left: 15px;
+            padding-right: 15px
+        }
+        
+        .ixp-grid-col-xs-1,
+        .ixp-grid-col-xs-10,
+        .ixp-grid-col-xs-11,
+        .ixp-grid-col-xs-12,
+        .ixp-grid-col-xs-2,
+        .ixp-grid-col-xs-3,
+        .ixp-grid-col-xs-4,
+        .ixp-grid-col-xs-5,
+        .ixp-grid-col-xs-6,
+        .ixp-grid-col-xs-7,
+        .ixp-grid-col-xs-8,
+        .ixp-grid-col-xs-9 {
+            float: left
+        }
+        
+        .ixp-grid-col-xs-12 {
+            width: 100%
+        }
+        
+        .ixp-grid-col-xs-11 {
+            width: 91.66%
+        }
+        
+        .ixp-grid-col-xs-10 {
+            width: 83.33%
+        }
+        
+        .ixp-grid-col-xs-9 {
+            width: 75%
+        }
+        
+        .ixp-grid-col-xs-8 {
+            width: 66.66%
+        }
+        
+        .ixp-grid-col-xs-7 {
+            width: 58.33%
+        }
+        
+        .ixp-grid-col-xs-6 {
+            width: 50%
+        }
+        
+        .ixp-grid-col-xs-5 {
+            width: 41.66%
+        }
+        
+        .ixp-grid-col-xs-4 {
+            width: 33.33%
+        }
+        
+        .ixp-grid-col-xs-3 {
+            width: 25%
+        }
+        
+        .ixp-grid-col-xs-2 {
+            width: 16.66%
+        }
+        
+        .ixp-grid-col-xs-1 {
+            width: 8.33%
+        }
+        
+        .ixp-grid-col-xs-offset-12 {
+            margin-left: 100%
+        }
+        
+        .ixp-grid-col-xs-offset-11 {
+            margin-left: 91.66%
+        }
+        
+        .ixp-grid-col-xs-offset-10 {
+            margin-left: 83.33%
+        }
+        
+        .ixp-grid-col-xs-offset-9 {
+            margin-left: 75%
+        }
+        
+        .ixp-grid-col-xs-offset-8 {
+            margin-left: 66.66%
+        }
+        
+        .ixp-grid-col-xs-offset-7 {
+            margin-left: 58.33%
+        }
+        
+        .ixp-grid-col-xs-offset-6 {
+            margin-left: 50%
+        }
+        
+        .ixp-grid-col-xs-offset-5 {
+            margin-left: 41.66%
+        }
+        
+        .ixp-grid-col-xs-offset-4 {
+            margin-left: 33.33%
+        }
+        
+        .ixp-grid-col-xs-offset-3 {
+            margin-left: 25%
+        }
+        
+        .ixp-grid-col-xs-offset-2 {
+            margin-left: 16.66%
+        }
+        
+        .ixp-grid-col-xs-offset-1 {
+            margin-left: 8.33%
+        }
+        
+        .ixp-grid-col-xs-offset-0 {
+            margin-left: 0
+        }
+        
+        @media (min-width:768px) {
+            .ixp-grid-col-sm-1,
+            .ixp-grid-col-sm-10,
+            .ixp-grid-col-sm-11,
+            .ixp-grid-col-sm-12,
+            .ixp-grid-col-sm-2,
+            .ixp-grid-col-sm-3,
+            .ixp-grid-col-sm-4,
+            .ixp-grid-col-sm-5,
+            .ixp-grid-col-sm-6,
+            .ixp-grid-col-sm-7,
+            .ixp-grid-col-sm-8,
+            .ixp-grid-col-sm-9 {
+                float: left
+            }
+            .ixp-grid-col-sm-12 {
+                width: 100%
+            }
+            .ixp-grid-col-sm-11 {
+                width: 91.66%
+            }
+            .ixp-grid-col-sm-10 {
+                width: 83.33%
+            }
+            .ixp-grid-col-sm-9 {
+                width: 75%
+            }
+            .ixp-grid-col-sm-8 {
+                width: 66.66%
+            }
+            .ixp-grid-col-sm-7 {
+                width: 58.33%
+            }
+            .ixp-grid-col-sm-6 {
+                width: 50%
+            }
+            .ixp-grid-col-sm-5 {
+                width: 41.66%
+            }
+            .ixp-grid-col-sm-4 {
+                width: 33.33%
+            }
+            .ixp-grid-col-sm-3 {
+                width: 25%
+            }
+            .ixp-grid-col-sm-2 {
+                width: 16.66%
+            }
+            .ixp-grid-col-sm-1 {
+                width: 8.33%
+            }
+            .ixp-grid-col-sm-offset-12 {
+                margin-left: 100%
+            }
+            .ixp-grid-col-sm-offset-11 {
+                margin-left: 91.66%
+            }
+            .ixp-grid-col-sm-offset-10 {
+                margin-left: 83.33%
+            }
+            .ixp-grid-col-sm-offset-9 {
+                margin-left: 75%
+            }
+            .ixp-grid-col-sm-offset-8 {
+                margin-left: 66.66%
+            }
+            .ixp-grid-col-sm-offset-7 {
+                margin-left: 58.33%
+            }
+            .ixp-grid-col-sm-offset-6 {
+                margin-left: 50%
+            }
+            .ixp-grid-col-sm-offset-5 {
+                margin-left: 41.66%
+            }
+            .ixp-grid-col-sm-offset-4 {
+                margin-left: 33.33%
+            }
+            .ixp-grid-col-sm-offset-3 {
+                margin-left: 25%
+            }
+            .ixp-grid-col-sm-offset-2 {
+                margin-left: 16.66%
+            }
+            .ixp-grid-col-sm-offset-1 {
+                margin-left: 8.33%
+            }
+            .ixp-grid-col-sm-offset-0 {
+                margin-left: 0
+            }
+        }
+        
+        @media (min-width:992px) {
+            .ixp-grid-col-md-1,
+            .ixp-grid-col-md-10,
+            .ixp-grid-col-md-11,
+            .ixp-grid-col-md-12,
+            .ixp-grid-col-md-2,
+            .ixp-grid-col-md-3,
+            .ixp-grid-col-md-4,
+            .ixp-grid-col-md-5,
+            .ixp-grid-col-md-6,
+            .ixp-grid-col-md-7,
+            .ixp-grid-col-md-8,
+            .ixp-grid-col-md-9 {
+                float: left
+            }
+            .ixp-grid-col-md-12 {
+                width: 100%
+            }
+            .ixp-grid-col-md-11 {
+                width: 91.66%
+            }
+            .ixp-grid-col-md-10 {
+                width: 83.33%
+            }
+            .ixp-grid-col-md-9 {
+                width: 75%
+            }
+            .ixp-grid-col-md-8 {
+                width: 66.66%
+            }
+            .ixp-grid-col-md-7 {
+                width: 58.33%
+            }
+            .ixp-grid-col-md-6 {
+                width: 50%
+            }
+            .ixp-grid-col-md-5 {
+                width: 41.66%
+            }
+            .ixp-grid-col-md-4 {
+                width: 33.33%
+            }
+            .ixp-grid-col-md-3 {
+                width: 25%
+            }
+            .ixp-grid-col-md-2 {
+                width: 16.66%
+            }
+            .ixp-grid-col-md-1 {
+                width: 8.33%
+            }
+            .ixp-grid-col-md-offset-12 {
+                margin-left: 100%
+            }
+            .ixp-grid-col-md-offset-11 {
+                margin-left: 91.66%
+            }
+            .ixp-grid-col-md-offset-10 {
+                margin-left: 83.33%
+            }
+            .ixp-grid-col-md-offset-9 {
+                margin-left: 75%
+            }
+            .ixp-grid-col-md-offset-8 {
+                margin-left: 66.66%
+            }
+            .ixp-grid-col-md-offset-7 {
+                margin-left: 58.33%
+            }
+            .ixp-grid-col-md-offset-6 {
+                margin-left: 50%
+            }
+            .ixp-grid-col-md-offset-5 {
+                margin-left: 41.66%
+            }
+            .ixp-grid-col-md-offset-4 {
+                margin-left: 33.33%
+            }
+            .ixp-grid-col-md-offset-3 {
+                margin-left: 25%
+            }
+            .ixp-grid-col-md-offset-2 {
+                margin-left: 16.66%
+            }
+            .ixp-grid-col-md-offset-1 {
+                margin-left: 8.33%
+            }
+            .ixp-grid-col-md-offset-0 {
+                margin-left: 0
+            }
+        }
+        
+        @media (min-width:1200px) {
+            .ixp-grid-col-lg-1,
+            .ixp-grid-col-lg-10,
+            .ixp-grid-col-lg-11,
+            .ixp-grid-col-lg-12,
+            .ixp-grid-col-lg-2,
+            .ixp-grid-col-lg-3,
+            .ixp-grid-col-lg-4,
+            .ixp-grid-col-lg-5,
+            .ixp-grid-col-lg-6,
+            .ixp-grid-col-lg-7,
+            .ixp-grid-col-lg-8,
+            .ixp-grid-col-lg-9 {
+                float: left
+            }
+            .ixp-grid-col-lg-12 {
+                width: 100%
+            }
+            .ixp-grid-col-lg-11 {
+                width: 91.66%
+            }
+            .ixp-grid-col-lg-10 {
+                width: 83.33%
+            }
+            .ixp-grid-col-lg-9 {
+                width: 75%
+            }
+            .ixp-grid-col-lg-8 {
+                width: 66.66%
+            }
+            .ixp-grid-col-lg-7 {
+                width: 58.33%
+            }
+            .ixp-grid-col-lg-6 {
+                width: 50%
+            }
+            .ixp-grid-col-lg-5 {
+                width: 41.66%
+            }
+            .ixp-grid-col-lg-4 {
+                width: 33.33%
+            }
+            .ixp-grid-col-lg-3 {
+                width: 25%
+            }
+            .ixp-grid-col-lg-2 {
+                width: 16.66%
+            }
+            .ixp-grid-col-lg-1 {
+                width: 8.33%
+            }
+            .ixp-grid-col-lg-offset-12 {
+                margin-left: 100%
+            }
+            .ixp-grid-col-lg-offset-11 {
+                margin-left: 91.66%
+            }
+            .ixp-grid-col-lg-offset-10 {
+                margin-left: 83.33%
+            }
+            .ixp-grid-col-lg-offset-9 {
+                margin-left: 75%
+            }
+            .ixp-grid-col-lg-offset-8 {
+                margin-left: 66.66%
+            }
+            .ixp-grid-col-lg-offset-7 {
+                margin-left: 58.33%
+            }
+            .ixp-grid-col-lg-offset-6 {
+                margin-left: 50%
+            }
+            .ixp-grid-col-lg-offset-5 {
+                margin-left: 41.66%
+            }
+            .ixp-grid-col-lg-offset-4 {
+                margin-left: 33.33%
+            }
+            .ixp-grid-col-lg-offset-3 {
+                margin-left: 25%
+            }
+            .ixp-grid-col-lg-offset-2 {
+                margin-left: 16.66%
+            }
+            .ixp-grid-col-lg-offset-1 {
+                margin-left: 8.33%
+            }
+            .ixp-grid-col-lg-offset-0 {
+                margin-left: 0
+            }
+        }
+        
+        @-ms-viewport {
+            width: device-width
+        }
+        
+        .ixp-grid-visible-lg,
+        .ixp-grid-visible-md,
+        .ixp-grid-visible-print,
+        .ixp-grid-visible-sm,
+        .ixp-grid-visible-xs {
+            display: none!important
+        }
+        
+        @media (max-width:767px) {
+            .ixp-grid-visible-xs {
+                display: block!important
+            }
+            table.ixp-grid-visible-xs {
+                display: table
+            }
+            tr.ixp-grid-visible-xs {
+                display: table-row!important
+            }
+            td.ixp-grid-visible-xs,
+            th.ixp-grid-visible-xs {
+                display: table-cell!important
+            }
+        }
+        
+        @media (min-width:768px) and (max-width:991px) {
+            .ixp-grid-visible-sm {
+                display: block!important
+            }
+            table.ixp-grid-visible-sm {
+                display: table
+            }
+            tr.ixp-grid-visible-sm {
+                display: table-row!important
+            }
+            td.ixp-grid-visible-sm,
+            th.ixp-grid-visible-sm {
+                display: table-cell!important
+            }
+        }
+        
+        @media (min-width:992px) and (max-width:1199px) {
+            .ixp-grid-visible-md {
+                display: block!important
+            }
+            table.ixp-grid-visible-md {
+                display: table
+            }
+            tr.ixp-grid-visible-md {
+                display: table-row!important
+            }
+            td.ixp-grid-visible-md,
+            th.ixp-grid-visible-md {
+                display: table-cell!important
+            }
+        }
+        
+        @media (min-width:1200px) {
+            .ixp-grid-visible-lg {
+                display: block!important
+            }
+            table.ixp-grid-visible-lg {
+                display: table
+            }
+            tr.ixp-grid-visible-lg {
+                display: table-row!important
+            }
+            td.ixp-grid-visible-lg,
+            th.ixp-grid-visible-lg {
+                display: table-cell!important
+            }
+        }
+        
+        @media (max-width:767px) {
+            .ixp-grid-hidden-xs {
+                display: none!important
+            }
+        }
+        
+        @media (min-width:768px) and (max-width:991px) {
+            .ixp-grid-hidden-sm {
+                display: none!important
+            }
+        }
+        
+        @media (min-width:992px) and (max-width:1199px) {
+            .ixp-grid-hidden-md {
+                display: none!important
+            }
+        }
+        
+        @media (min-width:1200px) {
+            .ixp-grid-hidden-lg {
+                display: none!important
+            }
+        }
+        
+        @media print {
+            .ixp-grid-visible-print {
+                display: block!important
+            }
+            table.ixp-grid-visible-print {
+                display: table
+            }
+            tr.ixp-grid-visible-print {
+                display: table-row!important
+            }
+            td.ixp-grid-visible-print,
+            th.ixp-grid-visible-print {
+                display: table-cell!important
+            }
+        }
+        
+        @media print {
+            .ixp-grid-hidden-print {
+                display: none!important
+            }
+        }
+        
+        .ixp-grid-container,
+        .ixp-grid-container-fixed,
+        .ixp-grid-container-fluid,
+        .ixp-grid-row,
+        [class*=" ixp-grid-col"],
+        [class^=ixp-grid-col] {
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box
+        }
+        
+        .ixp-container {
+            position: relative
+        }
+        
+        .ixp-container:after,
+        .ixp-container:before {
+            content: " ";
+            display: table
+        }
+        
+        .ixp-container:after {
+            clear: both
+        }
+        
+        [class*=" ixp-grid-col"]:after,
+        [class*=" ixp-grid-col"]:before,
+        [class^=ixp-grid-col]:after,
+        [class^=ixp-grid-col]:before {
+            content: none
+        }
+        
+        [class*=" ixp-grid-col"]:after,
+        [class^=ixp-grid-col]:after {
+            clear: none
+        }
+        
+        .ixp-container img {
+            max-width: 100%;
+            width: auto\9;
+            height: auto;
+            -ms-interpolation-mode: bicubic
+        }
+        
+        .ixp-container-link {
+            cursor: pointer
+        }
+        
+        .ixp-grid-container-fixed {
+            width: 970px;
+            margin-right: auto;
+            margin-left: auto;
+            padding-left: 15px;
+            padding-right: 15px;
+            text-align: left
+        }
+        
+        .ixp-grid-container-fixed:after,
+        .ixp-grid-container-fixed:before {
+            content: " ";
+            display: table
+        }
+        
+        .ixp-grid-container-fixed:after {
+            clear: both
+        }
+        
+        .ixp-grid-container {
+            text-align: left
+        }
+        
+        .ixp-grid-container-fluid {
+            width: 100%;
+            padding-left: 15px;
+            padding-right: 15px
+        }
+        
+        .ixp-grid-container-fluid:after,
+        .ixp-grid-container-fluid:before {
+            content: " ";
+            display: table
+        }
+        
+        .ixp-grid-container-fluid:after {
+            clear: both
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-container {
+            width: 970px
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-hidden-lg,
+        html.ixp-responsive-disabled .ixp-grid-hidden-sm,
+        html.ixp-responsive-disabled .ixp-grid-hidden-xs {
+            display: block!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-hidden-md,
+        html.ixp-responsive-disabled .ixp-grid-hidden-md.ixp-grid-hidden-lg {
+            display: none!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-12 {
+            width: 100%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-11 {
+            width: 91.66%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-10 {
+            width: 83.33%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-9 {
+            width: 75%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-8 {
+            width: 66.66%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-7 {
+            width: 58.33%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-6 {
+            width: 50%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-5 {
+            width: 41.66%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-4 {
+            width: 33.33%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-3 {
+            width: 25%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-2 {
+            width: 16.66%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-1 {
+            width: 8.33%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-12 {
+            margin-left: 100%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-11 {
+            margin-left: 91.66%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-10 {
+            margin-left: 83.33%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-9 {
+            margin-left: 75%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-8 {
+            margin-left: 66.66%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-7 {
+            margin-left: 58.33%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-6 {
+            margin-left: 50%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-5 {
+            margin-left: 41.66%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-4 {
+            margin-left: 33.33%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-3 {
+            margin-left: 25%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-2 {
+            margin-left: 16.66%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-1 {
+            margin-left: 8.33%!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-md-offset-0 {
+            margin-left: 0!important
+        }
+        
+        html.ixp-responsive-disabled .ixp-grid-col-lg-1,
+        html.ixp-responsive-disabled .ixp-grid-col-lg-10,
+        html.ixp-responsive-disabled .ixp-grid-col-lg-11,
+        html.ixp-responsive-disabled .ixp-grid-col-lg-12,
+        html.ixp-responsive-disabled .ixp-grid-col-lg-2,
+        html.ixp-responsive-disabled .ixp-grid-col-lg-3,
+        html.ixp-responsive-disabled .ixp-grid-col-lg-4,
+        html.ixp-responsive-disabled .ixp-grid-col-lg-5,
+        html.ixp-responsive-disabled .ixp-grid-col-lg-6,
+        html.ixp-responsive-disabled .ixp-grid-col-lg-7,
+        html.ixp-responsive-disabled .ixp-grid-col-lg-8,
+        html.ixp-responsive-disabled .ixp-grid-col-lg-9,
+        html.ixp-responsive-disabled .ixp-grid-col-md-1,
+        html.ixp-responsive-disabled .ixp-grid-col-md-10,
+        html.ixp-responsive-disabled .ixp-grid-col-md-11,
+        html.ixp-responsive-disabled .ixp-grid-col-md-12,
+        html.ixp-responsive-disabled .ixp-grid-col-md-2,
+        html.ixp-responsive-disabled .ixp-grid-col-md-3,
+        html.ixp-responsive-disabled .ixp-grid-col-md-4,
+        html.ixp-responsive-disabled .ixp-grid-col-md-5,
+        html.ixp-responsive-disabled .ixp-grid-col-md-6,
+        html.ixp-responsive-disabled .ixp-grid-col-md-7,
+        html.ixp-responsive-disabled .ixp-grid-col-md-8,
+        html.ixp-responsive-disabled .ixp-grid-col-md-9,
+        html.ixp-responsive-disabled .ixp-grid-col-sm-1,
+        html.ixp-responsive-disabled .ixp-grid-col-sm-10,
+        html.ixp-responsive-disabled .ixp-grid-col-sm-11,
+        html.ixp-responsive-disabled .ixp-grid-col-sm-12,
+        html.ixp-responsive-disabled .ixp-grid-col-sm-2,
+        html.ixp-responsive-disabled .ixp-grid-col-sm-3,
+        html.ixp-responsive-disabled .ixp-grid-col-sm-4,
+        html.ixp-responsive-disabled .ixp-grid-col-sm-5,
+        html.ixp-responsive-disabled .ixp-grid-col-sm-6,
+        html.ixp-responsive-disabled .ixp-grid-col-sm-7,
+        html.ixp-responsive-disabled .ixp-grid-col-sm-8,
+        html.ixp-responsive-disabled .ixp-grid-col-sm-9 {
+            float: left
+        }
+        
+        html.ixp-lt-ie9 .ixp-dynamic-vis.ixp-grid-hidden-lg,
+        html.ixp-lt-ie9 .ixp-dynamic-vis.ixp-grid-hidden-sm,
+        html.ixp-lt-ie9 .ixp-dynamic-vis.ixp-grid-hidden-xs {
+            display: none!important
+        }
+    </style>
+    <!--[if lt IE 8]><link href="/Templates/ixp-grid-lt-ie8.css" rel="stylesheet"><![endif]-->
+    <script type="text/javascript" src="./scripts/sticky_container.min.js.download"></script>
+    <link href="./css/ixp-microthemes.min.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        html,
+        body,
+        div,
+        span,
+        applet,
+        object,
+        iframe,
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        blockquote,
+        pre,
+        a,
+        abbr,
+        acronym,
+        address,
+        big,
+        cite,
+        code,
+        del,
+        dfn,
+        em,
+        img,
+        ins,
+        kbd,
+        q,
+        s,
+        samp,
+        small,
+        strike,
+        strong,
+        tt,
+        var,
+        b,
+        u,
+        i,
+        center,
+        dl,
+        dt,
+        dd,
+        ol,
+        ul,
+        li,
+        fieldset,
+        form,
+        label,
+        legend,
+        article,
+        aside,
+        canvas,
+        details,
+        embed,
+        figure,
+        figcaption,
+        footer,
+        header,
+        hgroup,
+        menu,
+        nav,
+        output,
+        ruby,
+        section,
+        summary,
+        time,
+        mark,
+        audio,
+        video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline
+        }
+        
+        article,
+        aside,
+        details,
+        figcaption,
+        figure,
+        footer,
+        header,
+        hgroup,
+        menu,
+        nav,
+        section {
+            display: block
+        }
+        
+        body {
+            line-height: 1
+        }
+        
+        ol,
+        ul {
+            list-style: none
+        }
+        
+        blockquote,
+        q {
+            quotes: none
+        }
+        
+        blockquote:before,
+        blockquote:after,
+        q:before,
+        q:after {
+            content: '';
+            content: none
+        }
+        
+        table,
+        tr,
+        td {
+            border-collapse: collapse;
+            border-spacing: 0
+        }
+        
+        table.pf_form_table {
+            margin: 0;
+            padding: 0;
+            border: 0
+        }
+        
+        :focus {
+            outline: 0
+        }
+        
+        ins {
+            text-decoration: none
+        }
+        
+        del {
+            text-decoration: line-through
+        }
+        
+        body {
+            text-align: center
+        }
+        
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6 {
+            font-weight: normal
+        }
+        
+        strong,
+        b {
+            font-weight: bold
+        }
+        
+        em,
+        i {
+            font-style: italic
+        }
+        
+        hr {
+            clear: both;
+            float: none;
+            margin: 10px 0;
+            border: 0
+        }
+        
+        .pf_form_table {
+            table-layout: fixed
+        }
+        
+        .flash_outer_wrap {
+            overflow: hidden
+        }
+        
+        [data-ixp-interaction-trigger] {
+            cursor: pointer
+        }
+    </style>
+    <link href="./css/theme.css" rel="stylesheet" type="text/css">
+    <style type="text/css">
+        .ixp-text {
+            font-size: 20px;
+        }
+        
+        .blueAngle:after {
+            background: inherit;
+            bottom: 0;
+            content: '';
+            display: block;
+            height: 50%;
+            left: 0;
+            position: absolute;
+            right: 0;
+            transform: skewY(-1.5deg);
+            transform-origin: 100%;
+            z-index: -1;
+        }
+        
+        .blueAngle:before {
+            background: inherit;
+            bottom: 0;
+            content: '';
+            display: block;
+            height: 50%;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            -webkit-transform: skewY(1.5deg);
+            transform: skewY(1.5deg);
+            -webkit-transform-origin: 100% 0;
+            transform-origin: 100% 0;
+            z-index: -1;
+        }
+        /*MEDIUM SCREENS*/
+        
+        @media screen and (max-width: 1199px) {}
+        /*SMALL SCREENS*/
+        
+        @media screen and (max-width: 991px) {
+            .box-a {
+                width: 100% !important;
+            }
+        }
+        /*EXTRA SMALL SCREENS*/
+        
+        @media screen and (max-width: 767px) {
+            .xsChange {
+                width: 60% !important;
+            }
+        }
+    </style>
+    <script id="analyticsDigitalData">
+        digitalData = {
+            "pageInstanceID": "",
+            "page": {
+                "pageInfo": {
+                    "pageID": "",
+                    "destinationURL": ""
+                },
+                "category": {
+                    "subCategory1": "",
+                    "pageType": ""
+                },
+                "attributes": {
+                    "descriptonCode": ""
+                }
+            },
+            "product": [{
+                "productInfo": {
+                    "productName": "ML"
+                }
+            }],
+            "component": []
+        };
+    </script>
+
+    <!-- BEGIN Adobe DTM -->
+    <script type="text/javascript" src="./scripts/satelliteLib-e8d23c2e444abadc572df06537e2def59c01db09.js.download"></script>
+    <script src="./scripts/mbox-contents-95c6a4d9c82a8d20476522984666120b54192e9b.js.download"></script>
+    <script src="./scripts/satellite-58fe08cb64746d190500a115.js.download"></script>
+    <script src="./scripts/satellite-56972e2c64746d54aa00cb73.js.download"></script>
+    <script src="./scripts/satellite-5b27fc4d64746d3f950001c1.js.download"></script>
+    <script src="./scripts/satellite-5b6ca5a364746d665d000c9f.js.download"></script>
+    <script async="" src="./scripts/js"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+
+        function gtag() {
+            dataLayer.push(arguments);
+        }
+        gtag('js', new Date());
+        gtag('config', 'AW-1023777138');
+    </script>
+    <script src="./scripts/last-event-tag-latest.min.js.download"></script>
+    <script>
+        var adCloudCheck = 0;
+        var adCloudInterval = setInterval(function() {
+            if (typeof AdCloudEvent !== "undefined") {
+                AdCloudEvent("B1441C8B533095C00A490D4D@AdobeOrg", "mathwgbl");
+                window.clearInterval(adCloudInterval);
+            }
+            if (++adCloudCheck === 5) {
+                window.clearInterval(adCloudInterval);
+            }
+        }, 200);
+    </script>
+
+    <link rel="shortcut icon" href="./images/favicon.ico" type="image/x-icon">
+
+    <style>
+        .js-side-slide {
+            position: fixed;
+            top: 0;
+            right: 0;
+            z-index: 20000;
+            height: 100%;
+            -webkit-transition: all 0.5s ease;
+            -moz-transition: all 0.5s ease;
+            -o-transition: all 0.5s ease;
+            transition: all 0.5s ease;
+            opacity: 0;
+        }
+        
+        .js-side-slide.js-slide-left {
+            right: auto;
+            left: 0;
+        }
+        
+        .js-toggle-side-slide,
+        .js-slide-close {
+            cursor: pointer;
+        }
+    </style>
+
+    <script type="text/javascript">
+        window.ixp.runtime.dependencies.require('jQuery', function(jQuery) {
+            jQuery(document).ready(function($) {
+                //start code
+                var side_slide_width;
+                var side_slide_orig_width = $('.js-side-slide').outerWidth();
+                get_slide_size();
+
+                var left_side;
+                if ($('.js-side-slide').hasClass('js-slide-left')) {
+                    $('.js-side-slide').css({
+                        left: '-' + side_slide_width + 'px'
+                    });
+                    left_side = true;
+                } else {
+                    $('.js-side-slide').css({
+                        right: '-' + side_slide_width + 'px'
+                    });
+                    left_side = false;
+                }
+                setTimeout(function() {
+                    $('.js-side-slide').css({
+                        opacity: 1
+                    });
+                }, 500);
+
+                // toggle side slide 
+                $('.js-toggle-side-slide').click(function(e) {
+                    if ($('.js-side-slide').hasClass('open')) {
+                        close_side_slide();
+                    } else {
+                        if (left_side) {
+                            $('.js-side-slide').css('left', '0px');
+                        } else {
+                            $('.js-side-slide').css('right', '0px');
+                        }
+                        $('.js-side-slide').addClass('open');
+                    }
+
+                });
+
+                // close side slide
+                $('.js-slide-close').click(function(e) {
+                    e.preventDefault();
+                    close_side_slide();
+                });
+
+                function close_side_slide() {
+                    if (left_side) {
+                        $('.js-side-slide').css('left', '-' + side_slide_width + 'px');
+                    } else {
+                        $('.js-side-slide').css('right', '-' + side_slide_width + 'px');
+                    }
+                    $('.js-side-slide').removeClass('open');
+                }
+
+                function get_slide_size() {
+                    if ($(window).width() < side_slide_orig_width) {
+                        side_slide_width = $(window).width();
+                    } else {
+                        side_slide_width = side_slide_orig_width;
+                    }
+                    $('.js-side-slide').css('width', side_slide_width + 'px');
+
+                    // reset the left or right margin
+                    if (!$('.js-side-slide').hasClass('open')) {
+                        close_side_slide();
+                    }
+                }
+
+                // resize
+                $(window).resize(function() {
+                    get_slide_size();
+                });
+
+                // close on scroll
+                $(window).scroll(function() {
+                    if ($('.js-side-slide').hasClass('js-close-scroll')) {
+                        close_side_slide();
+                    }
+                });
+
+                //end code
+            });
+        });
+    </script>
+
+    <style type="text/css">
+        #ixp_7f745606fcb470c34fdf2e8a78df0c19 {
+            display: none;
+        }
+    </style>
+    <script src="./scripts/satellite-5a6285a664746d3edc002109.js.download"></script>
+    <script src="./scripts/s-code-contents-73da148cb454c4f6e395aa8df704854c99540662.js.download"></script>
+    <style type="text/css">
+        #ball_iBYWQbgSFjEmrjN0hFV1HVw {
+            top: 0;
+            -webkit-transition: background 600ms ease-in;
+            -moz-transition: background 600ms ease-in;
+            -ms-transition: background 600ms ease-in;
+            -o-transition: background 600ms ease-in;
+            transition: background 600ms ease-in;
+        }
+        
+        #ball_iBYWQbgSFjEmrjN0hFV1HVw.ixp-sticky-container-fixed {
+            max-width: null;
+            background: #0476a8 !important;
+        }
+    </style>
+    <script type="text/javascript" charset="UTF-8" defer="" src="./scripts/jquery.js.download"></script>
+    <script type="text/javascript" charset="UTF-8" defer="" src="./scripts/adn_check.ad.download"></script>
+</head>
+
+<body id="ball_page_body"><a href="" id="ixp_7f745606fcb470c34fdf2e8a78df0c19" aria-hidden="true">go</a>
+    <div id="content_wrap">
+        <div id="ball_content_container" class="ixp-container">
+            <div id="ball_iQbAsoxa9ckGP2eA2aklDA" class="inner-content-wrapper ixp-container">
+                <div id="ball_ilomt9nYi1Eubpmo2LygVPg" style="background-image:url(&#39;./images/header.jpg&#39;);background-position:center center;background-repeat:no-repeat;background-size:cover;" class="background-d ixp-container">
+                    <div id="ball_iBYWQbgSFjEmrjN0hFV1HVw" data-ixp-component-root="iBYWQbgSFjEmrjN0hFV1HVw" data-ixp-behavior-scope-owner="iBYWQbgSFjEmrjN0hFV1HVw" class="ixp-sticky-container-fixed" style="left: 0px;">
+                        <div id="ball_itDedJG4Js0ax166KufXjcw" class="ixp-container">
+                            <div id="ball_ittOAbRPSqEu9WmD1J3PhDg" class="ixp-hidden-embed header ixp-container">
+                                <div id="ball_iOwA2bIO2nEWrDW31jHbYwQ" class="ixp-grid-container ixp-container">
+                                    <div id="ball_iKUwWsZh5fkqy7w8cVxeu9A" class="ixp-grid-row ixp-row-xs-12 ixp-container">
+                                        <div id="ball_itLX4BfenEEeGaR6SGxpGPw" class="ixp-grid-col-xs-12 ixp-grid-col-sm-3 ixp-grid-col-md-3 ixp-container">
+                                            <div id="ball_iqhyzkxKDAEe5ksARXHyaeA" class="header-logo-light-reversed ixp-container ixp-container-link" onclick="var event = arguments[0] || window.event; event.target = (event.target || event.srcElement);if (event.target == this || !event.target.href || event.target.href == event.target.src){ (function(e, element){ window.location.assign(&#39;https://nmcog.readthedocs.io/&#39;); e.cancelBubble = true; if (e.stopPropgation) { e.stopPropagation(); }})(event, this); return false;}"></div>
+                                        </div>
+                                        <div id="ball_iMsBn9hMBEGOx0zXHlr0g" class="align-right ixp-grid-col-xs-12 ixp-grid-col-sm-9 ixp-grid-col-md-9 ixp-container">
+                                            <div id="ball_iFlqvdigZxUa17B2xeDl7fw" style="margin-left:15px;display:inline-block;vertical-align:middle;" class="js-toggle-side-slide ixp-container">
+                                                <div id="ball_i9LHZFzMigEauHLmtkHOmg" style="-webkit-border-radius:3px 3px 3px 3px;-moz-border-radius:3px 3px 3px 3px;border-radius:3px 3px 3px 3px;margin-top:5px;margin-right:5px;margin-bottom:5px;margin-left:5px;width:40px;max-width:none;height:5px;" class="background-a ixp-container"></div>
+                                                <div id="ball_i16HS1wijgUaAWXF5eG9k0w" style="-webkit-border-radius:3px 3px 3px 3px;-moz-border-radius:3px 3px 3px 3px;border-radius:3px 3px 3px 3px;margin-top:5px;margin-right:5px;margin-bottom:5px;margin-left:5px;width:40px;max-width:none;height:5px;" class="background-a ixp-container"></div>
+                                                <div id="ball_i65sMYafEaB7U6kEhLSFA" style="-webkit-border-radius:3px 3px 3px 3px;-moz-border-radius:3px 3px 3px 3px;border-radius:3px 3px 3px 3px;margin-top:5px;margin-right:5px;margin-bottom:5px;margin-left:5px;width:40px;max-width:none;height:5px;" class="background-a ixp-container"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <script type="text/javascript" data-ixp-component-init="">
+                            (function($) {
+                                window.ixp.runtime.components.create('sticky_container', 'iBYWQbgSFjEmrjN0hFV1HVw', $, {
+                                    parameters: {
+                                        "sticky_trigger": "scroll",
+                                        "sticky_background_transition": "ease-in",
+                                        "sticky_background_transition_duration": 600,
+                                        "sticky_top_offset": null,
+                                        "sticky_width": null,
+                                        "sticky_height": null,
+                                        "sticky_background": "#0476a8"
+                                    }
+                                });
+                            })(window.ixp.runtime.components.dependencies.jQuery.v1_11);
+                        </script>
+                    </div>
+                    <div data-ixp-sticky-placeholder="undefined" style="height: 94px; display: block;"></div>
+                    <div id="ball_iUn3Lsbhd06ZL0r76JTtg" class="pre-content ixp-container">
+                        <div id="ball_iCKItKjoT0KmrvPlpXDkA" class="ixp-grid-container ixp-container">
+                            <div id="ball_iYMoKffH0Cq4ig4qaup4A" class="ixp-grid-row ixp-padded-row-m ixp-container">
+                                <div id="ball_iyKEYFB0G8E2VAFuGFC9k8A" class="align-center ixp-grid-col-md-12 ixp-grid-col-md-offset-0 ixp-container">
+                                    <div id="ball_iEP1zF8AUyudFJomRCpbQ" class="ixp-animated ixp-fadeInDown color-a ixp-text">
+                                        <h1>Discrimination</h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="ball_i6X7X9PKwUkiDVmYSE2OkWg" class="content ixp-container">
+                    <div id="ball_iNTwWJiwcaUi9AMcbzxnRfg" style="margin-bottom:3em;" class="ixp-grid-container ixp-container">
+                        <div id="ball_iHv3zmJuGn0elTFpaF6ydqg" style="margin-bottom:3em;" class="ixp-grid-row ixp-container">
+                            <div id="ball_i17rrYdznR06xppXDWxx19g" class="ixp-grid-col-sm-6 ixp-grid-col-md-6 ixp-grid-col-lg-7 ixp-container">
+                                <div id="ball_iboJZsPqA6UOoAZVJi8XZtg" style="margin-bottom:10px;" class="color-c ixp-text">
+                                    <h2>What is Discrimination?</h2></div>
+                                <div id="ball_iz7GNOCE7LUCM79yw1UEAGQ" class="ixp-container">
+                                    <div id="ball_iogl7dApTTkLmbdqJPkgA" style="margin-bottom:2em;" class="ixp-text">
+										According to Reber &amp; Reber &lpar;2001&rpar; the word discrimination can have at least three meaning.
+										Cognitive neuroscience usually concerns itself with two of them. These are,
+									</div>
+									<div id="ball_igvEew28bl0SbAmM1FUvvg" style="margin-top:2em;display:inline;" class="ixp-text">
+										<ol>
+											<li>"The ability to perceive differences between two or more stimuli." &lpar;Reber &amp; Reber, 2001, p. 205&rpar;
+											This may be viewed as a class of experimental procedures collectively called, discrimination training procedures.
+											The operant-conditioning experiments and the classica conditioning experiments belond to this class.</li>
+											<li>"The capacity to distinguish between stimuli." &lpar;Reber &amp; Reber, 2001, p. 206&rpar;
+											This is the definition in the context of perception and psychophysics. One of the 'distinguishing factor' is the idea of threshold.
+											Threshold as a statistically determined point on a stimulus continnum can be either
+											<em>absolute threshold</em> or <em>subjective threshold</em>. <em>Differential threshold</em>
+											is the point where the observer detects difference between two stimuli.
+											Another form of threshold is the minimum stimulus energy sufficient to excite a neuron.</li>
+										</ol>
+									</div>
+									<div id="ball_ivMmxsD2Y6USUxvHiRVmzTw" class="ixp-text">&nbsp; &nbsp;&nbsp;</div>
+									<div id="ball_ixemzCXVFw0qVBxbxHNlupA" style="display:inline;" class="ixp-text">
+										When the term is used to describe a training procedure whereby an organism learns to respond
+										differentially to different stimuli, the question of perceptual learning<sup>&#9768;</sup> arises indirectly.
+										Generally, "a priori assumption is made that the organism does perceive the differences
+										between the stimuli but does not react differently toward them because it has never been
+										reinforced for treating them differently." &lpar;Reber &amp; Reber, 2001, p. 206&rpar;
+									</div>
+									<div id="ball_ivMmxsD2Y6USUxvHiRVmzTw" class="ixp-text">&nbsp; &nbsp;&nbsp;</div>
+									<div id="ball_igvEew28bl0SbAmM1FUvvg" style="margin-top:2em;display:inline;" class="ixp-text">
+										<ul style="font-size:70%";>
+											<li>Reber, A.S., &amp; Reber, E.S. (2001). <em>The Penguin Dictionary of Psychology</em> (3rd ed.).
+											England, London: Penguin Books Ltd.</li>
+											<li><sup>&#9768;</sup>the organism's learning to detect the physical differences between the stimuli themselves.</li>
+										</ul>
+									</div>
+									<div id="ball_ivMmxsD2Y6USUxvHiRVmzTw" class="ixp-text">&nbsp; &nbsp;&nbsp;</div>
+                                    <div id="ball_iI1cwpQTPOkiDzSHuo3bDhQ" style="display:inline;" class="ixp-text">Wikipedia article on&nbsp;</div><a href="https://en.wikipedia.org/wiki/Discrimination_learning" target="_blank" id="ball_i62yNqhYNuEOtzL7goq3LA" class="ixp-link" style="margin-bottom:2em;display:inline;font-size: 20px;"><strong>Discrimination</strong></a>
+                                    <div id="ball_ixemzCXVFw0qVBxbxHNlupA" style="display:inline;" class="ixp-text">.</div>
+                                    <div id="ball_ivMmxsD2Y6USUxvHiRVmzTw" class="ixp-text">&nbsp; &nbsp;&nbsp;</div>
+                                </div>
+                            </div>
+                            <div id="ball_iVe1q8ccEMk2EhWmbtzR6A" class="ixp-grid-col-sm-6 ixp-grid-col-md-6 ixp-grid-col-lg-5 ixp-container"><img src="./images/discrimination.gif" id="ball_igakw2dihH02xrjFF551JQ" width="651" class="ixp-image" height="451" border="0"></div>
+                        </div>
+                        <div id="ball_iUM80wDFQqUOQ8DKUSO5opw" style="background-image:url(&#39;./images/800x300_texturedbg.png&#39;);background-position:left top;background-repeat:repeat;margin-bottom:2em;padding-top:2em;padding-right:2em;padding-bottom:2em;padding-left:2em;" class="ixp-grid-row background-e ixp-xsPadding1 ixp-container">
+                            <div id="ball_itBqN9WCNkOVC3rG7iaJw" class="ixp-grid-col-sm-12 ixp-grid-col-md-12 ixp-grid-col-sm-offset-0 ixp-grid-col-md-offset-0 ixp-container">
+                                <div id="ball_iID6zk0UOvka5fozgOAcWBg" class="color-a ixp-text">
+                                    <h2>The term 'discrimination' will depend on the context.</h2></div>
+                                <div id="ball_iO9UYspp0Nka5aNaw2weCpw" style="display:inline-block;" class="color-a bullet-a align-left ixp-text">
+                                    <ul>
+                                        <li>In terms of training it is the <em>ability</em> to perceive differences between stimuli.</li>
+                                        <li>In terms of perception it is the <em>capacity</em> to distinguish between stimuli.</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="ball_iMklKSs3Gbk2rDmQX7dWCQ" style="position: relative; z-index: 10;" class="content background-e ixp-container">
+                    <div id="ball_iACX4A5blWE6hZl68ucW6Vg" class="ixp-grid-container ixp-container">
+                        <div id="ball_irtLHbD9e3kKmlDaIXO0aGg" class="ixp-grid-row ixp-container">
+                            <div id="ball_i1Enwlvnjk02awSjbROIw" class="ixp-grid-col-md-12 ixp-container">
+                                <div id="ball_iqgVI1WqBgkiE3QWKWullBA" style="margin-bottom:10px;" class="color-a ixp-text">
+                                    <h2>Buonomano &amp; Merzenich's Temporal Discrimination of Stimuli</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="ball_i7aVZ2TTV0mqan8rj8Wxlw" class="ixp-grid-row ixp-container">
+                            <div id="ball_iQiu50QOKQEaZFvf4aP4ag" class="ixp-grid-col-xs-12 ixp-container">
+                                <div id="ball_iTai1zYQvxES7gE4wTDufpA" class="ixp-component-flow ixp-component-flow-progress-off ixp-component-flow-no-looping ixp-component-flow-fade-all" data-ixp-flow-mode="normal" data-ixp-component-root="iTai1zYQvxES7gE4wTDufpA" data-ixp-behavior-scope-owner="iTai1zYQvxES7gE4wTDufpA" data-ixp-flow-direction="forward" data-ixp-flow-progress="end">
+                                    <div id="ball_imQz9arrtWESkmOI3Uvhgw" data-ixp-flow-steps="iTai1zYQvxES7gE4wTDufpA" class="ixp-component-flow-steps ixp-container" style="height: 454px;">
+                                        <div id="ball_iiahqJOfjkWwOc7vyefvzg" data-ixp-component-tag="Section 3 - Hard Cluster 1" data-ixp-component-root="iiahqJOfjkWwOc7vyefvzg" class="ixp-component-flow-step" data-ixp-component-flow-step-tooltip="" data-ixp-behavior-scope-owner="iiahqJOfjkWwOc7vyefvzg" data-ixp-flow-step-placement="out">
+                                            <div id="ball_i7s81U6JME2nObJamn730w" class="ixp-container" data-ixp-step-wrapper="iiahqJOfjkWwOc7vyefvzg">
+                                                <div id="ball_ieNJZ4H0LM0qA6NaKH4j0g" class="ixp-grid-container ixp-grid-container-nested-responsive ixp-container">
+                                                    <div id="ball_iekDPx1uSGkaRHPxBFqjIA" style="margin-bottom:15px;" class="ixp-grid-row ixp-container">
+                                                        <div id="ball_iwXFmAXr8NUW5l4BsYUO0A" class="ixp-grid-col-sm-7 ixp-grid-col-md-7 ixp-grid-col-lg-7 ixp-container">
+                                                            <div id="ball_ilZeSiiB2NUmkymxgcwdvg" style="margin-bottom:1em;" class="color-a ixp-text">
+                                                                <!-- <h3>k-Means</h3> -->
+                                                            </div>
+                                                            <div id="ball_iwg9j8ZEoPkiccPHkeie65A" class="color-a ixp-text"><strong>PRINCIPLES BEHIND THE APPROACH</strong></div>
+                                                            <!-- <div id="ball_iwGR8nDqyJ0OaVLFvOTzhzw" style="margin-bottom:15px;" class="color-a ixp-text">Partitions data into k number of mutually exclusive clusters. How well a point fits into a cluster is determined by the distance from that point to the cluster’s center.</div> -->
+                                                            <!-- <div id="ball_ihIcwo59T7UW7cj3Qt0fGfA" class="color-a ixp-text"><strong>BEST USED....</strong></div> -->
+                                                            <div id="ball_iinKHCqhHkEylt5Pa7XtKgQ" class="color-a ixp-text">
+                                                                <ul>
+                                                                    <li>A stimulus is a pulse pair.</li>
+                                                                    <li>Differences in pulse intervals distinguish stimuli.</li>
+																	<li>Information in temporal tasks is encoded in temporal structure of the stimulus.</li>
+																	<li>Sensory inputs from the environment are dynamic and constantly changing in space and time.</li>
+																	<li>Time-dependent neuronal properties enable network to transform (self-organize) temporal information into spatial code.</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div id="ball_i8GCArJoM1UKn3yj5bFGYg" class="ixp-grid-col-sm-1 ixp-grid-col-md-1 ixp-grid-col-lg-1 ixp-container"></div>
+                                                        <div id="ball_idZ22UtaiEKAdyJQYK7eYg" class="ixp-grid-col-sm-4 ixp-grid-col-md-4 ixp-grid-col-lg-4 ixp-container">
+                                                            <!-- <div id="ball_iklzumYBYF0SjToeM6ZnSw" class="color-a ixp-text"><strong>RESULT</strong></div> -->
+															<div id="ball_iklzumYBYF0SjToeM6ZnSw" class="color-a ixp-text"><a href="https://doi.org/10.1126/science.7863330" target="_blank">(Buonomano &amp; Merzenich, 1995)</a></div>
+                                                            <div id="ball_ikV8LXJJUkuVIaHsDnedA" class="color-g ixp-text">
+                                                                <!-- <h6>Cluster centers</h6> -->
+                                                            </div><img src="./images/BuoMerzDefineStimulus.gif" id="ball_i0WbNrYAxLU6dEMdW5SjkhA" width="230" class="ixp-image" height="230" border="0"></div>
+                                                    </div>
+                                                </div><a href="https://nmcog.readthedocs.io/#" id="ball_iobexszrx2UGqm57UJMnaJg" data-ixp-behavior-scope-flow-next="iTai1zYQvxES7gE4wTDufpA" class="button button-d button-medium ixp-link" style="float:right;" data-ixp-behavior-flow-next="">Next ›</a><a href="https://nmcog.readthedocs.io/#" id="ball_iZzrSW44FwUCfVGsfOk5f2w" class="button button-d button-medium ixp-link" style="float:left;" data-ixp-behavior-flow-last="" data-ixp-behavior-scope-flow-last="iTai1zYQvxES7gE4wTDufpA">‹ Previous</a></div>
+                                            <script type="text/javascript" data-ixp-component-init="">
+                                                (function($) {
+                                                    window.ixp.runtime.components.create('ixp-flow-step', 'iiahqJOfjkWwOc7vyefvzg', $);
+                                                })(window.ixp.runtime.components.dependencies.jQuery.v1_11);
+                                            </script>
+                                        </div>
+                                        <div id="ball_iYLgdFaHw0eVc8QrEz0nmQ" data-ixp-component-tag="Section 3 - Hard Cluster 2" data-ixp-component-root="iYLgdFaHw0eVc8QrEz0nmQ" class="ixp-component-flow-step" data-ixp-component-flow-step-tooltip="" data-ixp-behavior-scope-owner="iYLgdFaHw0eVc8QrEz0nmQ" data-ixp-flow-step-placement="out">
+                                            <div id="ball_iMS0EsTSKVUqbo4NRQAKcNQ" class="ixp-container" data-ixp-step-wrapper="iYLgdFaHw0eVc8QrEz0nmQ">
+                                                <div id="ball_iXVmMktKslkOzcyoYaxnkg" class="ixp-grid-container ixp-grid-container-nested-responsive ixp-container">
+                                                    <div id="ball_iAioKyBN8VEy0QFwojwXRAw" style="margin-bottom:15px;" class="ixp-grid-row ixp-container">
+                                                        <div id="ball_iWbMJ3lySfUunmxoDu4X21g" class="ixp-grid-col-sm-7 ixp-grid-col-md-7 ixp-grid-col-lg-7 ixp-container">
+                                                            <div id="ball_i77ecJ3QpkyMeYYZccdlg" style="margin-bottom:1em;" class="color-a ixp-text">
+                                                                <!-- <h3>k-Medoids</h3> -->
+															</div>
+                                                            <div id="ball_iG5yllUq7y0ek2p2e6U9yDQ" class="color-a ixp-text"><strong>NETWORK ARCHITECTURE</strong></div>
+                                                            <!-- <div id="ball_iUsPJB4LUtU2VqUEddzGzjA" style="margin-bottom:15px;" class="color-a ixp-text">Similar to k-means, but with the requirement that the cluster centers coincide with points in the data.</div> -->
+                                                            <!-- <div id="ball_i3654D5VqE2wckP09UzKg" class="color-a ixp-text"><strong>BEST USED....</strong></div> -->
+                                                            <div id="ball_iKMFHMi3qEuuHcCL05Di1Q" class="color-a ixp-text">
+                                                                <ul>
+                                                                    <li>Stimulus is sent to a network representing Douglas and Martin's <a href="https://doi.org/10.1162/neco.1989.1.4.480" target="_blank">(1989)</a> cortical IV and III layers.</li>
+                                                                    <li>Keeping with experimental observations the excitatory:inhibitory element is approximately 4:1.</li>
+                                                                    <li>The constituent excitatory and inhibitory elements are randomly connected.</li>
+																	<li>The elements are based on Integrate-and-fire current units.</li>
+																	<li>The connection parameters are as per
+																		<ul style="font-size:70%";><li>Buonomano, D. V., &amp; Merzenich, M. M. (1997).
+																		Temporal Information Processing: A Computational Role for Paired-Pulse Facilitation and Slow Inhibition.
+																		In J. W. Donahoe &amp; V. Packard Dorsel (Eds.),
+																		<em>Neural-Networks Models of Cognition</em> (pp. 129-139).
+																		Netherlands, Amsterdam: Elsevier Science B. V.</li></ul>
+																	</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div id="ball_irgtJQTt450ydjNCTchDPiw" class="ixp-grid-col-sm-1 ixp-grid-col-md-1 ixp-grid-col-lg-1 ixp-container"></div>
+                                                        <div id="ball_iClkSh59kuj2rXkFyFmXQ" class="ixp-grid-col-sm-4 ixp-grid-col-md-4 ixp-grid-col-lg-4 ixp-container">
+                                                            <!-- <div id="ball_i0gPrg6RSdkVFRQWBqu5mg" class="color-a ixp-text"><strong>RESULT</strong></div> -->
+                                                            <div id="ball_iymqIIsvyi0mpLcwCryFmjQ" class="color-g ixp-text">
+                                                                <!-- <h6>Cluster centers that coincide with data points</h6> -->
+                                                            </div><img src="./images/BuoMerzNetwork.png" id="ball_imjbdcgSf2Ea6T3e0hxCqvA" width="230" class="ixp-image" height="230" border="0"></div>
+                                                    </div>
+                                                </div><a href="https://nmcog.readthedocs.io/#" id="ball_i5K5kWFvoZESBxxuTuaPqgQ" data-ixp-behavior-scope-flow-next="iTai1zYQvxES7gE4wTDufpA" class="button button-d button-medium ixp-link" style="float:right;" data-ixp-behavior-flow-next="">Next ›</a><a href="https://nmcog.readthedocs.io/#" id="ball_i5mYJkrFlMEGzZqBn4oZJrA" style="float:left;" data-ixp-behavior-flow-back="" data-ixp-behavior-scope-flow-back="iTai1zYQvxES7gE4wTDufpA" class="button button-d button-medium ixp-link">‹ Previous</a></div>
+                                            <script type="text/javascript" data-ixp-component-init="">
+                                                (function($) {
+                                                    window.ixp.runtime.components.create('ixp-flow-step', 'iYLgdFaHw0eVc8QrEz0nmQ', $);
+                                                })(window.ixp.runtime.components.dependencies.jQuery.v1_11);
+                                            </script>
+                                        </div>
+                                        <!-- <div id="ball_ifYYGSbSzkCxfQQWHVOPw" data-ixp-component-tag="Section 3 - Hard Cluster 3" data-ixp-component-root="ifYYGSbSzkCxfQQWHVOPw" class="ixp-component-flow-step" data-ixp-component-flow-step-tooltip="" data-ixp-behavior-scope-owner="ifYYGSbSzkCxfQQWHVOPw" data-ixp-flow-step-placement="out">
+                                            <div id="ball_icmIpfjw1m0e8FraFNO6w2A" class="ixp-container" data-ixp-step-wrapper="ifYYGSbSzkCxfQQWHVOPw">
+                                                <div id="ball_ip0DYlnm1Nka4RKHSzA1bjw" class="ixp-grid-container ixp-grid-container-nested-responsive ixp-container">
+                                                    <div id="ball_irliedoHkODHhLGVJRE9A" style="margin-bottom:15px;" class="ixp-grid-row ixp-container">
+                                                        <div id="ball_iQ7xW3sxNGkajoQuBXqsbdg" class="ixp-grid-col-sm-7 ixp-grid-col-md-7 ixp-grid-col-lg-7 ixp-container">
+                                                            <div id="ball_ipnMlPI8BZke79IiVu2ulzQ" style="margin-bottom:1em;" class="color-a ixp-text">
+                                                                <h3>Hierarchical Clustering</h3>
+															</div>
+                                                            <div id="ball_ibLrZuSCfkWjOuiaX68XQ" class="color-a ixp-text"><strong>HOW IT WORKS</strong></div>
+                                                            <div id="ball_iaWKsdL79ikmVtRzUq6QLjQ" style="margin-bottom:15px;" class="color-a ixp-text">Produces nested sets of clusters by analyzing similarities between pairs of points and grouping objects into a binary, hierarchical tree.</div>
+                                                            <div id="ball_if82FPRVyhUKlhFA5UkRdjQ" class="color-a ixp-text"><strong>BEST USED....</strong></div>
+                                                            <div id="ball_ia1OIt944JkiRJGHqMNALkQ" class="color-a ixp-text">
+                                                                <ul>
+                                                                    <li>When you don’t know in advance how many clusters are in your data</li>
+                                                                    <li>When you want visualization to guide your selection</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div id="ball_iwNtRC49MfkO4zTz3ADeFWQ" class="ixp-grid-col-sm-1 ixp-grid-col-md-1 ixp-grid-col-lg-1 ixp-container"></div>
+                                                        <div id="ball_iuYa4RZz806tZ6tSgov6w" class="ixp-grid-col-sm-4 ixp-grid-col-md-4 ixp-grid-col-lg-4 ixp-container">
+                                                            <div id="ball_iOllwTGLuEEOGAqeMIDPbAA" class="color-a ixp-text"><strong>RESULT</strong></div>
+                                                            <div id="ball_iPQqSHwa7f0CFVYNudDeYWg" class="color-g ixp-text">
+                                                                <h6>Dendrogram showing the hierarchical relationship between clusters</h6>
+                                                            </div><img src="./images/400w_s3_hard3-42d10435ddcf83bfeb1fa03dd883df7c97975016.png" id="ball_isS1xReB300qc6FqnZspvg" width="230" class="ixp-image" height="230" border="0"></div>
+                                                    </div>
+                                                </div><a href="https://nmcog.readthedocs.io/#" id="ball_iWMbmLjKhRUQD97iGbVTg" data-ixp-behavior-scope-flow-next="iTai1zYQvxES7gE4wTDufpA" class="button button-d button-medium ixp-link" style="float:right;" data-ixp-behavior-flow-next="">Next ›</a><a href="https://nmcog.readthedocs.io/#" id="ball_ixwuf8icOEOjdl0hIPS1uA" style="float:left;" data-ixp-behavior-flow-back="" data-ixp-behavior-scope-flow-back="iTai1zYQvxES7gE4wTDufpA" class="button button-d button-medium ixp-link">‹ Previous</a></div>
+                                            <script type="text/javascript" data-ixp-component-init="">
+                                                (function($) {
+                                                    window.ixp.runtime.components.create('ixp-flow-step', 'ifYYGSbSzkCxfQQWHVOPw', $);
+                                                })(window.ixp.runtime.components.dependencies.jQuery.v1_11);
+                                            </script>
+                                        </div> -->
+                                        <div id="ball_iIj8wLjanpkCs9sCg6QV8SQ" data-ixp-component-tag="Section 3 - Hard Cluster 4" data-ixp-component-root="iIj8wLjanpkCs9sCg6QV8SQ" class="ixp-component-flow-step" data-ixp-component-flow-step-tooltip="" data-ixp-behavior-scope-owner="iIj8wLjanpkCs9sCg6QV8SQ" data-ixp-flow-step-placement="in">
+                                            <div id="ball_izE2ej8Hy6022f9HyC6HrQ" class="ixp-container" data-ixp-step-wrapper="iIj8wLjanpkCs9sCg6QV8SQ">
+                                                <div id="ball_i19YtBvb220rFE4Sxh2rg" class="ixp-grid-container ixp-grid-container-nested-responsive ixp-container">
+                                                    <div id="ball_i7iL7UE6evkeLjD7XqiH3vA" style="margin-bottom:15px;" class="ixp-grid-row ixp-container">
+                                                        <div id="ball_i4aJDbHo02Mi6mN9T25g" class="ixp-grid-col-sm-7 ixp-grid-col-md-7 ixp-grid-col-lg-7 ixp-container">
+                                                            <div id="ball_ihCmLFXlOjkybgAAYMmCnQ" style="margin-bottom:1em;" class="color-a ixp-text">
+                                                                <!-- <h3>Self-Organizing Map</h3> -->
+															</div>
+                                                            <div id="ball_iHR0j8zD7VkaXzmgPdfuXA" class="color-a ixp-text"><strong>HOW IT WORKS</strong></div>
+                                                            <div id="ball_iOOlkWrvz021xCAL3ZTFyw" style="margin-bottom:15px;" class="color-a ixp-text">
+															Given one or more stimulus (i.e. interval) spikes from the output layer are the result of respective population.</div>
+                                                            <div id="ball_iJVCD5oA60KErgDXbrSU2Q" class="color-a ixp-text"><strong>BEST USED....</strong></div>
+                                                            <div id="ball_iY40BgY4th0iK9mqjTaVhw" class="color-a ixp-text">
+                                                                <ul>
+                                                                    <li>To distinguish two or more stimuli such that each carries temporal information.</li>
+                                                                    <li>To visualize small sequence of stimuli from the perspective of neuron populations (output layer).</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div id="ball_iRTb1QGWd5kiyWMWVJDftw" class="ixp-grid-col-sm-1 ixp-grid-col-md-1 ixp-grid-col-lg-1 ixp-container"></div>
+                                                        <div id="ball_iRPlqO4bc9UixbS6t0cu2Q" class="ixp-grid-col-sm-4 ixp-grid-col-md-4 ixp-grid-col-lg-4 ixp-container">
+                                                            <div id="ball_i99rVisuC6UmNBvYlWA9A" class="color-a ixp-text"><strong>RESULT</strong></div>
+                                                            <div id="ball_iVuHFNlZfvEOzBOMy3U8tZQ" class="color-g ixp-text">
+                                                                <!-- <h6>Lower-dimensional (typically 2D) representation</h6> -->
+                                                            </div><img src="./images/BuoMerzPopulationSpikes.png" id="ball_ioF8kEctJE6o3rCqoPFeHg" width="230" class="ixp-image" height="231" border="0"></div>
+                                                    </div>
+                                                </div><a href="https://nmcog.readthedocs.io/#" id="ball_iJMbcpioc0g34Pr91ADA" data-ixp-behavior-scope-flow-first="iTai1zYQvxES7gE4wTDufpA" style="float:right;" class="button button-d button-medium ixp-link" data-ixp-behavior-flow-first="">Next ›</a><a href="https://nmcog.readthedocs.io/#" id="ball_irPqW7zgsv0SOvUuYH5vQ" style="float:left;" data-ixp-behavior-flow-back="" data-ixp-behavior-scope-flow-back="iTai1zYQvxES7gE4wTDufpA" class="button button-d button-medium ixp-link">‹ Previous</a></div>
+                                            <script type="text/javascript" data-ixp-component-init="">
+                                                (function($) {
+                                                    window.ixp.runtime.components.create('ixp-flow-step', 'iIj8wLjanpkCs9sCg6QV8SQ', $);
+                                                })(window.ixp.runtime.components.dependencies.jQuery.v1_11);
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <script type="text/javascript" data-ixp-component-init="">
+                                        (function($) {
+                                            window.ixp.runtime.components.create('ixp-flow', 'iTai1zYQvxES7gE4wTDufpA', $, {
+                                                parameters: {
+                                                    "progress_indicator": "display",
+                                                    "fixed_height": true,
+                                                    "autoplay_delay": 4,
+                                                    "change_scroll_top": true,
+                                                    "autoplay_stop_on_navigation": false,
+                                                    "autoplay_enabled": false,
+                                                    "navigation_enabled": true,
+                                                    "looping_enabled": false
+                                                }
+                                            });
+                                        })(window.ixp.runtime.components.dependencies.jQuery.v1_11);
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- <div id="ball_ij2IMllYXYUyqG9DXGsZy2w" class="content content-c ixp-container">
+                    <div id="ball_iwuHZFL5I5kuDdbAebiZ8w" class="ixp-grid-container ixp-container">
+                        <div id="ball_i9WpimlUwUKbbih5OeYCpQ" class="ixp-grid-row ixp-container">
+                            <div id="ball_ijoMdhmbbi0CX9V1RdFFl7A" class="ixp-grid-col-md-12 ixp-container">
+                                <div id="ball_iJuBrIpOWBEGKvaBlolcIEQ" style="margin-bottom:10px;" class="ixp-text">
+                                    <h2>Common Soft Clustering&nbsp;Algorithms</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="ball_ilyWJ96YxD03QPWm4zJRog" class="ixp-grid-row ixp-container">
+                            <div id="ball_iV2P3NtFpKka6ulUZXO8g" class="ixp-grid-col-xs-12 ixp-container">
+                                <div id="ball_iRSgI53mHEqFB6wB8m8JRA" class="ixp-component-flow ixp-component-flow-progress-off ixp-component-flow-no-looping ixp-component-flow-fade-all" data-ixp-flow-mode="normal" data-ixp-component-root="iRSgI53mHEqFB6wB8m8JRA" data-ixp-behavior-scope-owner="iRSgI53mHEqFB6wB8m8JRA" data-ixp-flow-direction="forward" data-ixp-flow-progress="start">
+                                    <div id="ball_ibB7v4AzhXEm4OVUe2XfWmw" data-ixp-flow-steps="iRSgI53mHEqFB6wB8m8JRA" class="ixp-component-flow-steps ixp-container" style="height: 489px;">
+                                        <div id="ball_ig58bW4tHMUuF0flLiavGg" data-ixp-component-tag="Section 3 - Soft Cluster 1" data-ixp-component-root="ig58bW4tHMUuF0flLiavGg" class="ixp-component-flow-step" data-ixp-component-flow-step-tooltip="" data-ixp-behavior-scope-owner="ig58bW4tHMUuF0flLiavGg" data-ixp-flow-step-placement="in">
+                                            <div id="ball_iY9qUvMOqfE2Spd7Tv6rhdQ" class="ixp-container" data-ixp-step-wrapper="ig58bW4tHMUuF0flLiavGg">
+                                                <div id="ball_i8MyJWUI1H0iWgqGEXS33A" class="ixp-grid-container ixp-grid-container-nested-responsive ixp-container">
+                                                    <div id="ball_iYHS1AzCw0Wb6YyOmJpbg" style="margin-bottom:15px;" class="ixp-grid-row ixp-container">
+                                                        <div id="ball_iJM4sShDSh06Z9KzATSv4mQ" class="ixp-grid-col-sm-7 ixp-grid-col-md-7 ixp-grid-col-lg-7 ixp-container">
+                                                            <div id="ball_iTXbJ2VAmZEqD8ONJie7Fg" style="margin-bottom:1em;" class="ixp-text">
+                                                                <h3>Fuzzy c-Means</h3></div>
+                                                            <div id="ball_iq6ITrxUqUSILsMGHcbYg" class="ixp-text"><strong>HOW IT WORKS</strong></div>
+                                                            <div id="ball_im2rj0l7I0SnI3V8jop9pg" style="margin-bottom:15px;" class="ixp-text">Partition-based clustering when data points may belong to more than one cluster.</div>
+                                                            <div id="ball_iZoLfY2DbOEiKSz5oiPTA" class="ixp-text"><strong>BEST USED....</strong></div>
+                                                            <div id="ball_iH3zSj3DKJUCh48RSV3JQnQ" class="ixp-text">
+                                                                <ul>
+                                                                    <li>When the number of clusters is known</li>
+                                                                    <li>For pattern recognition</li>
+                                                                    <li>When clusters overlap</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div id="ball_iZIp9vugqXE6hjqzsb2Gg" class="ixp-grid-col-sm-1 ixp-grid-col-md-1 ixp-grid-col-lg-1 ixp-container"></div>
+                                                        <div id="ball_irdouS0u9Qk2UgUbIxyOEnw" class="ixp-grid-col-sm-4 ixp-grid-col-md-4 ixp-grid-col-lg-4 ixp-container">
+                                                            <div id="ball_ipCnJV0HT06ochmrkwUkkQ" class="ixp-text"><strong>RESULT</strong></div>
+                                                            <div id="ball_iaZJOm1EbA02ynKAlz0Tkg" class="color-c ixp-text">
+                                                                <h6>Cluster centers (similar to k-means) but with fuzziness so that points may belong to more than one cluster</h6>
+                                                            </div><img src="./images/400w_s3_soft1-dc3b93914dfb63b5e2ba73d3f9856eef52b39030.png" id="ball_iqPy81CwKUKm9G3X0xwpRQ" width="230" class="ixp-image" height="231" border="0"></div>
+                                                    </div>
+                                                </div><a href="https://nmcog.readthedocs.io/#" id="ball_ixtZB1r8CYU6mWmMR2Muepg" data-ixp-behavior-scope-flow-next="iRSgI53mHEqFB6wB8m8JRA" class="button button-d button-medium ixp-link" style="float:right;" data-ixp-behavior-flow-next="">Next ›</a><a href="https://nmcog.readthedocs.io/#" id="ball_iP2lAfSIeZEW83FXG7fI4Jw" class="button button-d button-medium ixp-link" style="float:left;" data-ixp-behavior-flow-last="" data-ixp-behavior-scope-flow-last="iRSgI53mHEqFB6wB8m8JRA">‹ Previous</a></div>
+                                            <script type="text/javascript" data-ixp-component-init="">
+                                                (function($) {
+                                                    window.ixp.runtime.components.create('ixp-flow-step', 'ig58bW4tHMUuF0flLiavGg', $);
+                                                })(window.ixp.runtime.components.dependencies.jQuery.v1_11);
+                                            </script>
+                                        </div>
+                                        <div id="ball_iPUj84Rs6MUK9F87AotLy0A" data-ixp-component-tag="Section 3 - Soft Cluster 2" data-ixp-component-root="iPUj84Rs6MUK9F87AotLy0A" class="ixp-component-flow-step" data-ixp-component-flow-step-tooltip="" data-ixp-behavior-scope-owner="iPUj84Rs6MUK9F87AotLy0A" data-ixp-flow-step-placement="out">
+                                            <div id="ball_isK3P8rt63kiY6eE0U84n1g" class="ixp-container" data-ixp-step-wrapper="iPUj84Rs6MUK9F87AotLy0A">
+                                                <div id="ball_iwBrHDuPpEGVy19pmU0AVQ" class="ixp-grid-container ixp-grid-container-nested-responsive ixp-container">
+                                                    <div id="ball_i2L6QlyWI7keX4LymXVW0Cw" style="margin-bottom:15px;" class="ixp-grid-row ixp-container">
+                                                        <div id="ball_iCLsd2EYtiUeespvGcbuYfQ" class="ixp-grid-col-sm-7 ixp-grid-col-md-7 ixp-grid-col-lg-7 ixp-container">
+                                                            <div id="ball_ikMpDhBhoki1pp9EiGR98g" style="margin-bottom:1em;" class="ixp-text">
+                                                                <h3>Gaussian Mixture Model</h3></div>
+                                                            <div id="ball_i2LG8MmotYUWHDglNoMEeWg" class="ixp-text"><strong>HOW IT WORKS</strong></div>
+                                                            <div id="ball_inL9mae5Qxk6utv3aQ11sw" style="margin-bottom:15px;" class="ixp-text">Partition-based clustering where data points come from different multivariate normal distributions with certain probabilities.</div>
+                                                            <div id="ball_iiNhJzxWoEUq8i2UKi3zHWg" class="ixp-text"><strong>BEST USED....</strong></div>
+                                                            <div id="ball_i3AeDIQeQ3U6uUAwmUMh6A" class="ixp-text">
+                                                                <ul>
+                                                                    <li>When a data point might belong to more than one cluster</li>
+                                                                    <li>When clusters have different sizes and correlation structures within them</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                        <div id="ball_iv3teJlKQkyCnVXAcfip7g" class="ixp-grid-col-sm-1 ixp-grid-col-md-1 ixp-grid-col-lg-1 ixp-container"></div>
+                                                        <div id="ball_icKXjuU5lbkCxUFmX9FJ4A" class="ixp-grid-col-sm-4 ixp-grid-col-md-4 ixp-grid-col-lg-4 ixp-container">
+                                                            <div id="ball_iEytSsfXZ0K7yOmbGSogfw" class="ixp-text"><strong>RESULT</strong></div>
+                                                            <div id="ball_ile2WHoUC50aFeiDfB67hw" class="color-c ixp-text">
+                                                                <h6>A model of Gaussian distributions that give probabilities of a point being in a cluster</h6>
+                                                            </div><img src="./images/400w_s3_soft2-42d10435ddcf83bfeb1fa03dd883df7c97975016.png" id="ball_iOh4SSzB06gkqZ6tHUJRg" width="230" class="ixp-image" height="230" border="0"></div>
+                                                    </div>
+                                                </div><a href="https://nmcog.readthedocs.io/#" id="ball_ieWAanrPOqkqh39Mox7hR5w" data-ixp-behavior-scope-flow-first="iRSgI53mHEqFB6wB8m8JRA" style="float:right;" class="button button-d button-medium ixp-link" data-ixp-behavior-flow-first="">Next ›</a><a href="https://nmcog.readthedocs.io/#" id="ball_iCiEnIcBd0Kz9h80u3bKeQ" style="float:left;" data-ixp-behavior-flow-back="" data-ixp-behavior-scope-flow-back="iRSgI53mHEqFB6wB8m8JRA" class="button button-d button-medium ixp-link">‹ Previous</a></div>
+                                            <script type="text/javascript" data-ixp-component-init="">
+                                                (function($) {
+                                                    window.ixp.runtime.components.create('ixp-flow-step', 'iPUj84Rs6MUK9F87AotLy0A', $);
+                                                })(window.ixp.runtime.components.dependencies.jQuery.v1_11);
+                                            </script>
+                                        </div>
+                                    </div>
+                                    <script type="text/javascript" data-ixp-component-init="">
+                                        (function($) {
+                                            window.ixp.runtime.components.create('ixp-flow', 'iRSgI53mHEqFB6wB8m8JRA', $, {
+                                                parameters: {
+                                                    "progress_indicator": "display",
+                                                    "fixed_height": true,
+                                                    "autoplay_delay": 4,
+                                                    "change_scroll_top": true,
+                                                    "autoplay_stop_on_navigation": false,
+                                                    "autoplay_enabled": false,
+                                                    "navigation_enabled": true,
+                                                    "looping_enabled": false
+                                                }
+                                            });
+                                        })(window.ixp.runtime.components.dependencies.jQuery.v1_11);
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div> -->
+                <div id="ball_ibT9lshjUdky1F5HqJYzeag" class="post-content-a ixp-container">
+                    <div id="ball_iczAnD8D8U6rok64bokQ2A" class="ixp-grid-container ixp-container">
+                        <div id="ball_ida6UsV2z8kSydDIs2Fl4g" class="ixp-grid-row ixp-container">
+                            <div id="ball_iHLlEdEcNkyERY70kqPbBQ" class="ixp-grid-col-sm-6 ixp-grid-col-md-6 ixp-grid-col-lg-6 ixp-container">
+                                <div id="ball_iKClouYDBb0a6TdHs1LYTZg" class="pod pod-a shadow-a ixp-hover-dim ixp-container ixp-container-link" style="margin-bottom:1.5em;" onclick="var event = arguments[0] || window.event; event.target = (event.target || event.srcElement);if (event.target == this || !event.target.href || event.target.href == event.target.src){ (function(e, element){ window.location.assign(&#39;Applying_Association.html&#39;); e.cancelBubble = true; if (e.stopPropgation) { e.stopPropagation(); }})(event, this); return false;}">
+                                    <div id="ball_i8TsN8UeuTEWSLBHPP0rLNw" style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px;width:80px;max-width:none;height:80px;display:inline-block;vertical-align:middle;box-sizing:border-box;" class="pod pod-e ixp-circle align-center ixp-container">
+                                        <div id="ball_iJCXHH8XhgU6iGgym2rn5Lg" style="font-size: 70px; line-height: 1;" class="ixp-text">
+                                            <icon class="fa-chevron-right fa"></icon>
+                                        </div>
+                                    </div>
+                                    <div id="ball_iGBSAuCYZ3EuVtCNXsBuSnA" style="margin-left:10px;display:inline-block;vertical-align:middle;" class="ixp-container">
+                                        <div id="ball_ibDaUybie5kSZsieKjuinCA" class="ixp-text"><strong>SECTION 2</strong></div>
+                                        <div id="ball_iu9VZEdSxb0mjTCoHnnS3eA" class="font-a color-c ixp-text">
+                                            <h3>Association</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="ball_iHsRlphXzgUeVHAUl4SqFw" class="ixp-grid-col-sm-1 ixp-grid-col-md-6 ixp-grid-col-lg-5 ixp-container">
+                                <div id="ball_itdR6LK6sgUmZ94wfw8ioMA" class="ixp-grid-row ixp-container">
+                                    <div id="ball_iLbMRwmaGrk6laWdNkIv3LA" style="padding-bottom:50px;" class="align-center ixp-grid-col-sm-12 ixp-grid-col-md-5 ixp-container">
+									<img src="./images/nmcogLogo1.png" id="ball_igacwQzyxFkqQm5lzLaQpOg" width="600" class="shadow-a image-c ixp-animated-scroll ixp-scroll-aware ixp-scroll-fadeDown ixp-image ixp-scroll-seen ixp-scroll-out" height="600" style="padding-left:15px;width:35%;max-width:none;" border="0">
+									<img src="./images/nmcogLogo3.png" id="ball_iHhUuViFRikOu8d6xZeirvw" width="600" class="shadow-a ixp-animated-scroll ixp-scroll-aware ixp-scroll-fadeLeft ixp-animated-delay-30 ixp-image ixp-scroll-seen ixp-scroll-out" height="600" style="margin-top:-10%;width:40%;max-width:none;float:left;z-index: 2; position:relative;" border="0">
+									<img src="./images/nmcogLogo4.png" id="ball_ixejawdSwwUmYnOSPuYOdcQ" width="600" class="shadow-a ixp-animated-scroll ixp-scroll-aware ixp-scroll-fadeRight ixp-animated-delay-30 ixp-image ixp-scroll-seen ixp-scroll-out" height="600" style="margin-top:-15%;width:50%;max-width:none;float:right;z-index: 2; position:relative;" border="0">
+									<img src="./images/nmcogLogo2.png" id="ball_iQvVtsgAmlk2UzjlDCm0Q" width="600" class="shadow-a image-c ixp-animated-scroll ixp-scroll-aware ixp-scroll-fadeUp ixp-animated-delay-50 ixp-image ixp-scroll-seen ixp-scroll-out" height="600" style="width:38%;max-width:none;top:49%;left:28%;position:absolute;z-index:1;" border="0">
+                                        <div id="ball_iWQoLFjiIPEyTZuUonQd9Tg" style="height:8em;" class="ixp-grid-hidden-sm ixp-grid-hidden-md ixp-grid-hidden-lg ixp-container"></div>
+                                    </div>
+                                    <div id="ball_iTfdGhPPy802wK3KK67lpMw" class="ixp-grid-col-sm-6 ixp-grid-col-md-7 ixp-container">
+                                        <div id="ball_i4wmxgff3ekW78JCxmzVopQ" style="margin-bottom:15px;" class="ixp-smFontSizen40 ixp-text">
+                                            <h2>Get nmcog</h2>
+                                        </div><a href="https://pypi.org/project/nmcog/" id="ball_ijcwOv14KNU6zR5sT9e6e7Q" class="button button-d button-medium ixp-link" target="_blank" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;">Install nmcog</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="ball_i9t7K9IVDPEGrQ7DAUKJwg" class="footer-a ixp-hidden-embed ixp-container">
+                <div id="ball_iB6uz2Avz602gfOtRzujvQ" class="ixp-grid-container ixp-container">
+                    <div id="ball_iHEoKb76GUulOUq1wlTbJw" class="ixp-grid-row ixp-row-xs-12 ixp-container">
+                        <div id="ball_ip0bftlkefUuVcvnQIVspXw" style="margin-bottom:10px;" class="ixp-grid-col-xs-12 ixp-grid-col-sm-6 ixp-grid-col-md-12 ixp-container">
+                            <!-- <div id="ball_irRrUiBf066ycvYj3NzHw" style="margin-bottom:10px;" class="ixp-container"><a href="link-here" id="ball_iNcf7yb8tzUCg1GvT0GWMw" class="ixp-link" style="display:inline-block;vertical-align:middle;">Patents</a> -->
+                                <!-- <div id="ball_iALtf33RUe0K3iXZ3AMwirw" style="margin-right:10px;margin-left:10px;display:inline-block;vertical-align:middle;" class="ixp-text">|</div><a href="link-here" id="ball_iWR1yB1G5A0WIPE5gqyxNSw" class="ixp-link" style="display:inline-block;vertical-align:middle;">Trademarks</a> -->
+                                <!-- <div id="ball_ij0gQ881PDka619yYh1oQ4Q" style="margin-right:10px;margin-left:10px;display:inline-block;vertical-align:middle;" class="ixp-text">|</div><a href="link-here" id="ball_iyqpN2lFKrk6drZuc7sa6Ow" class="ixp-link" style="display:inline-block;vertical-align:middle;">Privacy Policy</a> -->
+                                <!-- <div id="ball_iENv0kDRkPEKVMJtWx8VHQ" style="margin-right:10px;margin-left:10px;display:inline-block;vertical-align:middle;" class="ixp-text">|</div><a href="link-here" id="ball_itcKwObWHUuKQ74mS0sPIQ" class="ixp-link" style="display:inline-block;vertical-align:middle;">Preventing Piracy</a></div> -->
+                            <div id="ball_itOMFsrOFPE6evJta0xJi3Q" class="ixp-text">© 2019-2020 nmcog</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="ball_iR8sV2nUwPEaXoJBZ30JAw" style="padding: 15px; width: 320px; max-width: none; height: 100%; box-sizing: border-box; box-shadow: rgb(0, 0, 0) 0px 0px 3px 0px; z-index: 2147483647 !important; right: -320px; opacity: 1;" class="js-side-slide align-left background-a ixp-container">
+                <div id="ball_ixU9LQehGPkqjE6Bmqe3dOQ" class="js-slide-close align-right ixp-container">
+                    <div id="ball_i3d8XvcllUECi6F6fSXuqEQ" class="ixp-text">CLOSE&nbsp;
+                        <icon class="fa fa-close"></icon>
+                    </div>
+                </div>
+                <div id="ball_iLFWMRcNQX0m0R4wcR0wBw" class="ixp-container ixp-container-link" style="margin-bottom:1em;" onclick="var event = arguments[0] || window.event; event.target = (event.target || event.srcElement);if (event.target == this || !event.target.href || event.target.href == event.target.src){ (function(e, element){ window.location.assign(&#39;Applying_Discrimination.html&#39;); e.cancelBubble = true; if (e.stopPropgation) { e.stopPropagation(); }})(event, this); return false;}">
+                    <div id="ball_iqRHI1xwRYU25aBNhivZ29g" style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px;width:40px;max-width:none;height:40px;display:inline-block;vertical-align:middle;box-sizing:border-box;" class="pod pod-e ixp-circle align-center ixp-container">
+                        <div id="ball_itateUfXoEynzUBaqu1bZw" style="font-size: 32px; line-height:1;" class="ixp-text">
+                            <icon class="fa-check fa"></icon>
+                        </div>
+                    </div>
+                    <div id="ball_ic08ilcQ9v0mkEOcBXXapXg" style="margin-left:10px;width:60%;max-width:none;display:inline-block;vertical-align:middle;" class="ixp-container">
+                        <div id="ball_iagWrlszxEezRu6vyqxtiQ" class="fine-print ixp-text">
+                            <p><strong>SECTION 1</strong></p>
+                        </div>
+                        <div id="ball_iyRMJfRwESEyCd71Apxokhg" style="line-height: 1.5em;" class="font-a color-c ixp-text">
+                            <h5>Discrimination</h5>
+                        </div>
+                    </div>
+                </div>
+                <div id="ball_iz1aN7Foj2EOc8PRyddKD8A" class="ixp-container ixp-container-link" style="margin-bottom:1.5em;" onclick="var event = arguments[0] || window.event; event.target = (event.target || event.srcElement);if (event.target == this || !event.target.href || event.target.href == event.target.src){ (function(e, element){ window.location.assign(&#39;Applying_Association.html&#39;); e.cancelBubble = true; if (e.stopPropgation) { e.stopPropagation(); }})(event, this); return false;}">
+                    <div id="ball_if7FTUOfKEu0TRsumAwsDA" style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px;width:40px;max-width:none;height:40px;display:inline-block;vertical-align:middle;box-sizing:border-box;" class="pod pod-e ixp-circle align-center ixp-container">
+                        <div id="ball_iEvP85Iubk6aqA4xUuP2uw" style="font-size: 32px; line-height:1;" class="ixp-text">
+                            <icon class="fa-check fa"></icon>
+                        </div>
+                    </div>
+                    <div id="ball_ivh4Tga558EKdVtSZuQBMEg" style="margin-left:10px;width:60%;max-width:none;display:inline-block;vertical-align:middle;" class="ixp-container">
+                        <div id="ball_iETWzIWFBA0Sm1iPhezqBEQ" class="fine-print ixp-text">
+                            <p><strong>SECTION 2</strong></p>
+                        </div>
+                        <div id="ball_i8zcGK5bNZEmSBBgIfrqKw" style="line-height: 1.5em;" class="font-a color-c ixp-text">
+                            <h5>Association</h5>
+                        </div>
+                    </div>
+                </div>
+                <div id="ball_iqHPcCtQUzUSJy5rmxFoI0A" class="ixp-container ixp-container-link" style="margin-bottom:1.5em;" onclick="var event = arguments[0] || window.event; event.target = (event.target || event.srcElement);if (event.target == this || !event.target.href || event.target.href == event.target.src){ (function(e, element){ window.location.assign(&#39;Applying_Cognitive_Map.html&#39;); e.cancelBubble = true; if (e.stopPropgation) { e.stopPropagation(); }})(event, this); return false;}">
+                    <div id="ball_i8QAjiG2lyUS7YlMOmhyCKg" style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px;width:40px;max-width:none;height:40px;display:inline-block;vertical-align:middle;box-sizing:border-box;" class="pod pod-e ixp-circle align-center ixp-container">
+                        <div id="ball_iPXdjgyb1W0W1N5r7jDttw" style="font-size: 32px; line-height:1;" class="ixp-text">
+                            <icon class="fa-check fa"></icon>
+                        </div>
+                    </div>
+                    <div id="ball_iIaU9Qz0uD0mlSuTSj2CKrA" style="margin-left:10px;width:70%;max-width:none;display:inline-block;vertical-align:middle;" class="ixp-container">
+                        <div id="ball_ia5RTPehm2kqpiXHDjeipBQ" class="fine-print ixp-text">
+                            <p><strong>SECTION 3</strong></p>
+                        </div>
+                        <div id="ball_iJ9P1DYpRqU6VgjugBNayA" style="line-height: 1.5em;" class="font-a color-c ixp-text">
+                            <h5>Cognitive Map</h5>
+                        </div>
+                    </div>
+                </div>
+                <div id="ball_ii8PqXnEcuEmr9gmQc545rQ" class="ixp-container ixp-container-link" style="margin-bottom:1.5em;" onclick="var event = arguments[0] || window.event; event.target = (event.target || event.srcElement);if (event.target == this || !event.target.href || event.target.href == event.target.src){ (function(e, element){ window.location.assign(&#39;Applying_Cognitive_Planning.html&#39;); e.cancelBubble = true; if (e.stopPropgation) { e.stopPropagation(); }})(event, this); return false;}">
+                    <div id="ball_i3g5nnrYxrEm0PeUnAAOrCA" style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px;width:40px;max-width:none;height:40px;display:inline-block;vertical-align:middle;box-sizing:border-box;" class="pod pod-e ixp-circle align-center ixp-container">
+                        <div id="ball_inXr77WQOS0e4gQdcBJGKmw" style="font-size: 32px; line-height:1;" class="ixp-text">
+                            <icon class="fa-chevron-right fa"></icon>
+                        </div>
+                    </div>
+                    <div id="ball_i8YzowBzSE6OfYtJoQzmKg" style="margin-left:10px;width:70%;max-width:none;display:inline-block;vertical-align:middle;" class="ixp-container">
+                        <div id="ball_i3kkrMvsYyE6pfpGvnEERfg" class="fine-print ixp-text">
+                            <p><strong>SECTION 4</strong></p>
+                        </div>
+                        <div id="ball_iDRqgKRo9xUy8EuGm6a6s6Q" style="line-height: 1.5em;" class="font-a color-c ixp-text">
+                            <h5>Cognitive Planning</h5>
+                        </div>
+                    </div>
+                </div>
+                <div id="ball_ihu8aTujNAkm9RNaNVgLJxw" class="ixp-container"><a href="https://nmcog.readthedocs.io/" id="ball_iHJ1Vqm0WF0C8ka5QiHGNw" class="button button-a button-wide ixp-link" style="margin-top:0;margin-right:0;margin-bottom:0;margin-left:0;">Get Back To Dev Page</a></div>
+            </div>
+        </div>
+    </div>
+    <!-- BEGIN Adobe DTM -->
+    <script type="text/javascript">
+        try {
+            _satellite.pageBottom();
+        } catch (e) {
+            //something went wrong
+        }
+    </script>
+    <!-- Yahoo Code for your Target List -->
+    <script type="text/javascript" language="javascript">
+        /* <![CDATA[ */
+        var yahoo_retargeting_id = 'LQTLVL8PN4';
+        var yahoo_retargeting_page_type = '';
+        if (typeof _satellite.getVar("potentialUseQueryString") !== 'undefined' && _satellite.getVar("potentialUseQueryString") !== "") {
+            var yahoo_retargeting_label = _satellite.getVar("potentialUseQueryString");
+        }
+        a = '';
+        b = '';
+
+        // if (typeof _satellite.getVar("eloquaFormName") !== 'undefined' && _satellite.getVar("eloquaFormName") !== "")
+        // {
+        //  var a = _satellite.getVar("eloquaFormName");
+        // }
+
+        if (typeof _satellite.getVar("productInfo") !== 'undefined' && _satellite.getVar("productInfo") !== "") {
+            var b = _satellite.getVar("productInfo");
+        }
+        var yahoo_retargeting_items = [{
+            item_id: b,
+            category_id: '',
+            price: '',
+            quantity: ''
+        }];
+
+        /* ]]> */
+    </script>
+    <script type="text/javascript" language="javascript" src="./scripts/s_retargeting.js.download"></script>
+    <!-- Yahoo Code for your Target List -->
+    <script type="text/javascript">
+        /* <![CDATA[ */
+        var yahoo_ss_retargeting_id = 1000315120;
+        var yahoo_sstag_custom_params = window.yahoo_sstag_params;
+        var yahoo_ss_retargeting = true;
+        /* ]]> */
+    </script>
+    <script type="text/javascript" src="./scripts/conversion.js.download">
+    </script>
+    <script src="./scripts/satellite-5672ffbd64746d5bd3002853.js.download"></script>
+    <!--DTM LinkedIn Pixel-->
+    <img height="1" width="1" style="display:none;" alt="" src="./scripts/saved_resource">
+    <script type="text/javascript">
+        var adn_param = adn_param || [];
+        adn_param.push([{ 
+            ui: '100069',
+            ut: 'Home'
+        }]);
+    </script>
+    <script type="text/javascript" async="" src="./scripts/adn_tags_1.0.0.js.download"></script>
+    <!-- END Adobe DTM -->
+
+    <div id="adn_container" style="display:none">
+        <div id="adn_wrap_84191971572" style="display:none">
+            <iframe frameborder="0" scrolling="no" width="0px" height="0px" src="./scripts/ads.html"></iframe>
+        </div>
+    </div>
+</body>
+
+</html>

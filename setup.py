@@ -11,7 +11,10 @@ setup(
       "nmcog.spinnaker.discriminate",
       "nmcog.spinnaker.associate",
       "nmcog.spinnaker.associate.nealassoc",
+      "nmcog.spinnaker.cognitivemap",
       "nmcog.spinnaker.cognitivemap.nealmentalmap",
+      #"nmcog.spinnaker.cognitiveplanning",
+      #"nmcog.spinnaker.cognitiveplanning.nealplanning",
       "nmcog.spinnaker.specialfunction.neal",
       ],
   version = "0.0.12",
@@ -27,6 +30,7 @@ setup(
   #install_requires=[
   #        "numpy",
   #        "quantities",
+  #        "neo",
   #        "spynnaker8",
   #    ],
   classifiers=[

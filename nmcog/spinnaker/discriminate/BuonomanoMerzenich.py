@@ -1,18 +1,25 @@
 # ../spinnaker/discriminate/BuonomanoMerzenich.py
 
-"""
-SpiNNaker implementation of Temporal Information Processing.
-
-Buonomano, D. V., & Merzenich, M. M. (1997). Temporal Information Processing: A Computational Role For Paired-Pulse Facilitation and Slow Inhibition. In J. W. Donahoe & V. Packard Dorsel (Eds) Neural-Networks Models of Cognition. Amsterdam: North-Holland, Elsevier Science B. V. ISBN: 0444819312
-"""
-
 import copy
 import spynnaker8 as sim
 import numpy as np
 import quantities as pq
 
 class BuoMerz(object):
-    """
+    """SpiNNaker implementation of Temporal Information Processing.
+    
+    **Architecture:**
+    
+    * Stimulus is sent to a network representing Douglas and Martin's `(1989) <https://doi.org/10.1162/neco.1989.1.4.480>`_ cortical IV and III layers.
+    * Keeping with experimental observations the excitatory:inhibitory element is approximately 4:1.
+    * The constituent excitatory and inhibitory elements are randomly connected (Buonomano &amp; Merzenich, 1997).
+    * The elements are based on Integrate-and-fire current units (Buonomano &amp; Merzenich, 1995).
+    
+    **References:**
+
+    * Buonomano, D. V., &amp; Merzenich, M. M. (1995). *Temporal information transformed into a spatial code by a neural network with realistic properties*. Science: 1028-1030. DOI: `10.1126/science.7863330 <https://doi.org/10.1126/science.7863330>`_
+    * Buonomano, D. V., &amp; Merzenich, M. M. (1997). Temporal Information Processing: A Computational Role for Paired-Pulse Facilitation and Slow Inhibition. In J. W. Donahoe &amp; V. Packard Dorsel (Eds.), *Neural-Networks Models of Cognition* (pp. 129-139). Netherlands, Amsterdam: Elsevier Science B. V.
+    
     """
     # Network parameters (see Buonomano & Merzenich 1997, Fig 3, p 135)
     n_input = 100 # number of unit in input layer
@@ -54,6 +61,7 @@ class BuoMerz(object):
             self.__record()
             sim.run( self.runtime )
             [neo_popIn, neo_ex4, neo_inh4, neo_ex3, neo_inh3, neo_out] = self.__getdata()
+            #sim.reset() # mod line
             sim.end()
             self.data_for_all_intervals.update(
                     { str(self.inter_pulse_interval): { "origin": self.stim_origin,
@@ -62,6 +70,7 @@ class BuoMerz(object):
                                                         "ex4": neo_ex4, "inh4": neo_inh4,
                                                         "ex3": neo_ex3, "inh3": neo_inh3 }
                                                         } )
+            
     def get_results(self):
         return self.data_for_all_intervals
 
@@ -70,9 +79,9 @@ class BuoMerz(object):
         """
         """
         # Input population of size 100
-        T = 5
-        kHz_tone = lambda t0: list( np.linspace(t0, t0+T, 3) )
-        t0 = 20
+        self.period = 5
+        kHz_tone = lambda t0: list( np.linspace(t0, t0+self.period, 3) )
+        self.t0 = 20
         origin = 0
         joinpulses = lambda headlist, taillist: [ headlist.append(i) for i in taillist ]
         joinInchnl = lambda origin, oldInchnl, pulse1: pulse1 if origin==0 else oldInchnl+pulse1
@@ -82,8 +91,8 @@ class BuoMerz(object):
         #all_intervals = [80, 130] #, 130, 180 #ms number of stimuli
         self.runtime = 0
         for an_interval in all_intervals:
-            pulse1_t0 = origin + t0
-            pulse2_t0 = pulse1_t0 + T + an_interval
+            pulse1_t0 = origin + self.t0
+            pulse2_t0 = pulse1_t0 + self.period + an_interval
             pulse1 = kHz_tone(pulse1_t0)
             pulse2 = kHz_tone(pulse2_t0)
             joinpulses(pulse1, pulse2)
@@ -91,8 +100,8 @@ class BuoMerz(object):
             self.stim_origin.append(origin)
             self.stim_end.append( pulse1[-1] )
             # update for next
-            origin = pulse1[-1] + t0
-            self.runtime = self.runtime + ( 20 + T + an_interval + T + 20 )
+            origin = pulse1[-1] + self.t0
+            self.runtime = self.runtime + ( self.t0 + self.period + an_interval + self.period + self.t0 )
 
     # Generate input source
     def __gen_input_src(self):
@@ -111,7 +120,7 @@ class BuoMerz(object):
         # layer-4 receives input_src containing the PPF (paired-pulse facilitation)
         layer4 = { "exc": sim.Population( BuoMerz.n_ex4, sim.IF_curr_alpha(**BuoMerz.ex_cell_parameters), label="ex4" ),
                         "inh": sim.Population( BuoMerz.n_inh4, sim.IF_curr_alpha(**BuoMerz.inh_cell_parameters), label="inh4" ) }
-
+        
         # layer-3 receives input from layer 4
         layer3 = { "exc": sim.Population( BuoMerz.n_ex3, sim.IF_curr_alpha(**BuoMerz.ex_cell_parameters), label="ex3" ),
                         "inh": sim.Population( BuoMerz.n_inh3, sim.IF_curr_alpha(**BuoMerz.inh_cell_parameters), label="inh3" ) }
@@ -129,21 +138,33 @@ class BuoMerz(object):
     # Private function for setting up the wiring and connections
     def __connect(self):
         """ Based on Buonomano & Merzenich 1997 (Fig 3, p135)
-                ex3       ex4       inh3       inh4
-        ex3   18/200       -       12/200       -
-        ex4   18/120     15/120    12/120     10/120
-        inh3   8/50        -        6/50        -
-        inh4    -         6/30       -         4/30
-        input   -        15/100      -        10/100
-
-        Alternatively, above as probability values
-
-                ex3       ex4       inh3       inh4
-        ex3    0.09        -        0.06        -
-        ex4    0.15      0.125      0.1        0.083
-        inh3   0.16        -        0.12        -
-        inh4    -        0.2         -         0.133
-        input   -        0.15        -         0.1
+        
+        +----------------------+------------------+-----------------+------------------+-----------------+
+        | Populations          | excitatory (III) | excitatory (IV) | inhibitory (III) | inhibitory (IV) |
+        +======================+==================+=================+==================+=================+
+        | **excitatory (III)** | 18/200 = 0.09    | -               | 12/200 = 0.06    | -               |
+        +----------------------+------------------+-----------------+------------------+-----------------+
+        | **excitatory (IV)**  | 18/120 = 0.15    | 15/120 = 0.125  | 12/120 = 0.1     | 10/120 = 0.083  |
+        +----------------------+------------------+-----------------+------------------+-----------------+
+        | **inhibitory (III)** | 8/50 = 0.16      | -               | 6/50 = 0.12      | -               |
+        +----------------------+------------------+-----------------+------------------+-----------------+
+        | **inhibitory (IV)**  | -                | 6/30 = 0.2      | -                | 4/30 = 0.133    |
+        +----------------------+------------------+-----------------+------------------+-----------------+
+        | **Input**            | -                | 15/100 = 0.15   | -                | 10/100 = 0.1    |
+        +----------------------+------------------+-----------------+------------------+-----------------+
+        
+        **Note:**
+        
+        * The numerator correspond to the number of units (elements) within the recieving population.
+        * The denominator is the convergence number of presynaptic inputs for each unit.
+        * The decimal fraction are the probability values for the `sim.FixedProbabilityConnector` function.
+        
+        **Comments on connection with output layer:**
+        
+        The excitatory (III) population connects to the output layer `(1995) <https://doi.org/10.1126/science.7863330>`_ such that it proxies adaptation. The output layer populations recieves signal only at the end of the stimulus, i.e. during second pulse.
+        
+        Due to limitations with `SpNNaker8 <http://spinnakermanchester.github.io/>`_ here the connection is implemented such that it is made from the start of the simulation. However, only responses from the populations in the output layer at the end of the stimulus is returned.
+        
         """
         wire_ex3ex3 = sim.FixedProbabilityConnector(0.09, allow_self_connections=True)
         wire_ex3inh3 = sim.FixedProbabilityConnector(0.06, allow_self_connections=False)
@@ -193,11 +214,9 @@ class BuoMerz(object):
             if i == self.inter_pulse_interval:
                 unit_key = "out"+str(i)
                 prj = [ sim.Projection( self.layer3["exc"], self.output[unit_key], wire_ex3output,
-                                        sim.StaticSynapse(weight=10.0), receptor_type="excitatory" ) if k==unit_key else
-                        sim.Projection( self.layer3["exc"], self.output[unit_key], wire_ex3output,
-                                        sim.StaticSynapse(weight=0.0), receptor_type="inhibitory" ) for k in self.output.keys() ]
-        return prj
-
+                                        sim.StaticSynapse(weight=100.0), receptor_type="excitatory" )
+                       for k in self.output.keys() if k==unit_key ]
+                        
     # Private function for recording
     def __record(self):
         self.input_src.record("all")
@@ -209,16 +228,33 @@ class BuoMerz(object):
 
     # Private function for extracting recorded data
     def __getdata(self):
+        """
+        Gets the recorded `Neo <https://neo.readthedocs.io/en/latest/>`_ objects.
+        The only exception is for the output layer. Because of the reasons given above, for the output layer rather than a Neo object its `SpikeTrains` are returned. They are the responses at the end of the stimulus. To help visualizing them along with `SpikeTrains` from other layers a padding is also returned.
+        """
         #spikes_input_src = self.input_src.get_data("spikes")
         neo_popIn = self.popIn.get_data(variables=["spikes", "v"])
         neo_ex4 = self.layer4["exc"].get_data(variables=["spikes", "v"])
         neo_inh4 = self.layer4["inh"].get_data(variables=["spikes", "v"])
         neo_ex3 = self.layer3["exc"].get_data(variables=["spikes", "v"])
         neo_inh3 = self.layer3["inh"].get_data(variables=["spikes", "v"])
-        #neo_out = []
-        #for values in self.output.values():
-        #    neo_out.append( values.get_data(variables=["spikes", "v"]) )
+        # For the proxy output layer get just the spikes corresponding to the second pulse
         neo_out = {}
         for key in self.output.keys():
-            neo_out.update( { key: self.output[key].get_data( variables=["spikes", "v"] ) } )
+            #neo_out.update( { key: self.output[key].get_data( variables=["spikes", "v"] ) } )
+            for_all_neurons = self.output[key].get_data( variables=["spikes"] )
+            spktrains_all = []
+            for spktrain in for_all_neurons.segments[0].spiketrains:
+                spktrains_all.append( spktrain[ spktrain > self.stim_end[0]*pq.ms] ) # spikes for 2nd pulse only
+            neo_out.update( { key: {"spiketrains": spktrains_all,
+                                    "placeholder_axes": self._placeholder_x_y(neo_ex3) } } )
         return [neo_popIn, neo_ex4, neo_inh4, neo_ex3, neo_inh3, neo_out]
+
+    # Private function for dummy time and y-axis for output layer
+    def _placeholder_x_y(self, neo_ex3):
+        spks = neo_ex3.segments[0].spiketrains[0] # other neo_xyz objects should also work
+        # tstart = spks.t_start or tstart = spks.t_start + self.t0 + self.period
+        tstart = spks.t_start #+ self.t0*pq.ms + self.period*pq.ms
+        ndata = spks.sampling_rate * ( spks.t_stop - tstart )
+        taxis = np.linspace( tstart, spks.t_stop, num=ndata.magnitude )
+        return [ taxis, np.zeros( taxis.shape ) ]
