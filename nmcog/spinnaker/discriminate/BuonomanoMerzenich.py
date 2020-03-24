@@ -1,4 +1,9 @@
-# ../spinnaker/discriminate/BuonomanoMerzenich.py
+# =============================================================================
+# ~/spinnaker/discriminate/BuonomanoMerzenich.py
+#
+# created November 2019 Lungsi
+#
+# =============================================================================
 
 import copy
 import spynnaker8 as sim
