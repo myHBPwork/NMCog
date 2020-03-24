@@ -8,7 +8,7 @@ Notebook examples
    :maxdepth: 1
    :caption: Contents:
    
-..   notebooks/run_eg.ipynb
+   notebooks/runningBuoMerz.ipynb
 
 Available functions
 *******************
