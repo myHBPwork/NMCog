@@ -20,6 +20,34 @@ class BuoMerz(object):
     * The constituent excitatory and inhibitory elements are randomly connected (Buonomano &amp; Merzenich, 1997).
     * The elements are based on Integrate-and-fire current units (Buonomano &amp; Merzenich, 1995).
     
+    The connection is based on Buonomano & Merzenich 1997 (Fig 3, p135)
+        
+    +----------------------+------------------+-----------------+------------------+-----------------+
+    | Populations          | excitatory (III) | excitatory (IV) | inhibitory (III) | inhibitory (IV) |
+    +======================+==================+=================+==================+=================+
+    | **excitatory (III)** | 18/200 = 0.09    | -               | 12/200 = 0.06    | -               |
+    +----------------------+------------------+-----------------+------------------+-----------------+
+    | **excitatory (IV)**  | 18/120 = 0.15    | 15/120 = 0.125  | 12/120 = 0.1     | 10/120 = 0.083  |
+    +----------------------+------------------+-----------------+------------------+-----------------+
+    | **inhibitory (III)** | 8/50 = 0.16      | -               | 6/50 = 0.12      | -               |
+    +----------------------+------------------+-----------------+------------------+-----------------+
+    | **inhibitory (IV)**  | -                | 6/30 = 0.2      | -                | 4/30 = 0.133    |
+    +----------------------+------------------+-----------------+------------------+-----------------+
+    | **Input**            | -                | 15/100 = 0.15   | -                | 10/100 = 0.1    |
+    +----------------------+------------------+-----------------+------------------+-----------------+
+        
+    **Note:**
+        
+    * The numerator correspond to the number of units (elements) within the recieving population.
+    * The denominator is the convergence number of presynaptic inputs for each unit.
+    * The decimal fraction are the probability values for the `sim.FixedProbabilityConnector` function.
+        
+    **Comments on connection with output layer:**
+        
+    The excitatory (III) population connects to the output layer `(1995) <https://doi.org/10.1126/science.7863330>`_ such that it proxies adaptation. The output layer populations recieves signal only at the end of the stimulus, i.e. during second pulse.
+        
+    Due to limitations with `SpNNaker8 <http://spinnakermanchester.github.io/>`_ here the connection is implemented such that it is made from the start of the simulation. However, only responses from the populations in the output layer at the end of the stimulus is returned.
+    
     **References:**
 
     * Buonomano, D. V., &amp; Merzenich, M. M. (1995). *Temporal information transformed into a spatial code by a neural network with realistic properties*. Science: 1028-1030. DOI: `10.1126/science.7863330 <https://doi.org/10.1126/science.7863330>`_
@@ -77,11 +105,75 @@ class BuoMerz(object):
                                                         } )
             
     def get_results(self):
+        """
+        Gets the recorded `Neo <https://neo.readthedocs.io/en/latest/>`_ objects.
+        The only exception is for the output layer.
+        Because of the reasons given above, for the output layer rather than a Neo object its `SpikeTrain <https://neo.readthedocs.io/en/latest/api_reference.html#neo.core.SpikeTrain>`_ are returned.
+        They are the responses at the end of the stimulus.
+        To help visualizing them along with `SpikeTrain <https://neo.readthedocs.io/en/latest/api_reference.html#neo.core.SpikeTrain>`_ from other layers a padding is also returned.
+        
+        Returns data as a dictionary such that
+        
+        +----------+-----------------------------------------------------------------------------------------+
+        | Key      | Value                                                                                   |
+        +==========+=========================================================================================+
+        | "popIn"  | Neo object for input layer; contains `SpikeTrain` and `Analogsignal`                    |
+        +----------+-----------------------------------------------------------------------------------------+
+        | "ex4"    | Neo object for excitatory population LayerIV; contains `SpikeTrain` and `Analogsignal`  |
+        +----------+-----------------------------------------------------------------------------------------+
+        | "inh4"   | Neo object for inhibitory population LayerIV; contains `SpikeTrain` and `Analogsignal`  |
+        +----------+-----------------------------------------------------------------------------------------+
+        | "ex3"    | Neo object for excitatory population LayerIII; contains `SpikeTrain` and `Analogsignal` |
+        +----------+-----------------------------------------------------------------------------------------+
+        | "inh3"   | Neo object for inhibitory population LayerIII; contains `SpikeTrain` and `Analogsignal` |
+        +----------+-----------------------------------------------------------------------------------------+
+        | "out"    | Dictionary for output layer with populations under the keys "out"+stimuli, say "out80"  |
+        +----------+-----------------------------------------------------------------------------------------+
+        | "origin" | float type representing start of the runtime                                            |
+        +----------+-----------------------------------------------------------------------------------------+
+        | "end"    | float type representing end of the runtime                                              |
+        +----------+-----------------------------------------------------------------------------------------+
+        
+        **Note:**
+        
+        Each population in the output layer (value of "out") is also a dictionary with keys "spiketrains" and "placeholder_axes".
+        
+        * The value for "placeholder_axes" is a list containing two lists.
+        
+            - The first represent t-axis from zero to start of second pulse of the stimuli.
+            - The second is an array of zeros whose size is the same as the first.
+        
+        * The value for "spiketrains" is the `SpikeTrain` for *all* the populations 
+        
+        """
         return self.data_for_all_intervals
 
 
     def setup_inputchannel(self, all_intervals):
-        """
+        """Given a stimulus, i.e. interval values this function creates an input channel for it.
+        
+        The input channel is such that
+        
+                       ___|-interval/stimulus-|___
+                      |   |                   |   |
+        origin________|   |___________________|   |________end
+             |---t0---|-T-|                   |-T-|---t0---|
+             |------------------runtime--------------------|
+        
+        Note that the above dual-pulse train represented in `self.input_channel` is used to create a spiking version using the private function `__gen_input_src()`.
+        
+        In addition to the `self.input_channel` this function also sets the attributes: `self.stim_origin`, `self.stim_end`, and `self.runtime`.
+        
+        **Note:**
+        
+        * Interval value or the inter-pulse interval is the temporal information carried by the stimulus.
+        * The interval value represents the stimulus; if it is a list of values it is a list of stimuli.
+        
+        It should be pointed out that
+        
+        * Regardless of one or more stimulus it is here repesented in a list for the sake of not breaking previous code.
+        * So this is a practical choice and does not contradict the above mentioned assumptions.
+        
         """
         # Input population of size 100
         self.period = 5
@@ -110,6 +202,8 @@ class BuoMerz(object):
 
     # Generate input source
     def __gen_input_src(self):
+        """The above created `self.input_channel` is used to create a spiking version of it.
+        """
         spike_times = []
         for i in range( BuoMerz.n_input ):
             spike_times.append( self.input_channel )
@@ -117,18 +211,29 @@ class BuoMerz(object):
 
     # Private function for setting up the layers
     def __create_layers(self):
-        """
+        """Creates layers: input, IV, III, and output.
+        
+        * The input layer is represented as a population of `self.n_input`.
+        * Layer IV is represented as a dictionary with "exc" and "inh" for excitatory and inhibitory populations.
+        * Similarly, for layer III.
+        * The output layer is represented as a dictionary with keys of the form "out"+interval value, each representing a population.
+        
+        **Note:**
+        
+        * Interval value or the inter-pulse interval is the temporal information carried by the stimulus.
+        * The interval value represents the stimulus; if it is a list of values it is a list of stimuli.
+        
         """
         # input population
         popIn = sim.Population( BuoMerz.n_input, sim.IF_curr_alpha(), label="input" )
         
         # layer-4 receives input_src containing the PPF (paired-pulse facilitation)
         layer4 = { "exc": sim.Population( BuoMerz.n_ex4, sim.IF_curr_alpha(**BuoMerz.ex_cell_parameters), label="ex4" ),
-                        "inh": sim.Population( BuoMerz.n_inh4, sim.IF_curr_alpha(**BuoMerz.inh_cell_parameters), label="inh4" ) }
+                   "inh": sim.Population( BuoMerz.n_inh4, sim.IF_curr_alpha(**BuoMerz.inh_cell_parameters), label="inh4" ) }
         
         # layer-3 receives input from layer 4
         layer3 = { "exc": sim.Population( BuoMerz.n_ex3, sim.IF_curr_alpha(**BuoMerz.ex_cell_parameters), label="ex3" ),
-                        "inh": sim.Population( BuoMerz.n_inh3, sim.IF_curr_alpha(**BuoMerz.inh_cell_parameters), label="inh3" ) }
+                   "inh": sim.Population( BuoMerz.n_inh3, sim.IF_curr_alpha(**BuoMerz.inh_cell_parameters), label="inh3" ) }
 
         # output-layer receives input from excitatory population of layer 3
         output = {}
@@ -224,6 +329,8 @@ class BuoMerz(object):
                         
     # Private function for recording
     def __record(self):
+        """Records into `Neo <https://neo.readthedocs.io/en/latest/>`_ object for the four layers: input, IV, III, and output.
+        """
         self.input_src.record("all")
         self.popIn.record("all")
         rec = lambda pop: [ subpop.record("all") for subpop in pop.values() ]
@@ -257,6 +364,9 @@ class BuoMerz(object):
 
     # Private function for dummy time and y-axis for output layer
     def _placeholder_x_y(self, neo_ex3):
+        """
+        Returns a list containing two lists. The first represent t-axis from zero to start of second pulse of the stimuli. The second is an array of zeros whose size is the same as the first.
+        """
         spks = neo_ex3.segments[0].spiketrains[0] # other neo_xyz objects should also work
         # tstart = spks.t_start or tstart = spks.t_start + self.t0 + self.period
         tstart = spks.t_start #+ self.t0*pq.ms + self.period*pq.ms
