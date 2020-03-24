@@ -12,8 +12,6 @@ nmcog is a module for cognitive modeling in neuromorphic platform.
    :maxdepth: 2
    :caption: Contents:
    
-   `Guide to Cognitive Modeling via nmcog <_static/Applying_Discrimination.html>`_
-   -------------------------------------------------------------------------------
    contents.rst
 
 
