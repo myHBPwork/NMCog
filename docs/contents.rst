@@ -1,5 +1,5 @@
-Guide to Cognitive Modeling via nmcog <_static/notes/start.html>`_
-******************************************************************
+Guide to Cognitive Modeling via nmcog `<_static/Applying_Discrimination.html>`_
+********************************************************************************
 
 Notebook examples
 *****************
