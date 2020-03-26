@@ -1,5 +1,3 @@
-from types import SimpleNamespace as structdata
-
 import spynnaker8 as sim
 
 from .nealmentalmap.cogmapClass import CogmapBaseClass

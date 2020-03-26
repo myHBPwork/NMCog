@@ -1,12 +1,14 @@
-"""
-This creates a three way association topology.  One of the types
-is the base type (typically a node in a semantic net).  The other
-two are the same but one is named relation and the other property.
-If you turn two on, the third should come on.  You should also be
-able to get the (base) to spread up the inheritance hierarchy.
-
-Testing is weak.  It has only been tested in nest.
-"""
+#
+# Code based on Jan2020 Chris Huyck et al.
+# http://www.cwa.mdx.ac.uk/NEAL/code/assocMemJan2020.tar.gz
+#
+# This creates a three way association topology.  One of the types
+# is the base type (typically a node in a semantic net).  The other
+# two are the same but one is named relation and the other property.
+# If you turn two on, the third should come on.  You should also be
+# able to get the (base) to spread up the inheritance hierarchy.
+#
+# Testing is weak.  It has only been tested in nest.
 
 from nmcog.spinnaker.specialfunction.neal import FSAHelperFunctions
 from .makeInheritanceHier import NeuralInheritanceClass
@@ -16,6 +18,35 @@ import spynnaker8 as sim
 from nmcog.spinnaker.specialfunction.neal import NealCoverFunctions
 
 class NeuralThreeAssocClass:
+    """
+    
+    +---------------------------------------+------------------------------------------------+----------------------------------------------+
+    | Methods                               |  Argument                                      | Caller                                       |
+    +=======================================+================================================+==============================================+
+    | :py:meth:`.createBaseNet`             | - instance of :ref:`InheritanceReaderClass`    | :ref:`NEAL3Way`                              |
+    +---------------------------------------+------------------------------------------------+----------------------------------------------+
+    | :py:meth:`.createAssociationTopology` | - instance of :ref:`UnitReaderClass`           | :ref:`NEAL3Way`                              |
+    |                                       | - different instance of :ref:`UnitReaderClass` |                                              |
+    +---------------------------------------+------------------------------------------------+----------------------------------------------+
+    | :py:meth:`.addAssociations`           | - a structured data                            | :ref:`NEAL3Way`                              |
+    +---------------------------------------+------------------------------------------------+----------------------------------------------+
+    
+    
+    **Note:**
+    
+    * Specifically the instance of :ref:`InheritanceReaderClass` is the base data for :ref:`NEAL3Way`. An example base data is
+    
+    ::
+    
+        bases = {"units": ["animal", "mammal", "bird", "canary"],
+                 "relations": [ ["canary", "bird"], ["bird", "animal"], ["mammal", "animal"] ]}
+        associate = {"properties": ["food", "fur", "flying", "yellow"], # properties to be associated between base units and its relations
+                     "relations": ["eats", "likes", "travels", "has", "colored"], # relations associated with properties and base units
+                     "connections": [ ["animal", "eats", "food"], ["mammal", "has", "fur"], # specific combos of base-props-relations
+                                      ["bird", "travels", "flying"], ["canary", "colored", "yellow"]] }
+    
+    
+    """
     #class variables
     numPropertyCAs = -1
     numRelationshipCAs = -1
@@ -33,17 +64,25 @@ class NeuralThreeAssocClass:
         self.fsa = FSAHelperFunctions()
 
     def createNeurons(self,numPropertyNeurons,numRelationNeurons):
+        """Creates a two population (`propertyCells` and `relationCells`) of `IF_cond_exp` neurons with :ref:`FSAHelperFunctions.CELL_PARAMS`."""
         self.propertyCells = self.sim.Population(numPropertyNeurons,
                     self.sim.IF_cond_exp,self.fsa.CELL_PARAMS)
         self.relationCells = self.sim.Population(numRelationNeurons,
                     self.sim.IF_cond_exp, self.fsa.CELL_PARAMS)
 
     def setRecord(self):
+        """Records spikes of all the neurons in the `propertyCells` and `relationCells` populations created via :py:meth:`.createNeurons`."""
         self.propertyCells.record(['spikes'])
         self.relationCells.record(['spikes'])
 
     #Make a binary CA for each unit
     def makeCAs(self):
+        """Makes `numCAs` assemblies of cell, i.e. connect neurons in the two population created via :py:meth:`.createNeurons`.
+        
+        * `numPropertyCAs` assemblies of `propertyCells`
+        * `numRelationCAs` assemblies of `relationCells`
+        
+        """
         for CA in range (0,self.numPropertyCAs):
             self.fsa.makeCA(self.propertyCells,CA)
         for CA in range (0,self.numRelationCAs):
@@ -51,14 +90,15 @@ class NeuralThreeAssocClass:
     
     #main function
     def createBaseNet(self,baseNodeStructure):
+        """Creates a hierarchy topology for base data. See :ref:`NeuralInheritanceClass.createNeuralInheritanceHierarchy` to know more about hierarchy topology."""
         self.baseStructure = baseNodeStructure
         #self.neuralHierarchyTopology = NeuralInheritanceClass(self.simName,
         #        self.sim,self.neal,self.spinnVersion,self.fsa)
         self.neuralHierarchyTopology = NeuralInheritanceClass() # modified for nmcog
-        self.neuralHierarchyTopology.createNeuralInheritanceHierarchy(
-            baseNodeStructure)
+        self.neuralHierarchyTopology.createNeuralInheritanceHierarchy(baseNodeStructure)
 
     def createAssociationTopology(self,propertyStructure,relationStructure):
+        """Given two instances of :ref:`UnitReaderClass` this method creates cell assemblies (:py:meth:`.makeCAs`) based on the two neuron populations (:py:meth:`.createNeurons`)."""
         self.propStructure = propertyStructure
         self.relStructure = relationStructure
         self.numPropertyCAs = propertyStructure.numberUnits 
@@ -71,15 +111,24 @@ class NeuralThreeAssocClass:
 
     #Add synapses that make a 2/3 CA.
     def addThreeAssoc(self,assocTuple):
+        """Given an association tuple (list of three strings representing base, relation, and property) this method connects
+        
+        * The hierarchy topology to the cell assemblies for property.
+        * The hierarchy topology to the cell assemblies for relation.
+        * The cell assemblies for property to the hierarchy topology.
+        * The cell assemblies for property to the cell assemblies for relation.
+        * The cell assemblies for relation to the hierarchy topology.
+        * The cell assemblies for relation to the cell assemblies for property.
+        
+        """
         base = assocTuple[0]
         relation = assocTuple[1]
         property = assocTuple[2]
         baseNum = self.baseStructure.getUnitNumber(base)
         propertyNum = self.propStructure.getUnitNumber(property)
         relationNum = self.relStructure.getUnitNumber(relation)
-        print(assocTuple)
-        print(type(base),  base)
-
+        #print(assocTuple)
+        #print(type(base),  base)
         self.fsa.stateHalfTurnsOnState(self.neuralHierarchyTopology.cells,
                                        baseNum,self.propertyCells,propertyNum)
         self.fsa.stateHalfTurnsOnState(self.neuralHierarchyTopology.cells,
@@ -96,19 +145,22 @@ class NeuralThreeAssocClass:
                                        self.propertyCells,propertyNum)
 
     def addAssociations(self,assocStructure):
+        """Add associations for each tuple in a data structure of associations by calling :py:meth:`.addThreeAssoc` for each association."""
         print(assocStructure.numberAssocs)
         for assocNum in range (0,assocStructure.numberAssocs):
             self.addThreeAssoc(assocStructure.assocs[assocNum])
 
 
     #-print function
-    def printSpikes(self):
-        self.propertyCells.write_data("testProps.pkl")
-        self.relationCells.write_data("testRels.pkl")
-        self.neuralHierarchyTopology.cells.write_data("test3.pkl")
+    #def printSpikes(self):
+    #    """."""
+    #    self.propertyCells.write_data("testProps.pkl")
+    #    self.relationCells.write_data("testRels.pkl")
+    #    self.neuralHierarchyTopology.cells.write_data("test3.pkl")
 
 
     def printPklSpikes(self,inFileName,outFileName):
+        """Legacy."""
         outFileHandle = open(outFileName,'w')
         inFileHandle = open(inFileName)
         neoObj = pickle.load(inFileHandle)
@@ -128,12 +180,14 @@ class NeuralThreeAssocClass:
         outFileHandle.close()
 
     def printSpikes(self,fileName):
-        if ((self.simName =="spinnaker") and (self.spinnVersion == 7)):
-            suffix = ".sp"
-        elif ((self.simName =="nest") or
-              ((self.simName =="spinnaker") and (self.spinnVersion == 8))):
-            suffix = ".pkl"
-
+        """."""
+        # Commented out for nmcog
+        #if ((self.simName =="spinnaker") and (self.spinnVersion == 7)):
+        #    suffix = ".sp"
+        #elif ((self.simName =="nest") or
+        #      ((self.simName =="spinnaker") and (self.spinnVersion == 8))):
+        #    suffix = ".pkl"
+        suffix = ".pkl"
         basePklFile = "results/"+fileName +"Bases" + suffix
         #baseSpFile = "results/"+fileName +"Bases.sp"
         self.neuralHierarchyTopology.cells.write_data(basePklFile)
@@ -149,6 +203,7 @@ class NeuralThreeAssocClass:
     #When run, each unit should persist, but only that unit 
     #should.
     def makeGenerator(self,genTime):
+        """Set up spike generator to start each unit. `genTime` is a float representing the start time."""
         genTimes = genTime
         genTimeArray = {'spike_times': [genTimes]}
         spikeGen=self.sim.Population(1,self.sim.SpikeSourceArray,genTimeArray)
@@ -156,6 +211,7 @@ class NeuralThreeAssocClass:
 
     #now stop all of the units after each individual unit is tested.
     def createStopAll(self,stopTimes,cells,numUnits):
+        """Stop all the spikes generated, **each** generated using :py:meth:`.makeGenerator`."""
         stopTimeArray = {'spike_times': [stopTimes]}
         stopSpikeGen=self.sim.Population(1,self.sim.SpikeSourceArray,
                                          stopTimeArray)
@@ -163,6 +219,7 @@ class NeuralThreeAssocClass:
             self.fsa.turnOffStateFromSpikeSource(stopSpikeGen,cells,unit)
 
     def createSimpleTest(self):
+        """Legacy."""
         primeTimes = [5]
         primeArray = {'spike_times': [primeTimes]}
         generator=sim.Population(1,sim.SpikeSourceArray,primeArray)
@@ -173,6 +230,7 @@ class NeuralThreeAssocClass:
 
     #call this with 0-3 items to be stimulated (but typically two)
     def createTwoTest(self,baseNum,propNum,relNum):
+        """Legacy."""
         primeTimes = [5]
         primeArray = {'spike_times': [primeTimes]}
         generator=self.sim.Population(1,self.sim.SpikeSourceArray,primeArray)
@@ -188,6 +246,7 @@ class NeuralThreeAssocClass:
                                                 relNum)
 
     def createTestPrimeAllBaseUnits(self,firstTestStart,hierarchy):
+        """."""
         primeWeight = 0.014#0.017
         oneTestDuration = 100.0
         timeBetweenSteps = 5.0
@@ -207,6 +266,7 @@ class NeuralThreeAssocClass:
 
     #call this with 0-3 items to be stimulated (but typically two)
     def createTwoPrimeTest(self,baseNum,propNum,relNum):
+        """."""
         primeTimes = [5]
         primeArray = {'spike_times': [primeTimes]}
         generator=self.sim.Population(1,self.sim.SpikeSourceArray,primeArray)
@@ -225,6 +285,7 @@ class NeuralThreeAssocClass:
 
     #call this with 0-3 items to be stimulated (but typically two) 
     def createTwoPrimeTestPoisson(self,baseNum,propNum,relNum):
+        """Legacy."""
         PoissonParameters = {'duration': 200.0, 'start': 0.0, 'rate': 200.0} # rate = 200 Hz  
         generator=self.sim.Population(1,self.sim.SpikeSourcePoisson,PoissonParameters)
         
@@ -240,9 +301,10 @@ class NeuralThreeAssocClass:
             self.fsa.turnOnStateFromSpikeSource(generator,self.relationCells,
                                                 relNum)
 
-
-
     def createTestAllUnits(self,firstTestStart,cells,numUnits):
+        """Given a start time `firstTestStart`, the state for `numUnits` cell assemblies of a neuron population (`cells`) is turned on.
+        The method returns the time after turning on the state for the last cell assembly.
+        """
         print(numUnits)
         oneTestDuration = 100.0
         stopTimes = []
@@ -258,12 +320,16 @@ class NeuralThreeAssocClass:
         return lastTime
 
     def createUnitTests(self):
+        """Turns on the state for every cell assembly in
+        
+        * The hierarchy topology (base data)
+        * The populations for `propertyCells` and `relationCells`.
+        
+        """
         baseUnitTime = self.neuralHierarchyTopology.createTestAllUnits(0.0)
         propUnitTime = self.createTestAllUnits(baseUnitTime,self.propertyCells,
                                                self.numPropertyCAs)
         relUnitTime = self.createTestAllUnits(propUnitTime,self.relationCells,
                                                self.numRelationCAs)
-
-
         print(baseUnitTime,propUnitTime,relUnitTime)
         return relUnitTime

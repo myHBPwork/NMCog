@@ -29,7 +29,7 @@ Associate
    :maxdepth: 1
    :caption: Contents:
    
-..   spinnaker/associate/neal3way.rst
+   spinnaker/associate/contents_nealThreeWay.rst
    
    
 Cognitive Maps
@@ -52,3 +52,9 @@ Cognitive Planning
    
 Special Functions (Utilities)
 =============================
+
+.. toctree::
+   :maxdepth: 1
+   :caption: Contents:
+
+   contents_NEAL.rst
