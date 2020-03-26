@@ -56,7 +56,7 @@ class NEAL3Way(object):
     
     
     * Refer to :ref:`FSAHelperFunctions.makeCA` about the structure of a cell assembly based on the Neuromorphic Embodied Agents that Learn `(NEAL) <http://www.cwa.mdx.ac.uk/NEAL/NEAL.html>`_.
-    * Refer to :py:mod:`nmcog.specialfunction.neal.FSAHelperFunctions.getCAConnectors` for details on how the `neuron populations <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly are connected.
+    * Refer to :ref:`FSAHelperFunctions` for details on how the `neuron populations <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly are connected.
     
     Connection (excitatory) between the cell assemblies is based on the "isA" relationship pair.
     
