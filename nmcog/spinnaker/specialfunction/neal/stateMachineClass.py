@@ -86,7 +86,7 @@ class FSAHelperFunctions:
     +---------------------------------------------+-----------------------------------------------------------------------------------------+
     
     
-`   """
+    """
     
     #def __init__(self, simName, sim, neal,spinnVersion = None):
     def __init__(self, simName="spinnaker", spinnVersion = 8): # modified for nmcog
@@ -143,15 +143,21 @@ class FSAHelperFunctions:
         | `ONE_HALF_ON_ONE_WEIGHT`     | 0.08       | -                                                                  |
         +------------------------------+------------+--------------------------------------------------------------------+
         | `CELL_PARAMS`                | dictionary | -                                                                  |
-        | * 'v_thresh'                 | * -48.0    | -                                                                  |
-        | * 'v_reset'                  | * -70.0    | -                                                                  |
-        | * 'tau_refrac                | * 2.0      | -                                                                  |
-        | * 'tau_syn_E'                | * 5.0      | -                                                                  |
-        | * 'tau_syn_I'                | * 5.0      | -                                                                  |
-        | * 'v_rest'                   | * -65.0    | -                                                                  |
-        | * 'i_offset'                 | * 0.0      | -                                                                  |
+        |                              |            |                                                                    |
+        | 'v_thresh'                   | -48.0      | -                                                                  |
+        |                              |            |                                                                    |
+        | 'v_reset'                    | -70.0      | -                                                                  |
+        |                              |            |                                                                    |
+        | 'tau_refrac                  | 2.0        | -                                                                  |
+        |                              |            |                                                                    |
+        | 'tau_syn_E'                  | 5.0        | -                                                                  |
+        |                              |            |                                                                    |
+        | 'tau_syn_I'                  | 5.0        | -                                                                  |
+        |                              |            |                                                                    |
+        | 'v_rest'                     | -65.0      | -                                                                  |
+        |                              |            |                                                                    |
+        | 'i_offset'                   | 0.0        | -                                                                  |
         +------------------------------+------------+--------------------------------------------------------------------+
-        
         
         """
         self.CA_SIZE = 10  #This will (almost certainly) not work with a 
