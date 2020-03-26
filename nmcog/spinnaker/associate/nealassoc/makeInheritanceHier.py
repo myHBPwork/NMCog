@@ -89,7 +89,7 @@ class NeuralInheritanceClass:
         self.fsa = FSAHelperFunctions()
 
     def createNeurons(self,numNeurons):
-        """Creates a population of `IF_cond_exp` neurons with :ref:`FSAHelperFunctions.CELL_PARAMS`."""
+        """Creates a population of `IF_cond_exp` neurons with :ref:`FSAHelperFunctions` `.CELL_PARAMS`."""
         self.cells = self.sim.Population(numNeurons,self.sim.IF_cond_exp, 
                                     self.fsa.CELL_PARAMS)
 
@@ -106,9 +106,9 @@ class NeuralInheritanceClass:
     #make a hierarchical relationship for each isA pair passed in
     def makeHiersFromHier(self,pythonHier):
         """Makes a hierarchical relationship for each "isA" pair (see above for a `basedata` example).
-        For each "isA" relationship pair cell assemblies of the first element excites those of the second (using :ref:`FSAHelperFunctions.stateHalfTurnsOnState` with constant :ref:`FSAHelperFunctions.HALF_ON_WEIGHT`).
+        For each "isA" relationship pair cell assemblies of the first element excites those of the second (using :ref:`FSAHelperFunctions` `.stateHalfTurnsOnState` with constant :ref:`FSAHelperFunctions` `.HALF_ON_WEIGHT`).
         
-        * Refer to :ref:`FSAHelperFunctions.stateHalfTurnsOnState` for how the cell assemblies are connected.
+        * Refer to :ref:`FSAHelperFunctions` `.stateHalfTurnsOnState` for how the cell assemblies are connected.
         
         """
         isAPairs = pythonHier.isARelationships
@@ -142,7 +142,7 @@ class NeuralInheritanceClass:
         
         * A cell assembly is created for each association unit, i.e. respective assemblies for "animal", "mammal", "bird", and "canary".
         
-            - A cell assembly by default has ten `neuron populations <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_. See :ref:`FSAHelperFunctions.makeCA` for more detail.
+            - A cell assembly by default has ten `neuron populations <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_. See :ref:`FSAHelperFunctions` `.makeCA` for more detail.
             - For this example four cell assemblies will be created.
         
         * Size of each population in an assembly comprises of some factor of the total number of association units considered. For instance, some factor times the total number of association units. The factor is named `neuronsPerCA`.
