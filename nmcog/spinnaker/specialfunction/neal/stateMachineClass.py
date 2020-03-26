@@ -151,7 +151,7 @@ class FSAHelperFunctions:
         |                                |            |                                                                    |
         | 'v_reset'                      | -70.0      | -                                                                  |
         |                                |            |                                                                    |
-        | 'tau_refrac                    | 2.0        | -                                                                  |
+        | 'tau_refrac'                   | 2.0        | -                                                                  |
         |                                |            |                                                                    |
         | 'tau_syn_E'                    | 5.0        | -                                                                  |
         |                                |            |                                                                    |

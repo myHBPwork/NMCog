@@ -9,9 +9,15 @@ import copy
 import spynnaker8 as sim
 import numpy as np
 import quantities as pq
+# for plotting
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+from matplotlib import gridspec
+#from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+#import matplotlib.image as mpimg
 
 class BuoMerz(object):
-    """SpiNNaker implementation of Temporal Information Processing.
+    """`SpiNNaker (sPyNNaker) <https://spinnakermanchester.github.io/>`_ implementation of Temporal Information Processing.
     
     **Architecture:**
     
@@ -40,7 +46,7 @@ class BuoMerz(object):
         
     * The numerator correspond to the number of units (elements) within the recieving population.
     * The denominator is the convergence number of presynaptic inputs for each unit.
-    * The decimal fraction are the probability values for the `sim.FixedProbabilityConnector` function.
+    * The decimal fraction are the probability values for the `FixedProbabilityConnector <http://neuralensemble.org/docs/PyNN/reference/connectors.html#built-in-connectors>`_ function.
         
     **Comments on connection with output layer:**
         
@@ -362,11 +368,11 @@ class BuoMerz(object):
             for spktrain in for_all_neurons.segments[0].spiketrains:
                 spktrains_all.append( spktrain[ spktrain > self.stim_end[0]*pq.ms] ) # spikes for 2nd pulse only
             neo_out.update( { key: {"spiketrains": spktrains_all,
-                                    "placeholder_axes": self._placeholder_x_y(neo_ex3) } } )
+                                    "placeholder_axes": self.__placeholder_x_y(neo_ex3) } } )
         return [neo_popIn, neo_ex4, neo_inh4, neo_ex3, neo_inh3, neo_out]
 
     # Private function for dummy time and y-axis for output layer
-    def _placeholder_x_y(self, neo_ex3):
+    def __placeholder_x_y(self, neo_ex3):
         """
         Returns a list containing two lists. The first represent t-axis from zero to start of second pulse of the stimuli. The second is an array of zeros whose size is the same as the first.
         """
@@ -376,3 +382,114 @@ class BuoMerz(object):
         ndata = spks.sampling_rate * ( spks.t_stop - tstart )
         taxis = np.linspace( tstart, spks.t_stop, num=ndata.magnitude )
         return [ taxis, np.zeros( taxis.shape ) ]
+    
+    # Private function for checking and getting the interval for plotting all the layers
+    def __get_interval_of_interest(self, variable_argument_intv_tuple):
+        """."""
+        if len(variable_argument_intv_tuple)==0 and len(self.dual_pulse_intervals)==1:
+            return self.dual_pulse_intervals[0]
+        elif (len(variable_argument_intv_tuple)==0 and len(self.dual_pulse_intervals)>1) or (len(variable_argument_intv_tuple)!=1):
+            raise ValueError("Argument must be a string representing single interval (stimulus).")
+        else:
+            return variable_argument_intv_tuple[0]
+        
+    # Plotting functions
+    def plot_all_layers(self, *intv):
+        """Visualize spikes for populations in all layers; starting from below: input, excitatory in LayerIV, inhibitory in LayerIV, excitatory in LayerIII, inhibitory in LayerIII and lastly **a** population in the output layer at the top.
+        y-axis are labelled with respective population and x-axis is the time in milliseconds.
+        """
+        y = self.data_for_all_intervals
+        #z = "80"
+        z = self.__get_interval_of_interest(intv)
+        #
+        fig, ( (sp1),
+               (sp2),
+               (sp3),
+               (sp4),
+               (sp5),
+               (sp6) ) = plt.subplots(6,1,sharex=True)
+        fig.suptitle("Temporal Info. Processing for S = "+z)
+
+        [ sp1.plot(y[z]["out"]["out"+z]["placeholder_axes"], alpha=0.0) if i==0 else
+          sp1.eventplot( y[z]["out"]["out"+z]["spiketrains"] ) for i in range(2) ]
+        sp1.set(ylabel="output")
+
+        sp2.eventplot( y[z]["inh3"].segments[0].spiketrains )
+        sp2.set(ylabel="inh3")
+
+        sp3.eventplot( y[z]["ex3"].segments[0].spiketrains )
+        sp3.set(ylabel="ex3")
+
+        sp4.eventplot( y[z]["inh4"].segments[0].spiketrains )
+        sp4.set(ylabel="inh4")
+
+        sp5.eventplot( y[z]["ex4"].segments[0].spiketrains )
+        sp5.set(ylabel="ex4")
+
+        sp6.eventplot( y[z]["popIn"].segments[0].spiketrains )
+        sp6.set(ylabel="popIn")
+        sp6.set(xlabel="time (ms)")
+
+        plt.show()
+    
+    def plot_output_layer_timeseries(self):
+        """Visualize spikes from each population in the output layer as a time-series.
+        y-axis represent each unit in a population and x-axis is time in milliseconds.
+        """
+        y = self.data_for_all_intervals
+        intvs = self.dual_pulse_intervals #["80", "130", "180", "230", "280"]
+        clrs = ['C{}'.format(i) for i in range(len(intvs))] # colors for respective interval
+        legpatches = []
+        fig, ( (sp) ) = plt.subplots(1,1,sharex=True)
+        for j in range( len(intvs) ):
+            [ sp.plot(y[intvs[j]]["out"]["out"+intvs[j]]["placeholder_axes"], alpha=0.0) if i==0 else
+            sp.eventplot( y[intvs[j]]["out"]["out"+intvs[j]]["spiketrains"], colors=clrs[j] ) for i in range(2) ]
+            legpatches.append( mpatches.Patch(color=clrs[j], label=intvs[j]) )
+        sp.set(ylabel="unit in population")
+        sp.set(xlabel="time (ms)")
+        sp.legend( handles=legpatches, shadow=True )
+    
+    def plot_output_layer_vertical(self):
+        """Visualize spikes from each population in the output layer as one-above-eachother.
+        Left y-axis represent the population and right y-axis the stimulus.
+        """
+        y = self.data_for_all_intervals
+        intvs = self.dual_pulse_intervals #["80", "130", "180", "230", "280"]
+        #
+        mrows = len(intvs) # mrows of subplots
+        clrs = ['C{}'.format(i) for i in range(mrows)] # mrows of colors
+        poplabels = self.__population_labels(mrows)
+        #
+        fig, splist = plt.subplots( mrows, 1 )
+        for i in range(mrows):
+            z = intvs[i]
+            # plot
+            splist[i].eventplot( y[z]["out"]["out"+z]["spiketrains"],
+                                 colors=clrs[i] )
+            splist[i].margins(10, 0.5) # zoom-out
+            # legend
+            z_patch = mpatches.Patch( color=clrs[i], label=z )
+            splist[i].legend( handles=[z_patch], shadow=True )
+            # left yticks and ylabel
+            splist[i].set_yticks( [] )
+            splist[i].set( ylabel="output pop-"+poplabels[i] )
+            # right yticks and ylabel
+            rightside = splist[i].twinx()
+            rightside.set_yticks( [] )
+            rightside.set_ylabel( "stimulus "+z )
+        # remove vertical gap between subplots
+        plt.subplots_adjust( hspace=.0 )
+        plt.xticks( [] ) # remove xticks
+        plt.show()
+    
+    # Private function for generating labels for neuron populations
+    def __population_labels(self, mrows):
+        """Generates ``mrows`` of English letters from "a" to ...
+        This is the naive method shown in https://www.geeksforgeeks.org/python-ways-to-initialize-list-with-alphabets/
+        """
+        labellist = []
+        alpha = "a"
+        for i in range(0, mrows):
+            labellist.append( alpha )
+            alpha = chr( ord(alpha) + 1 )
+        return labellist

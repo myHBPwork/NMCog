@@ -18,7 +18,7 @@ Discriminate
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Available discrimination functions:
    
    spinnaker/discriminate/BuonomanoMerzenich.rst
    
@@ -27,7 +27,7 @@ Associate
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Available association functions:
    
    spinnaker/associate/contents_nealThreeWay.rst
    
@@ -37,7 +37,7 @@ Cognitive Maps
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Available cognitive map functions:
    
 ..   spinnaker/cognitivemap/nealcogmap.rst
    
@@ -46,7 +46,7 @@ Cognitive Planning
 
 .. toctree::
    :maxdepth: 1
-   :caption: Contents:
+   :caption: Available cognitive planning functions:
    
 ..   spinnaker/cognitiveplanning/nealcogplanner.rst
    
