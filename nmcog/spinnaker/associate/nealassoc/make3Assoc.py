@@ -1,3 +1,6 @@
+# ~/nmcog/spinnaker/associate/nealassoc/make3Assoc.py
+#
+# Documentation by Lungsi 24 March 2020
 #
 # Code based on Jan2020 Chris Huyck et al.
 # http://www.cwa.mdx.ac.uk/NEAL/code/assocMemJan2020.tar.gz
@@ -64,23 +67,23 @@ class NeuralThreeAssocClass:
         self.fsa = FSAHelperFunctions()
 
     def createNeurons(self,numPropertyNeurons,numRelationNeurons):
-        """Creates a two population (`propertyCells` and `relationCells`) of `IF_cond_exp` neurons with :ref:`FSAHelperFunctions.CELL_PARAMS`."""
+        """Creates a two population (``propertyCells`` and ``relationCells``) of `IF_cond_exp <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp>`_ neurons with :ref:`FSAHelperFunctions` ``.CELL_PARAMS``."""
         self.propertyCells = self.sim.Population(numPropertyNeurons,
                     self.sim.IF_cond_exp,self.fsa.CELL_PARAMS)
         self.relationCells = self.sim.Population(numRelationNeurons,
                     self.sim.IF_cond_exp, self.fsa.CELL_PARAMS)
 
     def setRecord(self):
-        """Records spikes of all the neurons in the `propertyCells` and `relationCells` populations created via :py:meth:`.createNeurons`."""
+        """Records spikes of all the neurons in the ``propertyCells`` and ``relationCells`` populations created via :py:meth:`.createNeurons`."""
         self.propertyCells.record(['spikes'])
         self.relationCells.record(['spikes'])
 
     #Make a binary CA for each unit
     def makeCAs(self):
-        """Makes `numCAs` assemblies of cell, i.e. connect neurons in the two population created via :py:meth:`.createNeurons`.
+        """Makes ``numCAs`` assemblies of cell, i.e. connect neurons in the two population created via :py:meth:`.createNeurons`.
         
-        * `numPropertyCAs` assemblies of `propertyCells`
-        * `numRelationCAs` assemblies of `relationCells`
+        * ``numPropertyCAs`` assemblies of ``propertyCells``
+        * ``numRelationCAs`` assemblies of ``relationCells``
         
         """
         for CA in range (0,self.numPropertyCAs):
@@ -203,7 +206,7 @@ class NeuralThreeAssocClass:
     #When run, each unit should persist, but only that unit 
     #should.
     def makeGenerator(self,genTime):
-        """Set up spike generator to start each unit. `genTime` is a float representing the start time."""
+        """Set up spike generator to start each unit. ``genTime`` is a float representing the start time."""
         genTimes = genTime
         genTimeArray = {'spike_times': [genTimes]}
         spikeGen=self.sim.Population(1,self.sim.SpikeSourceArray,genTimeArray)
@@ -302,7 +305,7 @@ class NeuralThreeAssocClass:
                                                 relNum)
 
     def createTestAllUnits(self,firstTestStart,cells,numUnits):
-        """Given a start time `firstTestStart`, the state for `numUnits` cell assemblies of a neuron population (`cells`) is turned on.
+        """Given a start time ``firstTestStart``, the state for ``numUnits`` cell assemblies of a neuron population (``cells``) is turned on.
         The method returns the time after turning on the state for the last cell assembly.
         """
         print(numUnits)
@@ -323,7 +326,7 @@ class NeuralThreeAssocClass:
         """Turns on the state for every cell assembly in
         
         * The hierarchy topology (base data)
-        * The populations for `propertyCells` and `relationCells`.
+        * The populations for ``propertyCells`` and ``relationCells``.
         
         """
         baseUnitTime = self.neuralHierarchyTopology.createTestAllUnits(0.0)

@@ -1,3 +1,6 @@
+# ~/nmcog/spinnaker/associate/nealassoc/makeInheritanceHier.py
+#
+# Documentation by Lungsi 24 March 2020
 #
 # Code based on Jan2020 Chris Huyck et al.
 # http://www.cwa.mdx.ac.uk/NEAL/code/assocMemJan2020.tar.gz
@@ -21,19 +24,19 @@ from nmcog.spinnaker.specialfunction.neal import FSAHelperFunctions
 class NeuralInheritanceClass:
     """
     
-    +-----------------+--------+----------------------------------------------+
-    | Constants       | values | comments                                     |
-    +=================+========+==============================================+
-    | `neuronsPerCA`  | 10     | -                                            |
-    +-----------------+--------+----------------------------------------------+
-    | `intraCAWeight` | 0.0085 | - 0.01 is hot (every 4 ms)                   |
-    |                 |        | - 0.005 does not go                          |
-    +-----------------+--------+----------------------------------------------+
-    | `hierWeight`    | 0.0012 | - replaced with 1/2 fsa connection           |
-    +-----------------+--------+----------------------------------------------+
-    | `primeWeight`   | 0.017  | - 0.016-0.015 threee levels of hier in 75 ms |
-    |                 |        | - 0.02 too big                               |
-    +-----------------+--------+----------------------------------------------+
+    +-------------------+--------+----------------------------------------------+
+    | Constants         | values | comments                                     |
+    +===================+========+==============================================+
+    | ``neuronsPerCA``  | 10     | -                                            |
+    +-------------------+--------+----------------------------------------------+
+    | ``intraCAWeight`` | 0.0085 | - 0.01 is hot (every 4 ms)                   |
+    |                   |        | - 0.005 does not go                          |
+    +-------------------+--------+----------------------------------------------+
+    | ``hierWeight``    | 0.0012 | - replaced with 1/2 fsa connection           |
+    +-------------------+--------+----------------------------------------------+
+    | ``primeWeight``   | 0.017  | - 0.016-0.015 threee levels of hier in 75 ms |
+    |                   |        | - 0.02 too big                               |
+    +-------------------+--------+----------------------------------------------+
     
     
     
@@ -89,7 +92,7 @@ class NeuralInheritanceClass:
         self.fsa = FSAHelperFunctions()
 
     def createNeurons(self,numNeurons):
-        """Creates a population of `IF_cond_exp` neurons with :ref:`FSAHelperFunctions` `.CELL_PARAMS`."""
+        """Creates a population of `IF_cond_exp <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp>`_ neurons with :ref:`FSAHelperFunctions` ``.CELL_PARAMS``."""
         self.cells = self.sim.Population(numNeurons,self.sim.IF_cond_exp, 
                                     self.fsa.CELL_PARAMS)
 
@@ -99,16 +102,16 @@ class NeuralInheritanceClass:
 
     #Make a binary CA for each unit
     def makeCAs(self):
-        """Makes `numCAs` assemblies of cell, i.e. connect neurons in the population created via :py:meth:`.createNeurons`."""
+        """Makes ``numCAs`` assemblies of cell, i.e. connect neurons in the population created via :py:meth:`.createNeurons`."""
         for CA in range (0,self.numCAs):
             self.fsa.makeCA(self.cells,CA)
 
     #make a hierarchical relationship for each isA pair passed in
     def makeHiersFromHier(self,pythonHier):
-        """Makes a hierarchical relationship for each "isA" pair (see above for a `basedata` example).
-        For each "isA" relationship pair cell assemblies of the first element excites those of the second (using :ref:`FSAHelperFunctions` `.stateHalfTurnsOnState` with constant :ref:`FSAHelperFunctions` `.HALF_ON_WEIGHT`).
+        """Makes a hierarchical relationship for each "isA" pair (see above for a ``basedata`` example).
+        For each "isA" relationship pair cell assemblies of the first element excites those of the second (using :ref:`FSAHelperFunctions` ``.stateHalfTurnsOnState`` with constant :ref:`FSAHelperFunctions` ``.HALF_ON_WEIGHT``).
         
-        * Refer to :ref:`FSAHelperFunctions` `.stateHalfTurnsOnState` for how the cell assemblies are connected.
+        * Refer to :ref:`FSAHelperFunctions` ``.stateHalfTurnsOnState`` for how the cell assemblies are connected.
         
         """
         isAPairs = pythonHier.isARelationships
@@ -142,10 +145,10 @@ class NeuralInheritanceClass:
         
         * A cell assembly is created for each association unit, i.e. respective assemblies for "animal", "mammal", "bird", and "canary".
         
-            - A cell assembly by default has ten `neuron populations <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_. See :ref:`FSAHelperFunctions` `.makeCA` for more detail.
+            - A cell assembly by default has ten `neuron populations <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_. See :ref:`FSAHelperFunctions` ``.makeCA`` for more detail.
             - For this example four cell assemblies will be created.
         
-        * Size of each population in an assembly comprises of some factor of the total number of association units considered. For instance, some factor times the total number of association units. The factor is named `neuronsPerCA`.
+        * Size of each population in an assembly comprises of some factor of the total number of association units considered. For instance, some factor times the total number of association units. The factor is named ``neuronsPerCA``.
         
             - By default, this is 10 times the total number of units.
             - For our example every population in each cell assembly will contain 40 `neurons. <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
@@ -167,7 +170,7 @@ class NeuralInheritanceClass:
     #When run, each unit should persist, but only that unit 
     #should.
     def makeGenerator(self,genTime):
-        """Set up spike generator to start each unit. `genTime` is a float representing the start time."""
+        """Set up spike generator to start each unit. ``genTime`` is a float representing the start time."""
         genTimes = genTime
         genTimeArray = {'spike_times': [genTimes]}
         spikeGen=self.sim.Population(1,self.sim.SpikeSourceArray,genTimeArray)

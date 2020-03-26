@@ -114,25 +114,25 @@ class BuoMerz(object):
         
         Returns data as a dictionary such that
         
-        +----------+-----------------------------------------------------------------------------------------+
-        | Key      | Value                                                                                   |
-        +==========+=========================================================================================+
-        | "popIn"  | Neo object for input layer; contains `SpikeTrain` and `Analogsignal`                    |
-        +----------+-----------------------------------------------------------------------------------------+
-        | "ex4"    | Neo object for excitatory population LayerIV; contains `SpikeTrain` and `Analogsignal`  |
-        +----------+-----------------------------------------------------------------------------------------+
-        | "inh4"   | Neo object for inhibitory population LayerIV; contains `SpikeTrain` and `Analogsignal`  |
-        +----------+-----------------------------------------------------------------------------------------+
-        | "ex3"    | Neo object for excitatory population LayerIII; contains `SpikeTrain` and `Analogsignal` |
-        +----------+-----------------------------------------------------------------------------------------+
-        | "inh3"   | Neo object for inhibitory population LayerIII; contains `SpikeTrain` and `Analogsignal` |
-        +----------+-----------------------------------------------------------------------------------------+
-        | "out"    | Dictionary for output layer with populations under the keys "out"+stimuli, say "out80"  |
-        +----------+-----------------------------------------------------------------------------------------+
-        | "origin" | float type representing start of the runtime                                            |
-        +----------+-----------------------------------------------------------------------------------------+
-        | "end"    | float type representing end of the runtime                                              |
-        +----------+-----------------------------------------------------------------------------------------+
+        +----------+---------------------------------------------------------------------------------------------+
+        | Key      | Value                                                                                       |
+        +==========+=============================================================================================+
+        | "popIn"  | Neo object for input layer; contains ``SpikeTrain`` and ``Analogsignal``                    |
+        +----------+---------------------------------------------------------------------------------------------+
+        | "ex4"    | Neo object for excitatory population LayerIV; contains ``SpikeTrain`` and ``Analogsignal``  |
+        +----------+---------------------------------------------------------------------------------------------+
+        | "inh4"   | Neo object for inhibitory population LayerIV; contains ``SpikeTrain`` and ``Analogsignal``  |
+        +----------+---------------------------------------------------------------------------------------------+
+        | "ex3"    | Neo object for excitatory population LayerIII; contains ``SpikeTrain`` and ``Analogsignal`` |
+        +----------+---------------------------------------------------------------------------------------------+
+        | "inh3"   | Neo object for inhibitory population LayerIII; contains ``SpikeTrain`` and ``Analogsignal`` |
+        +----------+---------------------------------------------------------------------------------------------+
+        | "out"    | Dictionary for output layer with populations under the keys "out"+stimuli, say "out80"      |
+        +----------+---------------------------------------------------------------------------------------------+
+        | "origin" | float type representing start of the runtime                                                |
+        +----------+---------------------------------------------------------------------------------------------+
+        | "end"    | float type representing end of the runtime                                                  |
+        +----------+---------------------------------------------------------------------------------------------+
         
         **Note:**
         
@@ -163,9 +163,9 @@ class BuoMerz(object):
                |------------------runtime--------------------|
         
         
-        Note that the above dual-pulse train represented in `self.input_channel` is used to create a spiking version using the private function `__gen_input_src()`.
+        Note that the above dual-pulse train represented in ``self.input_channel`` is used to create a spiking version using the private function ``__gen_input_src()``.
         
-        In addition to the `self.input_channel` this function also sets the attributes: `self.stim_origin`, `self.stim_end`, and `self.runtime`.
+        In addition to the ``self.input_channel`` this function also sets the attributes: ``self.stim_origin``, ``self.stim_end``, and ``self.runtime``.
         
         **Note:**
         

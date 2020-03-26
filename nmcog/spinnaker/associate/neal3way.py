@@ -55,8 +55,8 @@ class NEAL3Way(object):
         ooooooooooooooooooooooo   ooooooooooooooooooooooo   ooooooooooooooooooooooo   ooooooooooooooooooooooo
     
     
-    * Refer to :ref:`FSAHelperFunctions` `.makeCA` about the structure of a cell assembly based on the Neuromorphic Embodied Agents that Learn `(NEAL) <http://www.cwa.mdx.ac.uk/NEAL/NEAL.html>`_.
-    * Refer to :ref:`FSAHelperFunctions` `.getCAConnectors` for details on how the `neuron populations <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly are connected.
+    * Refer to :ref:`FSAHelperFunctions` ``.makeCA`` about the structure of a cell assembly based on the Neuromorphic Embodied Agents that Learn `(NEAL) <http://www.cwa.mdx.ac.uk/NEAL/NEAL.html>`_.
+    * Refer to :ref:`FSAHelperFunctions` ``.getCAConnectors`` for details on how the `neuron populations <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly are connected.
     
     Connection (excitatory) between the cell assemblies is based on the "isA" relationship pair.
     
@@ -89,11 +89,9 @@ class NEAL3Way(object):
     
     This hierarchy topology is also refered to a the network of the association units in the base data.
     
-    * Refer to :ref:`NeuralInheritanceClass.makeHiersFromHier` for how the excitatory connections among the assembly of association units are made.
+    * Refer to :ref:`NeuralInheritanceClass` ``.makeHiersFromHier`` for how the excitatory connections among the assembly of association units are made.
     
     Since,
-    # associate = {"properties": ["food", "fur", "flying", "yellow"], # properties to be associated between base units and its relations
-    #              "relations": ["eats", "likes", "travels", "has", "colored"], # relations associated with properties and base units
     
     ::
     
@@ -127,6 +125,7 @@ class NEAL3Way(object):
     
         >>> print(assocdata.assocs)
         [ ["animal", "eats", "food"], ["mammal", "has", "fur"], ["bird", "travels", "flying"], ["canary", "colored", "yellow"] ]
+    
     
     * The hierarchy topology to the cell assemblies for property.
     * The hierarchy topology to the cell assemblies for relation.
