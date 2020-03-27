@@ -478,7 +478,7 @@ class BuoMerz(object):
             splist[i].legend( handles=[z_patch], shadow=True )
             # left yticks and ylabel
             splist[i].set_yticks( [] )
-            splist[i].set( ylabel="output\npop-"+poplabels[i], multialignment='center' )
+            splist[i].set( ylabel="output\npop-"+poplabels[i] )
             # right yticks and ylabel
             rightside = splist[i].twinx()
             rightside.set_yticks( [] )
@@ -527,9 +527,9 @@ class BuoMerz(object):
             if j==(mrows-1):
                 sp.set(xlabel="time (ms)")
             else:
-                sp.xticks( [] )
+                sp.set_xticks( [] )
             # left ylabel
-            sp.set(ylabel='units in\npop', multialignment='center')
+            sp.set(ylabel='units in\npop')
             # right yticks and ylabel
             rightside = sp.twinx()
             rightside.set_yticks( [] )
