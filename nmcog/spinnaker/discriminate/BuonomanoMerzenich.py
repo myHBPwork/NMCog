@@ -445,6 +445,7 @@ class BuoMerz(object):
         clrs = ['C{}'.format(i) for i in range(len(intvs))] # colors for respective interval
         legpatches = []
         fig, ( (sp) ) = plt.subplots(1,1,sharex=True)
+        fig.suptitle("Populations (output layer) triggered by respective stimulus")
         for j in range( len(intvs) ):
             [ sp.plot(y[intvs[j]]["out"]["out"+intvs[j]]["placeholder_axes"], alpha=0.0) if i==0 else
               sp.eventplot( y[intvs[j]]["out"]["out"+intvs[j]]["spiketrains"], colors=clrs[j] ) for i in range(2) ]
@@ -465,6 +466,7 @@ class BuoMerz(object):
         poplabels = self.__population_labels(mrows)
         #
         fig, splist = plt.subplots( mrows, 1 )
+        fig.suptitle("Populations (output layer) triggered by respective stimulus")
         for i in range(mrows):
             z = intvs[i]
             # plot
@@ -476,11 +478,11 @@ class BuoMerz(object):
             splist[i].legend( handles=[z_patch], shadow=True )
             # left yticks and ylabel
             splist[i].set_yticks( [] )
-            splist[i].set( ylabel="output pop-"+poplabels[i] )
+            splist[i].set( ylabel="output\npop-"+poplabels[i], multialignment='center' )
             # right yticks and ylabel
             rightside = splist[i].twinx()
             rightside.set_yticks( [] )
-            rightside.set_ylabel( "stimulus "+z )
+            rightside.set_ylabel( "stimulus\n"+z, multialignment='center' )
         # remove vertical gap between subplots
         plt.subplots_adjust( hspace=.0 )
         plt.xticks( [] ) # remove xticks
@@ -497,3 +499,40 @@ class BuoMerz(object):
             labellist.append( alpha )
             alpha = chr( ord(alpha) + 1 )
         return labellist
+    
+    def plot_output_layer_timeseries_vertical(self):
+        """Visualize spikes from each population in the output layer as a time-series.
+        But unlike :py:meth:`plot_output_layer_timeseries` this one plots one-above-eachother.
+        Left y-axis represent units in a population and right y-axis the respective population.
+        """
+        y = self.data_for_all_intervals
+        intvs = self.str_dual_pulse_intervals #["80", "130", "180", "230", "280"]
+        #
+        mrows = len(intvs) # mrows of subplots
+        clrs = ['C{}'.format(i) for i in range(mrows)] # mrows of colors
+        poplabels = self.__population_labels(mrows)
+        #
+        fig, splist = plt.subplots( mrows, 1, sharex=True )
+        fig.suptitle("Populations (output layer) triggered by respective stimulus")
+        for j in range(mrows):
+            z = intvs[j]   # a stimulus
+            sp = splist[j] # a subplot
+            # plot
+            [ sp.plot(y[z]["out"]["out"+z]["placeholder_axes"], alpha=0.0) if i==0 else
+              sp.eventplot( y[z]["out"]["out"+z]["spiketrains"], colors=clrs[j] ) for i in range(2) ]
+            # legend
+            z_patch = mpatches.Patch(color=clrs[j], label=z)
+            sp.legend( handles=[z_patch], shadow=True )
+            # xticks and xlabel only for bottom subplot
+            if j==(mrows-1):
+                sp.set(xlabel="time (ms)")
+            else:
+                sp.xticks( [] )
+            # left ylabel
+            sp.set(ylabel='units in\npop', multialignment='center')
+            # right yticks and ylabel
+            rightside = sp.twinx()
+            rightside.set_yticks( [] )
+            rightside.set_ylabel( "pop-"+poplabels[j] )
+        plt.subplots_adjust( hspace=.0 )
+        plt.show()

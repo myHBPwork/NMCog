@@ -20,7 +20,7 @@
 
 class InheritanceReaderClass:
     """
-    **Note":**
+    **Note:**
     
     * Unlike implementation by Chris Huyck et al. nmcog does not use this class to read .txt file
     * The structured data are created within the working class.
