@@ -89,7 +89,8 @@ class BuoMerz(object):
     #dual_pulse_intervals = np.linspace(30, 330, num=31) # 30ms : 10ms : 330ms => 300/10 + 1 = 31 ms
 
     def __init__(self, intervals):
-        self.dual_pulse_intervals = intervals
+        self.dual_pulse_intervals = intervals # [80, 130, 180, 230, 280]
+        self.str_dual_pulse_intervals = [ str(stimulus) for stimulus in self.dual_pulse_intervals]  # ["80", "130", "180", "230", "280"] for plotting
         self.data_for_all_intervals = {}
         for self.inter_pulse_interval in intervals:
             sim.setup(1)
@@ -386,12 +387,15 @@ class BuoMerz(object):
     # Private function for checking and getting the interval for plotting all the layers
     def __get_interval_of_interest(self, variable_argument_intv_tuple):
         """."""
-        if len(variable_argument_intv_tuple)==0 and len(self.dual_pulse_intervals)==1:
-            return self.dual_pulse_intervals[0]
-        elif (len(variable_argument_intv_tuple)==0 and len(self.dual_pulse_intervals)>1) or (len(variable_argument_intv_tuple)>1):
+        if len(variable_argument_intv_tuple)==0 and len(self.str_dual_pulse_intervals)==1:
+            return self.str_dual_pulse_intervals()[0]
+        elif (len(variable_argument_intv_tuple)==0 and len(self.str_dual_pulse_intervals)>1) or (len(variable_argument_intv_tuple)>1):
             raise ValueError("Argument must be a string representing single interval (stimulus).")
         else:
-            return variable_argument_intv_tuple[0]
+            if type( variable_argument_intv_tuple[0] ) is str:
+                return variable_argument_intv_tuple[0]
+            else:
+                return str( variable_argument_intv_tuple[0] )
         
     # Plotting functions
     def plot_all_layers(self, *intv):
@@ -437,20 +441,15 @@ class BuoMerz(object):
         y-axis represent each unit in a population and x-axis is time in milliseconds.
         """
         y = self.data_for_all_intervals
-        intvs = self.dual_pulse_intervals #["80", "130", "180", "230", "280"]
+        intvs = self.str_dual_pulse_intervals #["80", "130", "180", "230", "280"]
         print(y)
         print(intvs)
         clrs = ['C{}'.format(i) for i in range(len(intvs))] # colors for respective interval
         legpatches = []
         fig, ( (sp) ) = plt.subplots(1,1,sharex=True)
         for j in range( len(intvs) ):
-            #[ sp.plot(y[intvs[j]]["out"]["out"+intvs[j]]["placeholder_axes"], alpha=0.0) if i==0 else
-            #  sp.eventplot( y[intvs[j]]["out"]["out"+intvs[j]]["spiketrains"], colors=clrs[j] ) for i in range(2) ]
-            for i in range(2):
-                if i==0:
-                    sp.plot(y[intvs[j]]["out"]["out"+intvs[j]]["placeholder_axes"], alpha=0.0)
-                else:
-                    sp.eventplot( y[intvs[j]]["out"]["out"+intvs[j]]["spiketrains"], colors=clrs[j] )
+            [ sp.plot(y[intvs[j]]["out"]["out"+intvs[j]]["placeholder_axes"], alpha=0.0) if i==0 else
+              sp.eventplot( y[intvs[j]]["out"]["out"+intvs[j]]["spiketrains"], colors=clrs[j] ) for i in range(2) ]
             legpatches.append( mpatches.Patch(color=clrs[j], label=intvs[j]) )
         sp.set(ylabel="unit in population")
         sp.set(xlabel="time (ms)")
@@ -461,7 +460,7 @@ class BuoMerz(object):
         Left y-axis represent the population and right y-axis the stimulus.
         """
         y = self.data_for_all_intervals
-        intvs = self.dual_pulse_intervals #["80", "130", "180", "230", "280"]
+        intvs = self.str_dual_pulse_intervals #["80", "130", "180", "230", "280"]
         #
         mrows = len(intvs) # mrows of subplots
         clrs = ['C{}'.format(i) for i in range(mrows)] # mrows of colors
