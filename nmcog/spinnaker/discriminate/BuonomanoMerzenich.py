@@ -438,12 +438,19 @@ class BuoMerz(object):
         """
         y = self.data_for_all_intervals
         intvs = self.dual_pulse_intervals #["80", "130", "180", "230", "280"]
+        print(y)
+        print(intvs)
         clrs = ['C{}'.format(i) for i in range(len(intvs))] # colors for respective interval
         legpatches = []
         fig, ( (sp) ) = plt.subplots(1,1,sharex=True)
         for j in range( len(intvs) ):
-            [ sp.plot(y[intvs[j]]["out"]["out"+intvs[j]]["placeholder_axes"], alpha=0.0) if i==0 else
-              sp.eventplot( y[intvs[j]]["out"]["out"+intvs[j]]["spiketrains"], colors=clrs[j] ) for i in range(2) ]
+            #[ sp.plot(y[intvs[j]]["out"]["out"+intvs[j]]["placeholder_axes"], alpha=0.0) if i==0 else
+            #  sp.eventplot( y[intvs[j]]["out"]["out"+intvs[j]]["spiketrains"], colors=clrs[j] ) for i in range(2) ]
+            for i in range(2):
+                if i==0:
+                    sp.plot(y[intvs[j]]["out"]["out"+intvs[j]]["placeholder_axes"], alpha=0.0)
+                else:
+                    sp.eventplot( y[intvs[j]]["out"]["out"+intvs[j]]["spiketrains"], colors=clrs[j] )
             legpatches.append( mpatches.Patch(color=clrs[j], label=intvs[j]) )
         sp.set(ylabel="unit in population")
         sp.set(xlabel="time (ms)")
