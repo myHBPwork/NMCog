@@ -526,8 +526,8 @@ class BuoMerz(object):
             # xticks and xlabel only for bottom subplot
             if j==(mrows-1):
                 sp.set(xlabel="time (ms)")
-            else:
-                sp.set_xticks( [] )
+            #else:
+            #    sp.set_xticks( [] )
             # left ylabel
             sp.set(ylabel='units in\npop')
             # right yticks and ylabel
