@@ -1,3 +1,4 @@
+# ~/nmcog/spinnaker/associate/nealassoc/readInheritanceFile.py
 #
 # Code based on Jan2020 Chris Huyck et al.
 # http://www.cwa.mdx.ac.uk/NEAL/code/assocMemJan2020.tar.gz
@@ -18,6 +19,15 @@
 # this class has been incorporated in nmcog.
 
 class InheritanceReaderClass:
+    """
+    **Note":**
+    
+    * Unlike implementation by Chris Huyck et al. nmcog does not use this class to read .txt file
+    * The structured data are created within the working class.
+    * However, the reading ability of :py:class:`InheritanceReaderClass` has not been disabled therefore it can still be used like Chris Huyck et al.
+    * Although, in the current implementation of any class within nmcog creates its structured data the reason :py:class:`InheritanceReaderClass` is because of some original scripts (Chris Huyck et al.) within nmcog that invokes methods (like the :py:meth:`getUnitNumber`) within this class whose internal has instantiated attributes.
+    
+    """
     #instance variables
     units = []
     numberUnits = -1

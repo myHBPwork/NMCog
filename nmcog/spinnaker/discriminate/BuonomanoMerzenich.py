@@ -442,8 +442,6 @@ class BuoMerz(object):
         """
         y = self.data_for_all_intervals
         intvs = self.str_dual_pulse_intervals #["80", "130", "180", "230", "280"]
-        print(y)
-        print(intvs)
         clrs = ['C{}'.format(i) for i in range(len(intvs))] # colors for respective interval
         legpatches = []
         fig, ( (sp) ) = plt.subplots(1,1,sharex=True)
