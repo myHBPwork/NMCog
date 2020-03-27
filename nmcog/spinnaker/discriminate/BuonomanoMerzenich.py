@@ -388,7 +388,7 @@ class BuoMerz(object):
         """."""
         if len(variable_argument_intv_tuple)==0 and len(self.dual_pulse_intervals)==1:
             return self.dual_pulse_intervals[0]
-        elif (len(variable_argument_intv_tuple)==0 and len(self.dual_pulse_intervals)>1) or (len(variable_argument_intv_tuple)!=1):
+        elif (len(variable_argument_intv_tuple)==0 and len(self.dual_pulse_intervals)>1) or (len(variable_argument_intv_tuple)>1):
             raise ValueError("Argument must be a string representing single interval (stimulus).")
         else:
             return variable_argument_intv_tuple[0]
@@ -408,7 +408,7 @@ class BuoMerz(object):
                (sp4),
                (sp5),
                (sp6) ) = plt.subplots(6,1,sharex=True)
-        fig.suptitle("Temporal Info. Processing for S = "+z)
+        fig.suptitle("Temporal Info. Processing for S = "+z+" ms")
 
         [ sp1.plot(y[z]["out"]["out"+z]["placeholder_axes"], alpha=0.0) if i==0 else
           sp1.eventplot( y[z]["out"]["out"+z]["spiketrains"] ) for i in range(2) ]
@@ -443,7 +443,7 @@ class BuoMerz(object):
         fig, ( (sp) ) = plt.subplots(1,1,sharex=True)
         for j in range( len(intvs) ):
             [ sp.plot(y[intvs[j]]["out"]["out"+intvs[j]]["placeholder_axes"], alpha=0.0) if i==0 else
-            sp.eventplot( y[intvs[j]]["out"]["out"+intvs[j]]["spiketrains"], colors=clrs[j] ) for i in range(2) ]
+              sp.eventplot( y[intvs[j]]["out"]["out"+intvs[j]]["spiketrains"], colors=clrs[j] ) for i in range(2) ]
             legpatches.append( mpatches.Patch(color=clrs[j], label=intvs[j]) )
         sp.set(ylabel="unit in population")
         sp.set(xlabel="time (ms)")
