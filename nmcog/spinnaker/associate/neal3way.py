@@ -246,9 +246,8 @@ class NEAL3Way(object):
         neo_relation = self.neural3assoc_topology.relationCells.get_data(variables=["spikes"])
         return [neo_base, neo_property, neo_relation]
         
-    # Privation function
+    # Private function for return overall spike train 
     def __get_overallspikes(self, dataname, neo_data, turnon):
-        data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
         if turnon=="all":
             if dataname=="basedata":
                 return neo_data.segments[0].spiketrains
@@ -258,7 +257,10 @@ class NEAL3Way(object):
                 else:
                     data = getattr(self, "propdata")
                 tstart = data.numberUnits * self.simTime
-                return neo_data.segments[0].spiketrains[ neo_data.segments[0].spiketrains > tstart*pq.ms ]
+                spktrains_all = []
+                for spktrain in neo_data.segments[0].spiketrains:
+                    spktrains_all.append( spktrain[ spktrain > tstart[0]*pq.ms] )
+                return spktrains_all
         else:
             return neo_data.segments[0].spiketrains
     
