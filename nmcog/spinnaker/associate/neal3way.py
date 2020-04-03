@@ -233,13 +233,14 @@ class NEAL3Way(object):
         self.neural3assoc_topology.addAssociations( self.assocdata )
         
     def __choose_applicable_test(self, turnon):
-        """."""
+        """If ``turnon = "all"`` then all the cell assemblies for each subject (base), object (property) and relation (predicate) is activated.
+        On the other hand, if ``turnon = [<subject-name>, <predicate-name>, <object-name>]`` only cell assemblies for these are trigerred."""
         if turnon=="all":
             self.simTime = self.neural3assoc_topology.createUnitTests() + 100
         else:
-            baseNum = self.basedata.getUnitNumber( turnon[0] )
-            probNum = self.propdata.getUnitNumber( turnon[1] )
-            relNum = self.reldata.getUnitNumber( turnon[2] )
+            baseNum = self.basedata.getUnitNumber( turnon[0] ) # base or subject
+            probNum = self.propdata.getUnitNumber( turnon[1] ) # property or object
+            relNum = self.reldata.getUnitNumber( turnon[2] )   # relation or predicate
             self.neural3assoc_topology.createTwoPrimeTest( baseNum, probNum, relNum )
             self.simTime = 200.0
     
@@ -253,6 +254,9 @@ class NEAL3Way(object):
         
     # Private function for return overall spike train 
     def __get_overallspikes(self, dataname, neo_data, turnon):
+        """Returns `Neo SpikeTrain <https://neo.readthedocs.io/en/stable/api_reference.html#neo.core.SpikeTrain>`_.
+        All of it if the data structure is basedata other wise the they are shifted accordingly for propdata and reldata.
+        """
         if turnon=="all":
             if dataname=="basedata":
                 return neo_data.segments[0].spiketrains
@@ -294,6 +298,8 @@ class NEAL3Way(object):
     # Plotting functions
     # Private function to get first key for self.results dictionary
     def __get_resultskey(self, dataname):
+        """Returns key string for ``self.results``. This is because the attribute names for the data structures are a shortened
+        version of the keys in ``self.results`` with the exception of ``self.basedata``."""
         if dataname=="reldata":
             return "relation" # corresponding key in self.results is "relation"
         elif dataname=="propdata":
@@ -303,6 +309,8 @@ class NEAL3Way(object):
     
     # Private function for each subplot in :py:meth:`.plot_all`
     def __subplot_all(self, dataname, subplotobject, clrs):
+        """For a given ``subplotobject`` this function returns matplotlib's `eventplot <https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.eventplot.html>`_
+        for spiketrains from all the cell units of all the cell assemblies for a given data structure (assigned by the ``dataname`` argument)."""
         legpatches = []
         data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
         for unit in data.units:
@@ -313,6 +321,20 @@ class NEAL3Way(object):
         subplotobject.legend( handles=legpatches, shadow=True )
     
     def plot_all(self):
+        """Plot of three subplots such that each subplot (invoking :py:meth:`.__subplot_all`) is the matplotlib's `eventplot <https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.eventplot.html>`_
+        of `SpikeTrain <https://neo.readthedocs.io/en/stable/api_reference.html#neo.core.SpikeTrain>`_ such that
+        
+        +---------+------------------------------------------------------------+-----------+
+        | subplot | spike trains for all cell units in all cell assemblies for | color map |
+        +=========+============================================================+===========+
+        | top     | subject (a.k.a base in ``basedata``)                       | Reds      |
+        +---------+------------------------------------------------------------+-----------+
+        | middle  | predicate (a.k.a relation in ``reldata``)                  | Greens    |
+        +---------+------------------------------------------------------------+-----------+
+        | bottom  | object (a.k.a property in ``propdata``)                    | Blues     |
+        +---------+------------------------------------------------------------+-----------+
+        
+        """
         fig, ((sp1),
               (sp2),
               (sp3)) = plt.subplots(3,1, sharex=True)
@@ -341,6 +363,14 @@ class NEAL3Way(object):
         plt.show()
         
     def plot_specific(self, basename=None, relname=None, propname=None):
+        """Plot of three subplots such that each is the matplotlib's `eventplot <https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.eventplot.html>`_
+        of `SpikeTrain <https://neo.readthedocs.io/en/stable/api_reference.html#neo.core.SpikeTrain>`_ of all the cell units in cell assembly for given
+        
+        * ``basename`` in top subplot for subject, color is red
+        * ``relname`` in middle subplot for predicate, color is green
+        * ``propname`` in bottom subplot for object, color is blue
+        
+        """
         fig, ((sp1),
               (sp2),
               (sp3)) = plt.subplots(3,1, sharex=True)
