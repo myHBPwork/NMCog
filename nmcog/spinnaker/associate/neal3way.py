@@ -6,6 +6,8 @@
 # =============================================================================
 from types import SimpleNamespace as structdata
 
+import quantities as pq
+
 import spynnaker8 as sim
 
 from .nealassoc.readInheritanceFile import InheritanceReaderClass
@@ -180,10 +182,10 @@ class NEAL3Way(object):
         neal.nealApplyProjections()
         sim.run(self.simTime)
         [neo_base, neo_property, neo_relation] = self.__getdata()
-        self.results = { "base": self.__split_spiketrains("basedata", neo_base),
-                         "property": self.__split_spiketrains("propdata", neo_property),
-                         "relation": self.__split_spiketrains("reldata", neo_relation) }
-        sim.reset()
+        self.results = { "base": self.__split_spiketrains("basedata", neo_base, turnon),
+                         "property": self.__split_spiketrains("propdata", neo_property, turnon),
+                         "relation": self.__split_spiketrains("reldata", neo_relation, turnon) }
+        #sim.reset()
         sim.end()
         
     def get_results(self):
@@ -243,9 +245,25 @@ class NEAL3Way(object):
         neo_property = self.neural3assoc_topology.propertyCells.get_data(variables=["spikes"])
         neo_relation = self.neural3assoc_topology.relationCells.get_data(variables=["spikes"])
         return [neo_base, neo_property, neo_relation]
+        
+    # Privation function
+    def __get_overallspikes(self, dataname, neo_data, turnon):
+        data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
+        if turnon=="all":
+            if dataname=="basedata":
+                return neo_data.segments[0].spiketrains
+            else:
+                if dataname=="propdata":
+                    data = getattr(self, "basedata")
+                else:
+                    data = getattr(self, "propdata")
+                tstart = data.numberUnits * self.simTime
+                return neo_data.segments[0].spiketrains[ neo_data.segments[0].spiketrains > tstart*pq.ms ]
+        else:
+            return neo_data.segments[0].spiketrains
     
     # Private function for segregating respective spike trains for each cell assembly within a Neo object.
-    def __split_spiketrains(self, dataname, neo_data):
+    def __split_spiketrains(self, dataname, neo_data, turnon):
         """Given the Neo object of a given data name ("basedata" or "propdata" or "reldata", see :py:meth:`.__create_datastructures`),
         this function returns a dictionary with "units" in the structured data as keys and its value the respective spike trains (all cell units in an assembly, i.e. the "unit").
         """
@@ -254,7 +272,8 @@ class NEAL3Way(object):
         spkindices = lambda n : (0,ca_size) if (n==0) else ( (n*ca_size), (n*ca_size)+ca_size )
         #
         data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
-        overallspikes = neo_data.segments[0].spiketrains
+        #overallspikes = neo_data.segments[0].spiketrains
+        overallspikes = self.__get_overallspikes(dataname, neo_data, turnon)
         #
         parsed_spiketrains = {"all": overallspikes} # this will be the returned value
         for unit in data.units:
