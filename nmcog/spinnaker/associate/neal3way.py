@@ -259,7 +259,7 @@ class NEAL3Way(object):
                 tstart = data.numberUnits * self.simTime
                 spktrains_all = []
                 for spktrain in neo_data.segments[0].spiketrains:
-                    spktrains_all.append( spktrain[ spktrain > tstart[0]*pq.ms] )
+                    spktrains_all.append( spktrain[ spktrain > tstart*pq.ms] )
                 return spktrains_all
         else:
             return neo_data.segments[0].spiketrains
