@@ -179,6 +179,7 @@ class NEAL3Way(object):
         #
         neal.nealApplyProjections()
         sim.run(self.simTime)
+        sim.end()
         
     def __create_datastructures(self, bases, associate):
         """."""
