@@ -238,7 +238,7 @@ class NEAL3Way(object):
         """
         ca_size = self.neural3assoc_topology.fsa.CA_SIZE
         #
-        spkindices = lambda n : list( range(0,ca_size) ) if (n==0) else list( range( (n*ca_size), (n*ca_size)+ca_size ) )
+        spkindices = lambda n : (0,ca_size) if (n==0) else ( (n*ca_size), (n*ca_size)+ca_size )
         #
         data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
         overallspikes = neo_data.segments[0].spiketrains
@@ -246,7 +246,8 @@ class NEAL3Way(object):
         parsed_spiketrains = {} # this will be the returned value
         for unit in data.units:
             n = data.getUnitNumber(unit)
-            parsed_spiketrains.update( {unit: overallspikes[spkindices(n)] } )
+            indx = spkindices(n)
+            parsed_spiketrains.update( {unit: overallspikes[ indx[0] : indx[-1] ] } )
         return parsed_spiketrains
             
     def get_results(self):
