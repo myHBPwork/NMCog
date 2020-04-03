@@ -256,7 +256,7 @@ class NEAL3Way(object):
                     data = getattr(self, "basedata")
                 else:
                     data = getattr(self, "propdata")
-                tstart = data.numberUnits * self.simTime
+                tstart = data.numberUnits * 100 # this 100 is the same value as in :py:meth:`.__choose_applicable_test`
                 spktrains_all = []
                 for spktrain in neo_data.segments[0].spiketrains:
                     spktrains_all.append( spktrain - tstart*pq.ms )
