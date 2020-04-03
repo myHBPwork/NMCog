@@ -240,7 +240,10 @@ class NEAL3Way(object):
         else:
             baseNum = self.basedata.getUnitNumber( turnon[0] ) # base or subject
             probNum = self.propdata.getUnitNumber( turnon[1] ) # property or object
-            relNum = self.reldata.getUnitNumber( turnon[2] )   # relation or predicate
+            try:
+                relNum = self.reldata.getUnitNumber( turnon[2] )# relation or predicate
+            except:
+                relNum = -1 # cell assembly for relation is not activated
             self.neural3assoc_topology.createTwoPrimeTest( baseNum, probNum, relNum )
             self.simTime = 200.0
     
