@@ -333,7 +333,7 @@ class NEAL3Way(object):
         clrs = self.__generate_compatible_subplot_colors(colorname, data.numberUnits)
         for unit in data.units:
             i = data.getUnitNumber(unit)
-            if self.testmd=="all":
+            if self.test_metadata[0]=="all":
                 subplotobject.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
                                          color = clrs(1.0 - (i*0.1) ) )
                 legpatches.append( mpatches.Patch(color=clrs( 1.0-(i*0.1) ), label=unit) )
@@ -345,7 +345,7 @@ class NEAL3Way(object):
         
     # Private function for returning color map (a tuple) or list of colors
     def __generate_compatible_subplot_colors(self, colorname, numberUnits):
-        if self.testmd=="all": # returns a tuple
+        if self.test_metadata[0]=="all": # returns a tuple
             return cm.get_cmap(colorname, 12) # "Reds", "Greens", "Blues"
         else:
             return ['C{}'.format(i) for i in range(numberUnits)]
