@@ -243,7 +243,7 @@ class NEAL3Way(object):
         data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
         overallspikes = neo_data.segments[0].spiketrains
         #
-        parsed_spiketrains = {} # this will be the returned value
+        parsed_spiketrains = {"all": overallspikes} # this will be the returned value
         for unit in data.units:
             n = data.getUnitNumber(unit)
             indx = spkindices(n)
