@@ -246,7 +246,7 @@ class NEAL3Way(object):
         parsed_spiketrains = {} # this will be the returned value
         for unit in data.units:
             n = data.getUnitNumber(unit)
-            parsed_data.update( {unit: overallspikes[spkindices(n)] } )
+            parsed_spiketrains.update( {unit: overallspikes[spkindices(n)] } )
         return parsed_spiketrains
             
     def get_results(self):
