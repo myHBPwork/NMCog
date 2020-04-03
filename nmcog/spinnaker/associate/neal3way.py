@@ -6,9 +6,14 @@
 # =============================================================================
 from types import SimpleNamespace as structdata
 
-import quantities as pq
-
 import spynnaker8 as sim
+
+import quantities as pq
+# for plotting
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+from matplotlib import gridspec
+from matplotlib import cm
 
 from .nealassoc.readInheritanceFile import InheritanceReaderClass
 from .nealassoc.readUnitFile import UnitReaderClass
@@ -254,9 +259,11 @@ class NEAL3Way(object):
             else:
                 if dataname=="propdata":
                     data = getattr(self, "basedata")
+                    tstart = data.numberUnits * 100 # this 100 is the same value as in :py:meth:`.__choose_applicable_test`
                 else:
-                    data = getattr(self, "propdata")
-                tstart = data.numberUnits * 100 # this 100 is the same value as in :py:meth:`.__choose_applicable_test`
+                    data1 = getattr(self, "basedata")
+                    data2 = getattr(self, "propdata")
+                    tstart = (data1.numberUnits * 100) + (data2.numberUnits * 100)
                 spktrains_all = []
                 for spktrain in neo_data.segments[0].spiketrains:
                     spktrains_all.append( spktrain - tstart*pq.ms )
@@ -283,3 +290,72 @@ class NEAL3Way(object):
             indx = spkindices(n)
             parsed_spiketrains.update( {unit: overallspikes[ indx[0] : indx[-1] ] } )
         return parsed_spiketrains
+    
+    # Plotting functions
+    # Private function for each subplot in :py:meth:`.plot_all`
+    def __subplot_all(self, dataname, subplotobject, clrs):
+        legpatches = []
+        data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
+        for unit in data.units:
+            i = data.getUnitNumber(unit)
+            subplotobject.eventplot( self.results[ data.strip("data") ][ unit ],
+                                     color = clrs(1.0 - (i*0.1) ) )
+            legpatches.append( mpatches.Patch(color=clrs( 1.0-(i*0.1) ), label=unit) )
+        subplotobject.legend( handles=legpatches, shadow=True )
+    
+    def plot_all(self, *intv):
+        fig, ((sp1),
+              (sp2),
+              (sp3)) = plt.subplots(3,1, sharex=True)
+        # Red color for subject, i.e. base Therefore its spectrum is used here
+        clrs = cm.get_cmap('Reds', 12)
+        self.__subplot_all("basedata", sp1, clrs)
+        #
+        # Green color for predicate, i.e. relation
+        clrs = cm.get_cmap('Greens', 12)
+        self.__subplot_all("reldata", sp2, clrs)
+        #
+        # Blue color for object, i.e. property
+        clrs = cm.get_cmap('Blues', 12)
+        self.__subplot_all("propdata", sp3, clrs)
+        #
+        sp1.title.set_text("Subject (base)")
+        sp2.title.set_text("Predicate (relation)")
+        sp3.title.set_text("Object (property)")
+        #
+        sp1.set(ylabel="cell units\nper CA")
+        sp2.set(ylabel="cell units\nper CA")
+        sp3.set(ylabel="cell units\nper CA")
+        sp3.set(xlabel="time (ms)")
+        #
+        plt.subplots_adjust( hspace=0.5 ) # spacing for the each subplot title
+        plt.show()
+        
+    def plot_specific(self, basename=None, relationname=None, propertyname=None):
+        fig, ((sp1),
+              (sp2),
+              (sp3)) = plt.subplots(3,1, sharex=True)
+        #
+        sp1.eventplot( self.results["base"][basename], color="red" ) # animal
+        z_patch = mpatches.Patch( color="red", label=basename )
+        sp1.legend( handles=[z_patch], shadow=True )
+        #
+        sp2.eventplot( self.results["relation"][relname], color="green" ) # eats
+        z_patch = mpatches.Patch( color="green", label=relname )
+        sp2.legend( handles=[z_patch], shadow=True )
+        #
+        sp3.eventplot( self.results["property"][propname], color="blue" ) # food
+        z_patch = mpatches.Patch( color="blue", label=propname )
+        sp3.legend( handles=[z_patch], shadow=True )
+        #
+        sp1.title.set_text('Subject (base)')
+        sp2.title.set_text('Predicate (relation)')
+        sp3.title.set_text('Object (property)')
+        #
+        sp1.set(ylabel="cell units\nper CA")
+        sp2.set(ylabel="cell units\nper CA")
+        sp3.set(ylabel="cell units\nper CA")
+        sp3.set(xlabel="time (ms)")
+        #
+        plt.subplots_adjust( hspace=.5 ) # spacing for the each subplot title
+        plt.show()
