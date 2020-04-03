@@ -186,7 +186,7 @@ class NEAL3Way(object):
                          "property": self.__split_spiketrains("propdata", neo_property, turnon),
                          "relation": self.__split_spiketrains("reldata", neo_relation, turnon) }
         #sim.reset()
-        sim.end()
+        #sim.end()
         
     def get_results(self):
         """Returns a dictionary with keys "base", "property", and "relation" whose values are dictionaries.
@@ -259,7 +259,7 @@ class NEAL3Way(object):
                 tstart = data.numberUnits * self.simTime
                 spktrains_all = []
                 for spktrain in neo_data.segments[0].spiketrains:
-                    spktrains_all.append( spktrain[ spktrain > tstart*pq.ms] )
+                    spktrains_all.append( spktrain[ spktrain >= tstart*pq.ms] - tstart*pq.ms )
                 return spktrains_all
         else:
             return neo_data.segments[0].spiketrains
@@ -274,8 +274,8 @@ class NEAL3Way(object):
         spkindices = lambda n : (0,ca_size) if (n==0) else ( (n*ca_size), (n*ca_size)+ca_size )
         #
         data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
-        #overallspikes = neo_data.segments[0].spiketrains
-        overallspikes = self.__get_overallspikes(dataname, neo_data, turnon)
+        overallspikes = neo_data.segments[0].spiketrains
+        #overallspikes = self.__get_overallspikes(dataname, neo_data, turnon)
         #
         parsed_spiketrains = {"all": overallspikes} # this will be the returned value
         for unit in data.units:
