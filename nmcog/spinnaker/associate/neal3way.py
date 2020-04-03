@@ -292,18 +292,27 @@ class NEAL3Way(object):
         return parsed_spiketrains
     
     # Plotting functions
+    # Private function to get first key for self.results dictionary
+    def __get_resultskey(self, dataname):
+        if dataname=="reldata":
+            return "relation" # corresponding key in self.results is "relation"
+        elif dataname=="propdata":
+            return "property" # corresponding key in self.results is "property"
+        else:
+            return dataname.strip("data") # basedata -> base
+    
     # Private function for each subplot in :py:meth:`.plot_all`
     def __subplot_all(self, dataname, subplotobject, clrs):
         legpatches = []
         data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
         for unit in data.units:
             i = data.getUnitNumber(unit)
-            subplotobject.eventplot( self.results[ data.strip("data") ][ unit ],
+            subplotobject.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
                                      color = clrs(1.0 - (i*0.1) ) )
             legpatches.append( mpatches.Patch(color=clrs( 1.0-(i*0.1) ), label=unit) )
         subplotobject.legend( handles=legpatches, shadow=True )
     
-    def plot_all(self, *intv):
+    def plot_all(self):
         fig, ((sp1),
               (sp2),
               (sp3)) = plt.subplots(3,1, sharex=True)

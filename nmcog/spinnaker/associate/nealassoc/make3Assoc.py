@@ -345,7 +345,7 @@ class NeuralThreeAssocClass:
         """Given a start time ``firstTestStart``, the state for ``numUnits`` cell assemblies of a neuron population (``cells``) is turned on.
         The method returns the time after turning on the state for the last cell assembly.
         """
-        print(numUnits)
+        #print(numUnits)
         oneTestDuration = 100.0
         stopTimes = []
         for unit in range (0,numUnits): 
