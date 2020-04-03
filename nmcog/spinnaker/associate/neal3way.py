@@ -333,7 +333,7 @@ class NEAL3Way(object):
         clrs = self.__generate_compatible_subplot_colors(colorname, data.numberUnits)
         for unit in data.units:
             i = data.getUnitNumber(unit)
-            if self.testmd="all":
+            if self.testmd=="all":
                 subplotobject.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
                                          color = clrs(1.0 - (i*0.1) ) )
                 legpatches.append( mpatches.Patch(color=clrs( 1.0-(i*0.1) ), label=unit) )
