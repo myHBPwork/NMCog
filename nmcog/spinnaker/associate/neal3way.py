@@ -183,6 +183,7 @@ class NEAL3Way(object):
         self.results = { "base": self.__split_spiketrains("basedata", neo_base),
                          "property": self.__split_spiketrains("propdata", neo_property),
                          "relation": self.__split_spiketrains("reldata", neo_relation) }
+        sim.reset()
         sim.end()
         
     def get_results(self):
