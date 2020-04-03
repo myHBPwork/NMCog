@@ -220,8 +220,9 @@ class FSAHelperFunctions:
     #use this when your using a spikesource
     def turnOnStateFromSpikeSource(self,spikeSource, toNeurons, toCA):
         """Given a `spikeSource <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#spike-sources>`_ ,
-        this method turns **ON** the state of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
-        within a cell assembly.
+        this method turns **ON** the state of the desired cell assembly.
+        ``toNeurons`` specifies the type of `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        within the cell assembly.
         
         +-----------------+-------------+---------------+------------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | ``INPUT_WEIGHT`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -237,8 +238,9 @@ class FSAHelperFunctions:
 
     def halfTurnOnStateFromSpikeSource(self,spikeSource, toNeurons, toCA):
         """Given a `spikeSource <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#spike-sources>`_ ,
-        this method turns **1/2 ON** the state of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
-        within a cell assembly.
+        this method turns **1/2 ON** the state of the desired cell assembly.
+        ``toNeurons`` specifies the type of `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        within the cell assembly.
         
         +-----------------+-------------+---------------+-----------------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | ``HALF_INPUT_WEIGHT`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -254,8 +256,9 @@ class FSAHelperFunctions:
 
     def turnOffStateFromSpikeSource(self,spikeSource, toNeurons, toCA):
         """Given a `spikeSource <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#spike-sources>`_ ,
-        this method turns **OFF** the state of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
-        within a cell assembly.
+        this method turns **OFF** the state of the desired cell assembly.
+        ``toNeurons`` specifies the type of `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        within the cell assembly.
         
         +-----------------+-------------+---------------+--------------------------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | ``ONE_NEURON_STOPS_CA_WEIGHT`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -271,8 +274,9 @@ class FSAHelperFunctions:
 
     def stimulateStateFromSpikeSource(self,spikeSource, toNeurons, toCA, weight):
         """Given a `spikeSource <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#spike-sources>`_ ,
-        this method stimulates the state of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
-        within a cell assembly with the given weight value.
+        this method stimulates the state of the desired cell assembly with the given weight value.
+        ``toNeurons`` specifies the type of `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        within the cell assembly.
         
         +-----------------+-------------+---------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -288,8 +292,9 @@ class FSAHelperFunctions:
 
     def inhibitStateFromSpikeSource(self,spikeSource, toNeurons, toCA, weight):
         """Given a `spikeSource <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#spike-sources>`_ ,
-        this method inhibits the state of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
-        within a cell assembly with the given weight value.
+        this method inhibits the state of the desired cell assembly.
+        ``toNeurons`` specifies the type of `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        within the cell assembly.
         
         +-----------------+-------------+---------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -305,8 +310,8 @@ class FSAHelperFunctions:
 
     def turnOnOneNeuronFromSpikeSource(self,spikeSource, toNeurons, toNeuron):
         """Given a `spikeSource <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#spike-sources>`_ ,
-        this method turns **ON** the state of a desired `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        within a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_.
+        this method turns **ON** the state of a desired `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        within a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_.
         
         +-----------------+------------------+--------------------------------------+
         | Parameters used | ``INPUT_WEIGHT`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -320,8 +325,8 @@ class FSAHelperFunctions:
     #undone needs a test
     def turnOffOneNeuronFromSpikeSource(self,spikeSource, toNeurons, toNeuron):
         """Given a `spikeSource <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#spike-sources>`_ ,
-        this method turns **OFF** the state of a desired `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        within a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_.
+        this method turns **OFF** the state of a desired `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        within a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_.
         
         +-----------------+------------------------+--------------------------------------+
         | Parameters used | ``CA_STOPS_CA_WEIGHT`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -336,8 +341,8 @@ class FSAHelperFunctions:
     def inhibitOneNeuronFromSpikeSource(self,spikeSource, toNeurons, toNeuron,
                                         weight):
         """Given a `spikeSource <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#spike-sources>`_ ,
-        this method inhibits the state of a desired `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        within a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ with the given weight value.
+        this method inhibits the state of a desired `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        within a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ with the given weight value.
         
         +-----------------+--------------------------------------+
         | Parameters used | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -351,9 +356,9 @@ class FSAHelperFunctions:
     #---states can be turned on and off by a neuron, can stimulate or 
     #inhibit one, and can half turn on one.
     def oneNeuronTurnsOnState(self,fromNeurons,fromNeuron, toNeurons, toCA):
-        """From a given a `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method turns **ON** the state
-        of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly.
+        """From a given a `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method turns **ON** the state
+        of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly.
         
         +-----------------+-------------+---------------+------------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | ``INPUT_WEIGHT`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -368,9 +373,9 @@ class FSAHelperFunctions:
         self.neal.nealProjection(fromNeurons, toNeurons, connector,'excitatory')
 
     def oneNeuronHalfTurnsOnState(self,fromNeurons,fromNeuron, toNeurons, toCA):
-        """From a given a `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method turns **1/2 ON** the state
-        of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly.
+        """From a given a `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method turns **1/2 ON** the state
+        of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly.
         
         +-----------------+-------------+---------------+------------------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | ``ONE_HALF_ON_WEIGHT`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -385,9 +390,9 @@ class FSAHelperFunctions:
         self.neal.nealProjection(fromNeurons, toNeurons, connector,'excitatory')
 
     def oneNeuronTurnsOffState(self,fromNeurons, fromNeuron, toNeurons, toCA):
-        """From a given a `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method turns **OFF** the state
-        of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly.
+        """From a given a `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method turns **OFF** the state
+        of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly.
         
         +-----------------+-------------+---------------+--------------------------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | ``ONE_NEURON_STOPS_CA_WEIGHT`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -404,9 +409,9 @@ class FSAHelperFunctions:
         self.neal.nealProjection(fromNeurons,toNeurons,connector,'inhibitory')
 
     def oneNeuronHalfTurnsOffState(self,fromNeurons,fromNeuron, toNeurons, toCA):
-        """From a given a `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method turns **1/2 OFF** the state
-        of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly.
+        """From a given a `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method turns **1/2 OFF** the state
+        of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly.
         
         +-----------------+-------------+---------------+------------------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | ``ONE_HALF_ON_WEIGHT`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -422,9 +427,9 @@ class FSAHelperFunctions:
 
     def oneNeuronStimulatesState(self,fromNeurons,fromNeuron, toNeurons, toCA, 
                                 weight):
-        """From a given a `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method stimulates the state
-        of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly
+        """From a given a `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method stimulates the state
+        of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly
         with the given weight value.
         
         +-----------------+-------------+---------------+--------------------------------------+
@@ -449,10 +454,10 @@ class FSAHelperFunctions:
     #Neurons can also directly interact with each other.
     def oneNeuronStimulatesOneNeuron(self,fromNeurons,fromNeuron, toNeurons, 
                                      toNeuron,weight):
-        """From a given a `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method stimulates the state
-        of another `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_ of a
-        desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ with the given weight value.
+        """From a given a `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method stimulates the state
+        of another `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_ of a
+        desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ with the given weight value.
         
         +-----------------+--------------------------------------+
         | Parameters used | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -464,10 +469,10 @@ class FSAHelperFunctions:
         self.neal.nealProjection(fromNeurons, toNeurons, connector,'excitatory')
 
     def oneNeuronTurnsOnOneNeuron(self,fromNeurons,fromCA,toNeurons,toCA):
-        """From a given a `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method turns **ON** the state
-        of another `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_ of a
-        `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a desired cell assembly.
+        """From a given a `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method turns **ON** the state
+        of another `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_ of a
+        `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a desired cell assembly.
         
         +-----------------+------------------+
         | Parameters used | ``INPUT_WEIGHT`` |
@@ -479,10 +484,10 @@ class FSAHelperFunctions:
 
     def oneNeuronInhibitsOneNeuron(self,fromNeurons,fromNeuron, 
                                    toNeurons,toNeuron, weight):
-        """From a given a `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method inhibits the state
-        of another `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_ of a
-        desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ with the given weight value.
+        """From a given a `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method inhibits the state
+        of another `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_ of a
+        desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ with the given weight value.
         
         +-----------------+--------------------------------------+
         | Parameters used | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -495,10 +500,10 @@ class FSAHelperFunctions:
         self.neal.nealProjection(fromNeurons, toNeurons, connector,'inhibitory')
 
     def oneNeuronHalfTurnsOnOneNeuron(self,fromNeurons,fromCA,toNeurons,toCA):
-        """From a given a `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method turns **1/2 ON** the state
-        of another `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_ of a
-        `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a desired cell assembly.
+        """From a given a `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method turns **1/2 ON** the state
+        of another `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_ of a
+        `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a desired cell assembly.
         
         +-----------------+----------------------------+
         | Parameters used | ``ONE_HALF_ON_ONE_WEIGHT`` |
@@ -510,9 +515,9 @@ class FSAHelperFunctions:
 
     def oneNeuronInhibitsState(self,fromNeurons,fromNeuron, toNeurons, toCA, 
                                weight):
-        """From a given a `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method inhibits the state
-        of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a desired cell assembly
+        """From a given a `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_, this method inhibits the state
+        of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a desired cell assembly
         with the given weight value.
         
         +-----------------+-------------+---------------+--------------------------------------+
@@ -530,10 +535,10 @@ class FSAHelperFunctions:
 
     #states can stimulate or inhibit neurons
     def stateTurnsOnOneNeuron(self,fromNeurons,fromCA,toNeurons,toNeuron):
-        """From a given a `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
-        this method turns **ON** the state of another `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_.
+        """From a given a `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
+        this method turns **ON** the state of another `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_.
         
         +-----------------+-------------+---------------+-------------------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | ``STATE_TO_ONE_WEIGHT`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -559,11 +564,11 @@ class FSAHelperFunctions:
         
         **Note:**
         
-        * A cell assembly is composed of CA_SIZE number of neuron populations such that each population is of same kind.
+        * A cell assembly is composed of CA_SIZE number of `neuron units <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp>`_ such that each unit is of same kind.
         * Therefore, the arguments ``fromNeurons`` and ``toNeurons`` (plural) refers to the kind of neuron population in the from- and to-assemblies.
         * That is, ``fromNeurons`` and ``toNeurons`` do not indicate some specific neuron population within respective assemblies.
-        * The specificiation of a population (from and to) a cell assembly is done by the connector list of tuples.
-        * This specification is such that the ``fromNeurons`` and ``toNeurons`` are only in reference to populations with excitatory connections.
+        * The specificiation of a unit (from and to) a cell assembly is done by the connector list of tuples.
+        * This specification is such that the ``fromNeuron`` and ``toNeuron`` are only in reference to units with excitatory connections.
         
             - Referring to illustration in :py:meth:`.getCAConnectors` then in the above illustration ``fromNeuron`` and ``toNeuron`` (singular) will be <<0>> to <<7>>
             - <<8>> and <<9>> are not the source for the connection.
@@ -582,9 +587,9 @@ class FSAHelperFunctions:
 
     #states can stimulate or inhibit neurons
     def stateTurnsOnOneRBSNeuron(self,fromNeurons,fromCA,toNeurons,toNeuron):
-        """From a given `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
-        this method turns **ON** the state of another `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ with the given weight value 0.015.
+        """From a given `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
+        this method turns **ON** the state of another `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ with the given weight value 0.015.
         
         +-----------------+-------------+---------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -606,9 +611,9 @@ class FSAHelperFunctions:
         self.neal.nealProjection(fromNeurons,toNeurons,connector,'excitatory')
 
     def stateHalfTurnsOnOneNueron(self,fromNeurons,fromCA,toNeurons,toNeuron):
-        """From a given `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
-        this method turns **1/2 ON** the state of another `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_.
+        """From a given `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
+        this method turns **1/2 ON** the state of another `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_.
         
         +-----------------+-------------+---------------+------------------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | ``HALF_ON_ONE_WEIGHT`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -631,9 +636,9 @@ class FSAHelperFunctions:
 
     def stateStimulatesOneNeuron(self,fromNeurons,fromCA,toNeurons,toNeuron,
                                  weight):
-        """From a given `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
-        this method stimulates the state of another `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ with the given weight value.
+        """From a given `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
+        this method stimulates the state of another `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ with the given weight value.
         
         +-----------------+-------------+---------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -655,9 +660,9 @@ class FSAHelperFunctions:
 
     def stateInhibitsOneNeuron(self,fromNeurons,fromCA,toNeurons,toNeuron, 
                               weight):
-        """From a given `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
-        this method inhibits the state of another `neuron <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
-        of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ with the given weight value.
+        """From a given `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
+        this method inhibits the state of another `neuron unit <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#standard-cell-types>`_
+        of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ with the given weight value.
         
         +-----------------+-------------+---------------+--------------------------------------+
         | Parameters used | ``CA_SIZE`` | ``CA_INHIBS`` | :ref:`NealCoverFunctions` ``.DELAY`` |
@@ -684,8 +689,8 @@ class FSAHelperFunctions:
     #Function to turn on one state from another
     #Call with fromPopulation, fromCA, toPopulation and toCA
     def stateTurnsOnState(self,fromNeurons,fromCA,toNeurons,toCA):
-        """From a given `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
-        this method turns **ON** the state of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        """From a given `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
+        this method turns **ON** the state of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
         within a desired cell assembly.
         
         +-----------------+-------------+---------------+--------------------+--------------------------------------+
@@ -712,8 +717,8 @@ class FSAHelperFunctions:
     #When stateTurnsOnState and the preState remains on, the post
     #state runs hot.
     def stateTurnsOnStateSlow(self,fromNeurons,fromCA,toNeurons,toCA):
-        """From a given `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
-        this method slowly turns **ON** the state of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        """From a given `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
+        this method slowly turns **ON** the state of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
         within a desired cell assembly.
         
         +-----------------+-------------+---------------+-------------------------+--------------------------------------+
@@ -741,8 +746,8 @@ class FSAHelperFunctions:
     #---- One State or other set of neurons turns off another
     #-- Uses CA_STOPS_CA_WEIGHT
     def stateTurnsOffState(self,fromNeurons, fromCA, toNeurons, toCA):
-        """From a given `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
-        this method turns **OFF** the state of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        """From a given `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
+        this method turns **OFF** the state of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
         within a desired cell assembly.
         
         +-----------------+-------------+---------------+------------------------+--------------------------------------+
@@ -769,11 +774,11 @@ class FSAHelperFunctions:
         
         **Note:**
         
-        * A cell assembly is composed of CA_SIZE number of neuron populations such that each population is of same kind.
+        * A cell assembly is composed of CA_SIZE number of `neuron units <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp>`_ such that each unit is of same kind.
         * Therefore, the arguments ``fromNeurons`` and ``toNeurons`` (plural) refers to the kind of neuron population in the from- and to-assemblies.
         * That is, ``fromNeurons`` and ``toNeurons`` do not indicate some specific neuron population within respective assemblies.
-        * The specificiation of a population (from and to) a cell assembly is done by the connector list of tuples.
-        * This specification is such that the ``fromNeurons`` and ``toNeurons`` are from every population within a cell assembly.
+        * The specificiation of a unit (from and to) a cell assembly is done by the connector list of tuples.
+        * This specification is such that the ``fromNeuron`` and ``toNeuron`` are from every unit within a cell assembly.
         
             - Thus, unlike the illustration in :py:meth:`.stateHalfTurnsOnState` in the above illustration ``fromNeuron`` and ``toNeuron`` (singular) will be <<0>> to <<9>>
             - See the illustration in :py:meth:`.getCAConnectors` for referring to <<0>> to <<9>> 
@@ -796,8 +801,8 @@ class FSAHelperFunctions:
     #-- This connects one of the inputs to the the third.
     #-- Uses HALFs_ON_WEIGHT
     def stateHalfTurnsOnState(self,fromNeurons,fromCA,toNeurons,toCA):
-        """From a given `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
-        this method turns **1/2 ON** the state of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        """From a given `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
+        this method turns **1/2 ON** the state of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
         within a desired cell assembly.
         
         +-----------------+-------------+---------------+--------------------+--------------------------------------+
@@ -824,11 +829,11 @@ class FSAHelperFunctions:
         
         **Note:**
         
-        * A cell assembly is composed of CA_SIZE number of neuron populations such that each population is of same kind.
+        * A cell assembly is composed of CA_SIZE number of `neuron units <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp>`_ such that each unit is of same kind.
         * Therefore, the arguments ``fromNeurons`` and ``toNeurons`` (plural) refers to the kind of neuron population in the from- and to-assemblies.
         * That is, ``fromNeurons`` and ``toNeurons`` do not indicate some specific neuron population within respective assemblies.
-        * The specification of a population (from and to) a cell assembly is done by the connector list of tuples.
-        * This specification is such that the ``fromNeurons`` and ``toNeurons`` are only in reference to populations with excitatory connections.
+        * The specification of a unit (from and to) a cell assembly is done by the connector list of tuples.
+        * This specification is such that the ``fromNeuron`` and ``toNeuron`` are only in reference to units with excitatory connections.
         
             - Referring to illustration in :py:meth:`.getCAConnectors` then in the above illustration ``fromNeuron`` and ``toNeuron`` (singular) will be <<0>> to <<7>>
             - <<8>> and <<9>> are neither the source nor the target for the connection.
@@ -847,8 +852,8 @@ class FSAHelperFunctions:
         self.neal.nealProjection(fromNeurons,toNeurons,connector,'excitatory')
 
     def stateHalfTurnsOffState(self,fromNeurons,fromCA,toNeurons,toCA):
-        """From a given `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
-        this method turns **1/2 OFF** the state of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        """From a given `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
+        this method turns **1/2 OFF** the state of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
         within a desired cell assembly.
         
         +-----------------+-------------+---------------+--------------------+--------------------------------------+
@@ -873,8 +878,8 @@ class FSAHelperFunctions:
         self.neal.nealProjection(fromNeurons,toNeurons,connector,'inhibitory')
 
     def stateStimulatesState(self,fromNeurons,fromCA,toNeurons,toCA,weight):
-        """From a given `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
-        this method stimulates the state of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        """From a given `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
+        this method stimulates the state of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
         within a desired cell assembly with the given weight value.
         
         +-----------------+-------------+---------------+--------------------------------------+
@@ -897,8 +902,8 @@ class FSAHelperFunctions:
         self.neal.nealProjection(fromNeurons,toNeurons,connector,'excitatory')
 
     def stateInhibitsState(self,fromNeurons, fromCA, toNeurons, toCA, wt):
-        """From a given `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
-        this method inhibits the state of a desired `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        """From a given `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in a cell assembly,
+        this method inhibits the state of a desired `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
         within a desired cell assembly with the given weight value.
         
         +-----------------+-------------+--------------------------------------+
@@ -941,7 +946,7 @@ class FSAHelperFunctions:
         |                 |             |               | ``INTRA_CA_FROM_INHIB_WEIGHT`` |                                      |
         +-----------------+-------------+---------------+--------------------------------+--------------------------------------+
         
-        By default a cell assembly size ``CA_SIZE`` = 10, which is the number of neuron `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ in each assembly.
+        By default a cell assembly size ``CA_SIZE`` = 10, which is the number of `neuron units <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp>`_ in each assembly.
         
         These ten neuron populations are such that
         
@@ -950,7 +955,7 @@ class FSAHelperFunctions:
         
         Three kinds of connections are made,
         
-        1. Excitatory connection from neuron population to other populations that project excitatory connection (but not itself). Below shows projections from <<0>>.
+        1. Excitatory connection from one neuron unit to another unit that projects excitatory connection (but not itself). Below shows projections from <<0>>.
         
         ::
         
@@ -966,7 +971,7 @@ class FSAHelperFunctions:
             ( 1 )    ( 3 )    ( 5 )    ( 7 )    ( 9 )
              '-'      '-'      '-'      '-'      '-'
         
-        2. Excitatory connection from neuron population to other populations that project inhibitory connection. Below shows projections from <<0>>.
+        2. Excitatory connection from neuron unit to another that project inhibitory connection. Below shows projections from <<0>>.
         
         ::
         
@@ -982,7 +987,7 @@ class FSAHelperFunctions:
             ( 1 )    ( 3 )    ( 5 )    ( 7 )    ( 9 )
              '-'      '-'      '-'      '-'      '-'
         
-        3. Inhibitory connection from neuron population to other populations that project excitatory connection (but not populations that project inhibitory connection including itself). Below shows projections from <<8>>.
+        3. Inhibitory connection from neuron unit to other unit that project excitatory connection (but not to units that project inhibitory connection including itself). Below shows projections from <<8>>.
         
         ::
         
@@ -1035,10 +1040,9 @@ class FSAHelperFunctions:
 
     def makeCA(self,neurons, CA):
         """Given a `neuron population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ and cell assembly parameters
-        this method gets excitatory and inhibitory connectors (from :py:meth:`.getCAConnectors`) for the presumptive cell assembly
-        which is an assembly of two populations.
+        this method gets excitatory and inhibitory connectors (from :py:meth:`.getCAConnectors`) for the presumptive cell assembly.
         
-        Because the default a cell assembly size ``CA_SIZE`` = 10, there are ten neuron `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ **in a** assembly.
+        * Because the default a cell assembly size ``CA_SIZE`` = 10, there are ten `neuron units <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp>`_
         
         ::
         
@@ -1056,9 +1060,15 @@ class FSAHelperFunctions:
             o                                              o
             oooooooooooooooooooooooooooooooooooooooooooooooo
         
-        **Note:**
         
-        * About connections between the populations within the cell assembly see the documentation for :py:meth:`.getCAConnectors`
+        * These neuron units are connected using :py:meth:`.getCAConnectors` put together via :ref:`NealCoverFunctions` ``.nealProjection``
+        * The source and target `neuron populations <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ are one and the same.
+        
+        Therefore, a cell assembly here is
+        
+        * **one** `PyNN neuron population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ 
+        * with ten `neuron units <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp>`_ within the `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+        * and the ten neuron units are connected (see :py:meth:`.getCAConnectors` for how the connections are made).
         
         """
         connectors = self.getCAConnectors(CA)

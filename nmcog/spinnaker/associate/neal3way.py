@@ -173,14 +173,14 @@ class NEAL3Way(object):
         neal = NealCoverFunctions()
         sim.setup(timestep=neal.DELAY, min_delay=neal.DELAY, max_delay=neal.DELAY, debug=0)
         #
-        self._create_datastructures(bases, associate)
-        self._create_network()
-        self._choose_applicable_test( turnon )
+        self.__create_datastructures(bases, associate)
+        self.__create_network()
+        self.__choose_applicable_test( turnon )
         #
         neal.nealApplyProjections()
         sim.run(self.simTime)
         
-    def _create_datastructures(self, bases, associate):
+    def __create_datastructures(self, bases, associate):
         """."""
         #self.basedata = structdata()
         self.basedata = InheritanceReaderClass()
@@ -205,14 +205,14 @@ class NEAL3Way(object):
         self.assocdata.numberAssocs = len(associate["connections"])
         self.assocdata.assocs = associate["connections"]
         
-    def _create_network(self):
-        """."""
+    def __create_network(self):
+        """Moved to main description."""
         self.neural3assoc_topology = NeuralThreeAssocClass()
         self.neural3assoc_topology.createBaseNet( self.basedata )
         self.neural3assoc_topology.createAssociationTopology( self.propdata, self.reldata )
         self.neural3assoc_topology.addAssociations( self.assocdata )
         
-    def _choose_applicable_test(self, turnon):
+    def __choose_applicable_test(self, turnon):
         """."""
         if turnon=="all":
             self.simTime = self.neural3assoc_topology.createUnitTests() + 100
@@ -222,3 +222,39 @@ class NEAL3Way(object):
             relNum = self.reldata.getUnitNumber( turnon[2] )
             self.neural3assoc_topology.createTwoPrimeTest( baseNum, probNum, relNum )
             self.simTime = 200.0
+    
+    # Private function for getting Neo object for all the created cell assemblies.
+    def __getdata(self):
+        """Gets the recorded `Neo <https://neo.readthedocs.io/en/latest/>`_ objects."""
+        neo_base = self.neural3assoc_topology.neuralHierarchyTopology.cells.get_data(variables=["spikes"])
+        neo_property = self.neural3assoc_topology.propertyCells.get_data(variables=["spikes"])
+        neo_relation = self.neural3assoc_topology.relationCells.get_data(variables=["spikes"])
+        return [neo_base, neo_property, neo_relation]
+    
+    # Private function for segregating respective spike trains for each cell assembly within a Neo object.
+    def __split_spiketrains(self, dataname, neo_data):
+        """Given the Neo object of a given data name ("basedata" or "propdata" or "reldata", see :py:meth:`.__create_datastructures`),
+        this function returns a dictionary with "units" in the structured data as keys and its value the respective spike trains (all cell units in an assembly, i.e. the "unit").
+        """
+        ca_size = self.neural3assoc_topology.fsa.CA_SIZE
+        #
+        spkindices = lambda n : list( range(0,ca_size) ) if (n==0) else list( range( (n*ca_size), (n*ca_size)+ca_size ) )
+        #
+        data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
+        overallspikes = neo_data.segments[0].spiketrains
+        #
+        parsed_spiketrains = {} # this will be the returned value
+        for unit in data.units:
+            n = data.getUnitNumber(unit)
+            parsed_data.update( {unit: overallspikes[spkindices(n)] } )
+        return parsed_spiketrains
+            
+    def get_results(self):
+        """Returns a dictionary with keys "base", "property", and "relation" whose values are dictionaries.
+        A value dictionary is such that the keys are the names of the cell assemblies (i.e. "units" in respective structured data)
+        and values are the respective spike trains (i.e. from all cell units in an assembly).
+        """
+        [neo_base, neo_property, neo_relation] = self.__getdata()
+        return { "base": self.__split_spiketrains("basedata", neo_base),
+                 "property": self.__split_spiketrains("propdata", neo_property),
+                 "relation": self.__split_spiketrains("reldata", neo_relation) }

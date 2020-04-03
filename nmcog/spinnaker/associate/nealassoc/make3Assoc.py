@@ -85,6 +85,43 @@ class NeuralThreeAssocClass:
         * ``numPropertyCAs`` assemblies of ``propertyCells``
         * ``numRelationCAs`` assemblies of ``relationCells``
         
+        Like the "hierarchy topology" created with :ref:`NeuralInheritanceClass` ``.createNeuralInheritanceHierarchy`` the practical meaning of the cell assemblies of "property" and "relations" in terms of extracting/visualizing the neuron units in a population is as follows.
+        
+        * For our example of four property units ``["food", "fur", "flying", "yellow"]`` there will be four cell assemblies for "property".
+        * For our example of four relation units ``["eats", "likes", "travels", "has", "colored"]`` there will be five cell assemblies for "relation".
+        * By default :ref:`FSAHelperFunctions` ``.CA_SIZE`` = 10, which is the number of neuron units in each assembly.
+        
+            - This is done by invoking :py:meth:`createNeurons`
+            - The result is ``self.propertyCells`` and ``self.relationCells``
+            
+        * After simulating for a particular runtime, spikes from all the neurons (i.e. all neuron units in all the neuronal populations in all the assemblies) by
+        
+        ::
+        
+            allpropertyspikes = self.propertyCells.get_data( variables=["spikes"] )
+            allrelationspikes = self.relationCells.get_data( variables=["spikes"] )
+        
+        
+            - It should be noted that the above objects are `Neo Blocks <https://neo.readthedocs.io/en/latest/api_reference.html#neo.core.Block>`_
+            - It is a Neo Block with only one `Segment <https://neo.readthedocs.io/en/latest/api_reference.html#neo.core.Segment>`_
+        
+        * Therefore,
+        
+            - Spike trains for all the neuron units in the cell assembly for the property units "food", "fur", "flying", and "yellow" are respectively
+            
+                * ``allpropertyspikes.segments[0].spiketrains[0]`` for "food"
+                * ``allpropertyspikes.segments[0].spiketrains[1]`` for "fur"
+                * ``allpropertyspikes.segments[0].spiketrains[2]`` for "flying"
+                * ``allpropertyspikes.segments[0].spiketrains[3]`` for "yellow"
+            
+            - Similarly, for the relation units "eats", "likes", "travels", "has", and "colored" are respectively
+            
+                * ``allrelationspikes.segments[0].spiketrains[0]`` for "eats"
+                * ``allrelationspikes.segments[0].spiketrains[1]`` for "likes"
+                * ``allrelationspikes.segments[0].spiketrains[2]`` for "travels"
+                * ``allrelationspikes.segments[0].spiketrains[3]`` for "has"
+                * ``allrelationspikes.segments[0].spiketrains[4]`` for "colored"
+        
         """
         for CA in range (0,self.numPropertyCAs):
             self.fsa.makeCA(self.propertyCells,CA)
@@ -149,7 +186,7 @@ class NeuralThreeAssocClass:
 
     def addAssociations(self,assocStructure):
         """Add associations for each tuple in a data structure of associations by calling :py:meth:`.addThreeAssoc` for each association."""
-        print(assocStructure.numberAssocs)
+        #print(assocStructure.numberAssocs)
         for assocNum in range (0,assocStructure.numberAssocs):
             self.addThreeAssoc(assocStructure.assocs[assocNum])
 
@@ -318,7 +355,7 @@ class NeuralThreeAssocClass:
             lastTime =(((unit+1)*oneTestDuration)+firstTestStart)
             stopTimes = stopTimes + [lastTime]
 
-        print(stopTimes)
+        #print(stopTimes)
         self.createStopAll(stopTimes,cells,numUnits)
         return lastTime
 
@@ -334,5 +371,5 @@ class NeuralThreeAssocClass:
                                                self.numPropertyCAs)
         relUnitTime = self.createTestAllUnits(propUnitTime,self.relationCells,
                                                self.numRelationCAs)
-        print(baseUnitTime,propUnitTime,relUnitTime)
+        #print(baseUnitTime,propUnitTime,relUnitTime)
         return relUnitTime

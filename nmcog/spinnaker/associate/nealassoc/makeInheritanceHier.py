@@ -157,6 +157,37 @@ class NeuralInheritanceClass:
         
         Therefore, the hierarchy topology is connection among cell assemblies that form a "isA" relationship pair.
         
+        **What is the practical meaning of the cell assemblies of a "hierarchy topology" in terms of extracting/visualizing the neuron units in a population?**
+        
+        * For our example of four base units ``["animal", "mammal", "bird", "canary"]``, i.e. there will be four cell assemblies.
+        * By default ``neuronsPerCA`` = 10 (Notice that this value is equal to :ref:`FSAHelperFunctions` ``.CA_SIZE`` = 10)
+        * Invoking :py:meth:`createNeurons` creates all the neuron units that will make the cell assemblies.
+        
+            - :py:meth:`createNeurons` creates all the neuron units in one attribute ``self.cells``
+            
+        * After simulating for a particular runtime, spikes from all the neurons (i.e. all neuron units in all the neuronal populations in all the assemblies) by
+        
+        ::
+        
+            allspikes = self.cells.get_data( variables=["spikes"] )
+        
+        
+            - It should be noted that the above ``allspikes`` object is the `Neo Block <https://neo.readthedocs.io/en/latest/api_reference.html#neo.core.Block>`_
+            - It is a Neo Block with only one `Segment <https://neo.readthedocs.io/en/latest/api_reference.html#neo.core.Segment>`_
+        
+        * Therefore,
+        
+            - Spike trains for all the neuron units in the cell assembly for the base unit "animal" would be.
+            
+                * ``allspikes.segments[0].spiketrains[0]``
+                * That is, spike trains from all the ten neuron units in this cell assembly.
+            
+            - Similarly, for "mammal", "bird", and "canary" are respectively
+            
+                * ``allspikes.segments[0].spiketrains[0]``
+                * ``allspikes.segments[0].spiketrains[1]``
+                * ``allspikes.segments[0].spiketrains[2]``
+        
         """
         self.numCAs = inheritanceStructure.numberUnits 
         numberNeurons = self.numCAs * self.neuronsPerCA
