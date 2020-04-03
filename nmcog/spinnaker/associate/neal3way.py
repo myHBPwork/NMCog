@@ -179,7 +179,18 @@ class NEAL3Way(object):
         #
         neal.nealApplyProjections()
         sim.run(self.simTime)
+        [neo_base, neo_property, neo_relation] = self.__getdata()
+        self.results = { "base": self.__split_spiketrains("basedata", neo_base),
+                         "property": self.__split_spiketrains("propdata", neo_property),
+                         "relation": self.__split_spiketrains("reldata", neo_relation) }
         sim.end()
+        
+    def get_results(self):
+        """Returns a dictionary with keys "base", "property", and "relation" whose values are dictionaries.
+        A value dictionary is such that the keys are the names of the cell assemblies (i.e. "units" in respective structured data)
+        and values are the respective spike trains (i.e. from all cell units in an assembly).
+        """
+        return self.results
         
     def __create_datastructures(self, bases, associate):
         """."""
@@ -250,13 +261,3 @@ class NEAL3Way(object):
             indx = spkindices(n)
             parsed_spiketrains.update( {unit: overallspikes[ indx[0] : indx[-1] ] } )
         return parsed_spiketrains
-            
-    def get_results(self):
-        """Returns a dictionary with keys "base", "property", and "relation" whose values are dictionaries.
-        A value dictionary is such that the keys are the names of the cell assemblies (i.e. "units" in respective structured data)
-        and values are the respective spike trains (i.e. from all cell units in an assembly).
-        """
-        [neo_base, neo_property, neo_relation] = self.__getdata()
-        return { "base": self.__split_spiketrains("basedata", neo_base),
-                 "property": self.__split_spiketrains("propdata", neo_property),
-                 "relation": self.__split_spiketrains("reldata", neo_relation) }
