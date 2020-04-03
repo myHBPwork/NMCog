@@ -191,7 +191,7 @@ class NEAL3Way(object):
                          "property": self.__split_spiketrains("propdata", neo_property, turnon),
                          "relation": self.__split_spiketrains("reldata", neo_relation, turnon) }
         #sim.reset()
-        #sim.end()
+        sim.end()
         
     def get_results(self):
         """Returns a dictionary with keys "base", "property", and "relation" whose values are dictionaries.
@@ -340,7 +340,7 @@ class NEAL3Way(object):
         plt.subplots_adjust( hspace=0.5 ) # spacing for the each subplot title
         plt.show()
         
-    def plot_specific(self, basename=None, relationname=None, propertyname=None):
+    def plot_specific(self, basename=None, relname=None, propname=None):
         fig, ((sp1),
               (sp2),
               (sp3)) = plt.subplots(3,1, sharex=True)
