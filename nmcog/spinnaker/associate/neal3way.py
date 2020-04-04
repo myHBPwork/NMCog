@@ -325,57 +325,45 @@ class NEAL3Way(object):
             return dataname.strip("data") # basedata -> base
     
     # Private function for each subplot in :py:meth:`.plot_all`
-    def __subplot_all(self, dataname, colorname, subplotobject):
+    def __subplot_all(self, dataname, subplotobject):
         """For a given ``subplotobject`` this function returns matplotlib's `eventplot <https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.eventplot.html>`_
         for spiketrains from all the cell units of all the cell assemblies for a given data structure (assigned by the ``dataname`` argument)."""
         legpatches = []
         data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
-        clrs = self.__generate_compatible_subplot_colors(colorname, data.numberUnits)
+        clrs = ['C{}'.format(i) for i in range(data.numberUnits)]
         for unit in data.units:
             i = data.getUnitNumber(unit)
-            if self.test_metadata[0]=="all":
-                subplotobject.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
-                                         color = clrs(1.0 - (i*0.1) ) )
-                legpatches.append( mpatches.Patch(color=clrs( 1.0-(i*0.1) ), label=unit) )
-            else:
-                subplotobject.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
-                                         color = clrs[i] )
-                legpatches.append( mpatches.Patch(color=clrs[i], label=unit) )
+            subplotobject.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
+                                     color = clrs[i] )
+            legpatches.append( mpatches.Patch(color=clrs[i], label=unit) )
         subplotobject.legend( handles=legpatches, shadow=True )
-        
-    # Private function for returning color map (a tuple) or list of colors
-    def __generate_compatible_subplot_colors(self, colorname, numberUnits):
-        if self.test_metadata[0]=="all": # returns a tuple
-            return cm.get_cmap(colorname, 12) # "Reds", "Greens", "Blues"
-        else:
-            return ['C{}'.format(i) for i in range(numberUnits)]
     
     def plot_all(self):
         """Plot of three subplots such that each subplot (invoking :py:meth:`.__subplot_all`) is the matplotlib's `eventplot <https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.eventplot.html>`_
         of `SpikeTrain <https://neo.readthedocs.io/en/stable/api_reference.html#neo.core.SpikeTrain>`_ such that
         
-        +---------+------------------------------------------------------------+----------------------------------+
-        | subplot | spike trains for all cell units in all cell assemblies for | color map for ``turnon = "all"`` |
-        +=========+============================================================+==================================+
-        | top     | subject (a.k.a base in ``basedata``)                       | Reds                             |
-        +---------+------------------------------------------------------------+----------------------------------+
-        | middle  | predicate (a.k.a relation in ``reldata``)                  | Greens                           |
-        +---------+------------------------------------------------------------+----------------------------------+
-        | bottom  | object (a.k.a property in ``propdata``)                    | Blues                            |
-        +---------+------------------------------------------------------------+----------------------------------+
+        +---------+------------------------------------------------------------+
+        | subplot | spike trains for all cell units in all cell assemblies for |
+        +=========+============================================================+
+        | top     | subject (a.k.a base in ``basedata``)                       |
+        +---------+------------------------------------------------------------+
+        | middle  | predicate (a.k.a relation in ``reldata``)                  |
+        +---------+------------------------------------------------------------+
+        | bottom  | object (a.k.a property in ``propdata``)                    |
+        +---------+------------------------------------------------------------+
         
         """
         fig, ((sp1),
               (sp2),
               (sp3)) = plt.subplots(3,1, sharex=True)
         # If turnon is "all" Red color for subject, i.e. base Therefore its spectrum is used here
-        self.__subplot_all("basedata", "Reds", sp1)
+        self.__subplot_all("basedata", sp1)
         #
         # If turnon is "all" Green color for predicate, i.e. relation
-        self.__subplot_all("reldata", "Greens", sp2)
+        self.__subplot_all("reldata", sp2)
         #
         # If turnon is "all" Blue color for object, i.e. property
-        self.__subplot_all("propdata", "Blues", sp3)
+        self.__subplot_all("propdata", sp3)
         #
         sp1.title.set_text("Subject (base)")
         sp2.title.set_text("Predicate (relation)")
