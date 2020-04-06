@@ -354,7 +354,7 @@ class NEAL3Way(object):
         else:
             return ['C{}'.format(i) for i in range(numberUnits)]
     
-    def plot_all(self):
+    def plot_all(self, form="1"):
         """Plot of three subplots such that each subplot (invoking :py:meth:`.__subplot_all`) is the matplotlib's `eventplot <https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.eventplot.html>`_
         of `SpikeTrain <https://neo.readthedocs.io/en/stable/api_reference.html#neo.core.SpikeTrain>`_ such that
         
@@ -367,30 +367,57 @@ class NEAL3Way(object):
         +---------+------------------------------------------------------------+----------------------------------+
         | bottom  | object (a.k.a property in ``propdata``)                    | Blues                            |
         +---------+------------------------------------------------------------+----------------------------------+
-        
+        legpatches = []
+        data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
+        #clrs = self.__generate_compatible_subplot_colors(colorname, data.numberUnits)
+        clrs = cm.get_cmap(colorname, 12) # "Reds", "Greens", "Blues"
+        for unit in data.units:
+            i = data.getUnitNumber(unit)
+            #if self.test_metadata[0]=="all":
+            subplotobject.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
+                                     color = clrs(1.0 - (i*0.1) ) )
+            legpatches.append( mpatches.Patch(color=clrs( 1.0-(i*0.1) ), label=unit) )
+            #else:
+            #    subplotobject.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
+            #                             color = clrs[i] )
+            #    legpatches.append( mpatches.Patch(color=clrs[i], label=unit) )
+        subplotobject.legend( handles=legpatches, shadow=True )
         """
-        fig, ((sp1),
-              (sp2),
-              (sp3)) = plt.subplots(3,1, sharex=True)
-        # If turnon is "all" Red color for subject, i.e. base Therefore its spectrum is used here
-        self.__subplot_all("basedata", "Reds", sp1)
-        #
-        # If turnon is "all" Green color for predicate, i.e. relation
-        self.__subplot_all("reldata", "Greens", sp2)
-        #
-        # If turnon is "all" Blue color for object, i.e. property
-        self.__subplot_all("propdata", "Blues", sp3)
-        #
-        sp1.title.set_text("Subject (base)")
-        sp2.title.set_text("Predicate (relation)")
-        sp3.title.set_text("Object (property)")
-        #
-        sp1.set(ylabel="cell units\nper CA")
-        sp2.set(ylabel="cell units\nper CA")
-        sp3.set(ylabel="cell units\nper CA")
-        sp3.set(xlabel="time (ms)")
-        #
-        plt.subplots_adjust( hspace=0.5 ) # spacing for the each subplot title
+        if form=="1":
+            datanames = ["basedata", "propdata", "reldata"]
+            colornames = ["Reds", "Greens", "Blues"]
+            for i in range(len(datanames)):
+                legpatches = []
+                data = getattr(self, datanames[i])
+                clrs = cm.get_cmap(colornames[i], 12)
+                for unit in data.units:
+                    j = data.getUnitNumber(unit)
+                    plt.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
+                                   color = clrs(1.0 - (i*0.1) ) )
+                    legpatched.append( mpatches.Patch(color=clrs( 1.0-(i*0.1) ), label=unit) )
+        elif form=="2":
+            fig, ((sp1),
+                  (sp2),
+                  (sp3)) = plt.subplots(3,1, sharex=True)
+            # If turnon is "all" Red color for subject, i.e. base Therefore its spectrum is used here
+            self.__subplot_all("basedata", "Reds", sp1)
+            #
+            # If turnon is "all" Blue color for object, i.e. property
+            self.__subplot_all("propdata", "Blues", sp2)
+            #
+            # If turnon is "all" Green color for predicate, i.e. relation
+            self.__subplot_all("reldata", "Greens", sp3)
+            #
+            sp1.title.set_text("Subject (base)")
+            sp2.title.set_text("Object (property)")
+            sp3.title.set_text("Predicate (relation)")
+            #
+            sp1.set(ylabel="cell units\nper CA")
+            sp2.set(ylabel="cell units\nper CA")
+            sp3.set(ylabel="cell units\nper CA")
+            sp3.set(xlabel="time (ms)")
+            #
+            plt.subplots_adjust( hspace=0.5 ) # spacing for the each subplot title
         plt.show()
         
     def plot_specific(self, basename=None, relname=None, propname=None):
@@ -410,17 +437,17 @@ class NEAL3Way(object):
         z_patch = mpatches.Patch( color="red", label=basename )
         sp1.legend( handles=[z_patch], shadow=True )
         #
-        sp2.eventplot( self.results["relation"][relname], color="green" ) # eats
-        z_patch = mpatches.Patch( color="green", label=relname )
+        sp2.eventplot( self.results["property"][propname], color="blue" ) # food
+        z_patch = mpatches.Patch( color="blue", label=propname )
         sp2.legend( handles=[z_patch], shadow=True )
         #
-        sp3.eventplot( self.results["property"][propname], color="blue" ) # food
-        z_patch = mpatches.Patch( color="blue", label=propname )
+        sp3.eventplot( self.results["relation"][relname], color="green" ) # eats
+        z_patch = mpatches.Patch( color="green", label=relname )
         sp3.legend( handles=[z_patch], shadow=True )
         #
         sp1.title.set_text('Subject (base)')
-        sp2.title.set_text('Predicate (relation)')
-        sp3.title.set_text('Object (property)')
+        sp2.title.set_text('Object (property)')
+        sp3.title.set_text('Predicate (relation)')
         #
         sp1.set(ylabel="cell units\nper CA")
         sp2.set(ylabel="cell units\nper CA")
