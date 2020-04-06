@@ -273,6 +273,8 @@ class NEAL3Way(object):
     def __get_overallspikes(self, dataname, neo_data, turnon):
         """Returns `Neo SpikeTrain <https://neo.readthedocs.io/en/stable/api_reference.html#neo.core.SpikeTrain>`_.
         All of it if the data structure is basedata other wise the they are shifted accordingly for propdata and reldata.
+        
+        This function is no longer used by __split_spiketrains
         """
         if turnon=="all":
             if dataname=="basedata":
@@ -302,8 +304,8 @@ class NEAL3Way(object):
         spkindices = lambda n : (0,ca_size) if (n==0) else ( (n*ca_size), (n*ca_size)+ca_size )
         #
         data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
-        #overallspikes = neo_data.segments[0].spiketrains
-        overallspikes = self.__get_overallspikes(dataname, neo_data, turnon)
+        overallspikes = neo_data.segments[0].spiketrains
+        #overallspikes = self.__get_overallspikes(dataname, neo_data, turnon)
         #
         parsed_spiketrains = {"all": overallspikes} # this will be the returned value
         for unit in data.units:
