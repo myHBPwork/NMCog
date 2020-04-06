@@ -29,7 +29,7 @@ class NEAL3Way(object):
     ::
     
         bases = {"units": ["animal", "mammal", "bird", "canary"],
-                 "relations": [ ["canary", "bird"], ["bird", "animal"], ["mammal", "animal"] ]}
+                 "is-a": [ ["canary", "bird"], ["bird", "animal"], ["mammal", "animal"] ]}
         associate = {"properties": ["food", "fur", "flying", "yellow"], # properties to be associated between base units and its relations
                      "relations": ["eats", "likes", "travels", "has", "colored"], # relations associated with properties and base units
                      "connections": [ ["animal", "eats", "food"], ["mammal", "has", "fur"], # specific combos of base-props-relations
@@ -37,7 +37,14 @@ class NEAL3Way(object):
     
     **Note:**
     
-    * Specifically the instance of :ref:`InheritanceReaderClass` is the base data for :ref:`NEAL3Way`. An example base data is
+    * One may think of the arguments, ``bases`` and ``associate`` as some a priori knowledge of the embodied agent.
+    * The value for "is-a" must have **at least one** non-empty list.
+    * The result of above restriction is that ``bases`` must have at least two units, i.e. list of the value for "units" have at least two elements.
+    * Usually, the number of "properties" equal the number of base units.
+    * The number of "relations" can be of any number as long as there is at least one.
+    * Finally, the components within "connections" is of the form ``[<base-unit>, <a-relation>, <a-property>]``.
+    * Looking from the context of a sentence one may view ``bases`` as the subject, "properties" (key of ``associate``) as the object and "relations" (also key of ``associate``) as the predicate, and "connections" as the sentence structure.
+    * Specifically the instance of :ref:`InheritanceReaderClass` is the base data for :ref:`NEAL3Way`.
     
     
     Considering the above example whose base data is the instance such that,
@@ -206,7 +213,7 @@ class NEAL3Way(object):
         self.basedata = InheritanceReaderClass()
         self.basedata.numberUnits = len(bases["units"])
         self.basedata.units = bases["units"]
-        self.basedata.isARelationships = bases["relations"]
+        self.basedata.isARelationships = bases["is-a"]
         #self.basedata.getUnitNumber = lambda checkUnit: [ resultUnit for resultUnit in range(0, self.basedata.numberUnits)
         #                                                              if checkUnit==self.basedata.units[resultUnit] ][0]
         #self.propdata = structdata()
@@ -274,7 +281,7 @@ class NEAL3Way(object):
         """Returns `Neo SpikeTrain <https://neo.readthedocs.io/en/stable/api_reference.html#neo.core.SpikeTrain>`_.
         All of it if the data structure is basedata other wise the they are shifted accordingly for propdata and reldata.
         
-        This function is no longer used by __split_spiketrains
+        This function is no longer used by __split_spiketrains but left here for potential/future use.
         """
         if turnon=="all":
             if dataname=="basedata":
@@ -305,7 +312,7 @@ class NEAL3Way(object):
         #
         data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
         overallspikes = neo_data.segments[0].spiketrains
-        #overallspikes = self.__get_overallspikes(dataname, neo_data, turnon)
+        #overallspikes = self.__get_overallspikes(dataname, neo_data, turnon) # technically w/o this spike train is not split
         #
         parsed_spiketrains = {"all": overallspikes} # this will be the returned value
         for unit in data.units:
@@ -333,7 +340,7 @@ class NEAL3Way(object):
         legpatches = []
         data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
         #clrs = self.__generate_compatible_subplot_colors(colorname, data.numberUnits)
-        clrs = cm.get_cmap(colorname, 12) # "Reds", "Greens", "Blues"
+        clrs = cm.get_cmap(colorname, 12) # "Reds", "Blues", "Greens"
         for unit in data.units:
             i = data.getUnitNumber(unit)
             #if self.test_metadata[0]=="all":
@@ -348,14 +355,22 @@ class NEAL3Way(object):
         
     # Private function for returning color map (a tuple) or list of colors
     def __generate_compatible_subplot_colors(self, colorname, numberUnits):
-        """This is no longer used."""
+        """This is no longer used but left here for potential/future use."""
         if self.test_metadata[0]=="all": # returns a tuple
             return cm.get_cmap(colorname, 12) # "Reds", "Greens", "Blues"
         else:
             return ['C{}'.format(i) for i in range(numberUnits)]
     
     def plot_all(self, form="1"):
-        """Plot of three subplots such that each subplot (invoking :py:meth:`.__subplot_all`) is the matplotlib's `eventplot <https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.eventplot.html>`_
+        """Plotting spike trains from all the units within every cell assembly can be done in two ways.
+        
+        **Default**
+        
+        Plots all the spike trains in one plot.
+        
+        **``form = "2"``**
+        
+        Plot of three subplots such that each subplot (invoking :py:meth:`.__subplot_all`) is the matplotlib's `eventplot <https://matplotlib.org/3.1.1/api/_as_gen/matplotlib.pyplot.eventplot.html>`_
         of `SpikeTrain <https://neo.readthedocs.io/en/stable/api_reference.html#neo.core.SpikeTrain>`_ such that
         
         +---------+------------------------------------------------------------+----------------------------------+
@@ -363,9 +378,9 @@ class NEAL3Way(object):
         +=========+============================================================+==================================+
         | top     | subject (a.k.a base in ``basedata``)                       | Reds                             |
         +---------+------------------------------------------------------------+----------------------------------+
-        | middle  | predicate (a.k.a relation in ``reldata``)                  | Greens                           |
+        | middle  | object (a.k.a property in ``propdata``)                    | Blues                            |
         +---------+------------------------------------------------------------+----------------------------------+
-        | bottom  | object (a.k.a property in ``propdata``)                    | Blues                            |
+        | bottom  | predicate (a.k.a relation in ``reldata``)                  | Greens                           |
         +---------+------------------------------------------------------------+----------------------------------+
         
         """

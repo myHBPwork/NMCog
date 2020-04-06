@@ -65,7 +65,7 @@ class NeuralInheritanceClass:
     ::
     
         bases = {"units": ["animal", "mammal", "bird", "canary"],
-                "relations": [ ["canary", "bird"], ["bird", "animal"], ["mammal", "animal"] ]}
+                 "is-a": [ ["canary", "bird"], ["bird", "animal"], ["mammal", "animal"] ]}
         basedata = InheritanceReaderClass()
         basedata.numberUnits = len(bases["units"])
         basedata.units = bases["units"]

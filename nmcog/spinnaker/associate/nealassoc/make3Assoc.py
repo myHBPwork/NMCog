@@ -42,7 +42,7 @@ class NeuralThreeAssocClass:
     ::
     
         bases = {"units": ["animal", "mammal", "bird", "canary"],
-                 "relations": [ ["canary", "bird"], ["bird", "animal"], ["mammal", "animal"] ]}
+                 "is-a": [ ["canary", "bird"], ["bird", "animal"], ["mammal", "animal"] ]}
         associate = {"properties": ["food", "fur", "flying", "yellow"], # properties to be associated between base units and its relations
                      "relations": ["eats", "likes", "travels", "has", "colored"], # relations associated with properties and base units
                      "connections": [ ["animal", "eats", "food"], ["mammal", "has", "fur"], # specific combos of base-props-relations
