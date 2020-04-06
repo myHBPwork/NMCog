@@ -386,8 +386,8 @@ class NEAL3Way(object):
         if form=="1":
             datanames = ["basedata", "propdata", "reldata"]
             colornames = ["Reds", "Blues", "Greens"]
+            legpatches = []
             for i in range(len(datanames)):
-                legpatches = []
                 dataname = datanames[i]
                 data = getattr(self, dataname)
                 clrs = cm.get_cmap(colornames[i], 12)
@@ -395,7 +395,12 @@ class NEAL3Way(object):
                     j = data.getUnitNumber(unit)
                     plt.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
                                    color = clrs(1.0 - (i*0.1) ) )
-                    legpatched.append( mpatches.Patch(color=clrs( 1.0-(i*0.1) ), label=unit) )
+                    legpatches.append( mpatches.Patch(color=clrs( 1.0-(i*0.1) ), label=unit) )
+            plt.legend( handles=legpatches, shadow=True
+                        ('No mask', 'Masked if > 0.5', 'Masked if < -0.5'), loc='upper right' )
+            plt.ylabel("cell units\nper CA")
+            plt.xlabel("time (ms)")
+            plt.title("Three-way Association")
         elif form=="2":
             fig, ((sp1),
                   (sp2),
