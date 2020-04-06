@@ -367,21 +367,7 @@ class NEAL3Way(object):
         +---------+------------------------------------------------------------+----------------------------------+
         | bottom  | object (a.k.a property in ``propdata``)                    | Blues                            |
         +---------+------------------------------------------------------------+----------------------------------+
-        legpatches = []
-        data = getattr(self, dataname) # "basedata" or "propdata" or "reldata"
-        #clrs = self.__generate_compatible_subplot_colors(colorname, data.numberUnits)
-        clrs = cm.get_cmap(colorname, 12) # "Reds", "Greens", "Blues"
-        for unit in data.units:
-            i = data.getUnitNumber(unit)
-            #if self.test_metadata[0]=="all":
-            subplotobject.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
-                                     color = clrs(1.0 - (i*0.1) ) )
-            legpatches.append( mpatches.Patch(color=clrs( 1.0-(i*0.1) ), label=unit) )
-            #else:
-            #    subplotobject.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
-            #                             color = clrs[i] )
-            #    legpatches.append( mpatches.Patch(color=clrs[i], label=unit) )
-        subplotobject.legend( handles=legpatches, shadow=True )
+        
         """
         if form=="1":
             datanames = ["basedata", "propdata", "reldata"]
@@ -396,8 +382,7 @@ class NEAL3Way(object):
                     plt.eventplot( self.results[ self.__get_resultskey(dataname) ][ unit ],
                                    color = clrs(1.0 - (i*0.1) ) )
                     legpatches.append( mpatches.Patch(color=clrs( 1.0-(i*0.1) ), label=unit) )
-            plt.legend( handles=legpatches, shadow=True
-                        ('No mask', 'Masked if > 0.5', 'Masked if < -0.5'), loc='upper right' )
+            plt.legend( handles=legpatches, shadow=True, loc='upper right' )
             plt.ylabel("cell units\nper CA")
             plt.xlabel("time (ms)")
             plt.title("Three-way Association")
