@@ -369,6 +369,7 @@ class NEAL3Way(object):
         +---------+------------------------------------------------------------+----------------------------------+
         
         """
+        plt.close() # close any previous figure
         if form=="1":
             datanames = ["basedata", "propdata", "reldata"]
             colornames = ["Reds", "Blues", "Greens"]
@@ -434,7 +435,7 @@ class NEAL3Way(object):
         #
         sp3.eventplot( self.results["relation"][relname], color="green" ) # eats
         z_patch = mpatches.Patch( color="green", label=relname )
-        sp3.legend( handles=[z_patch], shadow=True )
+        sp3.legend( handles=[z_patch], shadow=True, loc='upper left' )
         #
         sp1.title.set_text('Subject (base)')
         sp2.title.set_text('Object (property)')
