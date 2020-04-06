@@ -385,10 +385,11 @@ class NEAL3Way(object):
         """
         if form=="1":
             datanames = ["basedata", "propdata", "reldata"]
-            colornames = ["Reds", "Greens", "Blues"]
+            colornames = ["Reds", "Blues", "Greens"]
             for i in range(len(datanames)):
                 legpatches = []
-                data = getattr(self, datanames[i])
+                dataname = datanames[i]
+                data = getattr(self, dataname)
                 clrs = cm.get_cmap(colornames[i], 12)
                 for unit in data.units:
                     j = data.getUnitNumber(unit)
