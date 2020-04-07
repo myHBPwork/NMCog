@@ -38,20 +38,119 @@ class PlaceCellSystemClass:
     +----------------------------------+-------------------------------+
     | :py:meth:`.createPlaces`         | integer ``numberPlaces``      |
     +----------------------------------+-------------------------------+
+    | :py:meth:`.createAutomaton`      | - integer ``tryToBindStates`` |
+    |                                  | - integer ``bindingStates``   |
+    |                                  | - integer ``bindDoneStates``  |
+    +----------------------------------+-------------------------------+
     | :py:meth:`.connectObjects`       | -                             |
     +----------------------------------+-------------------------------+
     | :py:meth:`.connectPlaces`        | -                             |
+    +----------------------------------+-------------------------------+
+    | :py:meth:`.connectAutomaton`     | -                             |
     +----------------------------------+-------------------------------+
     | :py:meth:`.setupCogMapRecording` | -                             |
     +----------------------------------+-------------------------------+
     | :py:meth:`.makeLearningSynapses` | -                             |
     +----------------------------------+-------------------------------+
-    | :py:meth:`.createAutomaton`      | - integer ``tryToBindStates`` |
-    |                                  | - integer ``bindingStates``   |
-    |                                  | - integer ``bindDoneStates``  |
-    +----------------------------------+-------------------------------+
-    | :py:meth:`.connectAutomaton`     | -                             |
-    +----------------------------------+-------------------------------+
+    
+    
+    +---------------+-----------------+--------------------------------+
+    | Methods       | Cell assemblies | Available cells (for analysis) |
+    +===============+=================+================================+
+    | An object     | to bind cells   | - ``self.objectBindCells``     |
+    |               | to bind on      | - ``self.objectBindOnCells``   |
+    |               | to bind done    | - ``self.objectBindDoneCells`` |
+    |               | to query on     | - ``self.queryOnObjectCells``  |
+    |               | to answer       | - ``self.answerObjectCells``   |
+    +---------------+-----------------+--------------------------------+
+    | A place       | to bind cells   | - ``self.placeBindCells``      |
+    |               | to bind on      | - ``self.placeBindOnCells``    |
+    |               | to bind done    | - ``self.placeBindDoneCells``  |
+    |               | to query on     | - ``self.queryOnPlaceCells``   |
+    |               | to answer       | - ``self.answerPlaceCells``    |
+    +---------------+-----------------+--------------------------------+
+    | The Automaton |                 | - ``self.automatonCells``      |
+    +---------------+-----------------+--------------------------------+
+    | :py:meth:`.connectObjects`       | -                              |
+    +----------------------------------+--------------------------------+
+    | :py:meth:`.connectPlaces`        | -                              |
+    +----------------------------------+--------------------------------+
+    | :py:meth:`.connectAutomaton`     | -                              |
+    +----------------------------------+--------------------------------+
+    | :py:meth:`.setupCogMapRecording` | -                              |
+    +----------------------------------+--------------------------------+
+    | :py:meth:`.makeLearningSynapses` | -                              |
+    +----------------------------------+--------------------------------+
+    
+    
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | Names of 15 Automaton states  | State number      | Methods where state is used                         |
+    +===============================+===================+=====================================================+
+    | ``startState``                | 0                 | - :py:meth:`.connectStartState`                     |
+    |                               |                   | - :py:meth:`.connectBindFailState`                  |
+    |                               |                   | - :py:meth:`.connectBindDoneState`                  |
+    |                               |                   | - :py:meth:`.connectRetrieveObjectState`            |
+    |                               |                   | - :py:meth:`.connectRetrieveObjectDoneState`        |
+    |                               |                   | - :py:meth:`.connectRetrievePlaceState`             |
+    |                               |                   | - :py:meth:`.connectRetrievePlaceDoneState`         |
+    |                               |                   | - :py:meth:`.sourceStartsAutomaton`                 |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``tryBindState``              | 1                 | - :py:meth:`.connectStartState`                     |
+    |                               |                   | - :py:meth:`.connectBindOnState`                    |
+    |                               |                   | - :py:meth:`.connectBindFailState`                  |
+    |                               |                   | - :py:meth:`.sourceTurnsOnBind`                     |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``bindOnState``               | 2                 | - :py:meth:`.connectBindOnState`                    |
+    |                               |                   | - :py:meth:`.connectBindFailState`                  |
+    |                               |                   | - :py:meth:`.bindOnPrimesPlaceAndObjectBind`        |
+    |                               |                   | - :py:meth:`.connectBindDoneState`                  |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``bindFailState``             | 3                 | - :py:meth:`.connectStartState`                     |
+    |                               |                   | - :py:meth:`.connectBindFailState`                  |
+    |                               |                   | - :py:meth:`.bindFailStopsPlaceObjectOn`            |
+    |                               |                   | - :py:meth:`.bindFailStopsPlaceObjectOn`            |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``bindDoneState``             | 4                 | - :py:meth:`.connectStartState`                     |
+    |                               |                   | - :py:meth:`.connectBindDoneState`                  |
+    |                               |                   | - :py:meth:`.connectBindDoneState`                  |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``retrieveObjectState``       | 5                 | - :py:meth:`.retrieveObjectPrimesPlaceBind`         |
+    |                               |                   | - :py:meth:`.connectRetrieveObjectState`            |
+    |                               |                   | - :py:meth:`.connectRetrieveObjectDoneState`        |
+    |                               |                   | - :py:meth:`.sourceTurnOnRetrieveObjectFromPlace`   |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``retrievePlaceState``        | 6                 | - :py:meth:`.retrievePlacePrimesObjectBind`         |
+    |                               |                   | - :py:meth:`.connectRetrievePlaceState`             |
+    |                               |                   | - :py:meth:`.connectRetrievePlaceDoneState`         |
+    |                               |                   | - :py:meth:`.sourceTurnOnRetrievePlaceFromObject`   |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``retrieveObjectDoneState``   | 7                 | - :py:meth:`.connectStartState`                     |
+    |                               |                   | - :py:meth:`.connectRetrieveObjectDoneState`        |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``retrievePlaceDoneState``    | 8                 | - :py:meth:`.connectStartState`                     |
+    |                               |                   | - :py:meth:`.connectRetrievePlaceDoneState`         |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``lastState``                 | 8                 |                                                     |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``onePlaceOneObjectFact``     | ``lastState`` + 1 | - :py:meth:`.setupObjectPlaceFacts`                 |
+    |                               |                   | - :py:meth:`.connectBindOnState`                    |
+    |                               |                   | - :py:meth:`.connectBindFailState`                  |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``twoPlacesFact``             | ``lastState`` + 2 | - :py:meth:`.setupObjectPlaceFacts`                 |
+    |                               |                   | - :py:meth:`.connectBindFailState`                  |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``twoObjectsFact``            | ``lastState`` + 3 | - :py:meth:`.setupObjectPlaceFacts`                 |
+    |                               |                   | - :py:meth:`.connectBindFailState`                  |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``notEnoughPlaceObjectsFact`` | ``lastState`` + 4 | - :py:meth:`.connectBindFailState`                  |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``placeRetrievedFact``        | ``lastState`` + 5 | - :py:meth:`.answerPlaceStartsPlaceRetrievedFact`   |
+    |                               |                   | - :py:meth:`.connectRetrievePlaceDoneState`         |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    | ``objectRetrievedFact``       | ``lastState`` + 6 | - :py:meth:`.answerObjectStartsObjectRetrievedFact` |
+    |                               |                   | - :py:meth:`.connectRetrieveObjectDoneState`        |
+    +-------------------------------+-------------------+-----------------------------------------------------+
+    
     
     """
     numberAutomatonStates = 15
@@ -82,7 +181,7 @@ class PlaceCellSystemClass:
         #self.automatonCells = self.createAutomaton() # commented out for nmcog
 
     #-----FSA functions and constants
-    #state names
+    #state names for the Automaton
     startState = 0
     tryBindState = 1
     bindOnState = 2
@@ -828,7 +927,7 @@ class PlaceCellSystemClass:
             x   o    binds   o   o   binds    o   o   binds    o
             x   o    cells   o   o  on-cells  o   o done-cells o
             x   oooooooooooooo   oooooooooooooo   oooooooooooooo
-            x       /\   x           <ON>               /\
+            x       /\   x           <ON>              /\
             x       x    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             x       x <1/2-ON>
             x   oooooooooooooo   oooooooooooooo

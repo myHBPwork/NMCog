@@ -17,23 +17,23 @@ from .nealmentalmap.placecellsysClass import PlaceCellSystemClass
 from nmcog.spinnaker.specialfunction.neal import NealCoverFunctions
 
 class NEALPlaceSystem(object):
+    """
+    Consider nobject = 2 and nplaces = 3
+    
+    +------------------+---------------------+------------------+-----------------+
+    | Example use case | objectsTOplaces     | findPlaceFor     | findObjectFor   |
+    +==================+=====================+==================+=================+
+    | 1 (default)      | None                | None             | None            |
+    +------------------+---------------------+------------------+-----------------+
+    | 2                | [(0,1),(1,0),(1,2)] | None             | None            |
+    +------------------+---------------------+------------------+-----------------+
+    | 3                | [(0,1),(1,0),(1,2)] | 1 (for object 1) | None            |
+    +------------------+---------------------+------------------+-----------------+
+    | 4                | [(0,1),(1,0),(1,2)] | None             | 2 (for place 2) |
+    +------------------+---------------------+------------------+-----------------+
+    
+    """
     def __init__(self, nobjects=2, nplaces=3, objectsTOplaces=None, findPlaceFor=None, findObjectFor=None):
-        """
-        Consider nobject = 2 and nplaces = 3
-        
-        +------------------+---------------------+------------------+-----------------+
-        | Example use case | objectsTOplaces     | findPlaceFor     | findObjectFor   |
-        +==================+=====================+==================+=================+
-        | 1 (default)      | None                | None             | None            |
-        +------------------+---------------------+------------------+-----------------+
-        | 2                | [(0,1),(1,0),(1,2)] | None             | None            |
-        +------------------+---------------------+------------------+-----------------+
-        | 3                | [(0,1),(1,0),(1,2)] | 1 (for object 1) | None            |
-        +------------------+---------------------+------------------+-----------------+
-        | 4                | [(0,1),(1,0),(1,2)] | None             | 2 (for place 2) |
-        +------------------+---------------------+------------------+-----------------+
-        
-        """
         neal = NealCoverFunctions()
         sim.setup(timestep=neal.DELAY, min_delay=neal.DELAY, max_delay=neal.DELAY, debug=0)
         #
@@ -53,6 +53,7 @@ class NEALPlaceSystem(object):
         #sim.end()
     
     def __createCogmap(self, nobjects, nplaces):
+        """."""
         self.cogmap = PlaceCellSystemClass()
         self.cogmap.createAutomaton()
         self.cogmap.createObjects(nobjects)
@@ -103,7 +104,7 @@ class NEALPlaceSystem(object):
         return oTp
     
     def bindObjectsToPlaces(self, objectsTOplaces):
-        
+        """."""
         if objectsTOplaces is not None:
             oTp = self.__object_place_tuple_list(objectsTOplaces)
             for i in range( len(oTp) ):
@@ -116,7 +117,7 @@ class NEALPlaceSystem(object):
             pass
     
     def retrievePlaceForObject(self, findPlaceFor):
-        "Where is the object?"
+        """Where is the object?"""
         if findPlaceFor is not None:
             self.cogmap.sourceTurnOnRetrievePlaceFromObject( self.spikeSource[-1] )
             self.cogmap.sourceTurnsOnObjectQuery( self.spikeSource[-1], findPlaceFor )
@@ -124,7 +125,7 @@ class NEALPlaceSystem(object):
             pass
             
     def retrieveObjectForPlace(self, findObjectFor):
-        "What object are in the place?"
+        """What object are in the place?"""
         if findObjectFor is not None:
             self.cogmap.sourceTurnOnRetrievePlaceFromPlace( self.spikeSource[-1] )
             self.cogmap.sourceTurnsOnPlaceQuery( self.spikeSource[-1], findObjectFor )
