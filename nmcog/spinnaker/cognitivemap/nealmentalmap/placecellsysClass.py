@@ -29,7 +29,31 @@ import spynnaker8 as sim
 from nmcog.spinnaker.specialfunction.neal.stateMachineClass import FSAHelperFunctions
 
 class PlaceCellSystemClass:
-    """."""
+    """
+    
+    +----------------------------------+-------------------------------+
+    | Methods                          | Argument                      |
+    +==================================+===============================+
+    | :py:meth:`.createObjects`        | integer ``numberObjects``     |
+    +----------------------------------+-------------------------------+
+    | :py:meth:`.createPlaces`         | integer ``numberPlaces``      |
+    +----------------------------------+-------------------------------+
+    | :py:meth:`.connectObjects`       | -                             |
+    +----------------------------------+-------------------------------+
+    | :py:meth:`.connectPlaces`        | -                             |
+    +----------------------------------+-------------------------------+
+    | :py:meth:`.setupCogMapRecording` | -                             |
+    +----------------------------------+-------------------------------+
+    | :py:meth:`.makeLearningSynapses` | -                             |
+    +----------------------------------+-------------------------------+
+    | :py:meth:`.createAutomaton`      | - integer ``tryToBindStates`` |
+    |                                  | - integer ``bindingStates``   |
+    |                                  | - integer ``bindDoneStates``  |
+    +----------------------------------+-------------------------------+
+    | :py:meth:`.connectAutomaton`     | -                             |
+    +----------------------------------+-------------------------------+
+    
+    """
     numberAutomatonStates = 15
     numberObjects = -1
     numberPlaces = -1

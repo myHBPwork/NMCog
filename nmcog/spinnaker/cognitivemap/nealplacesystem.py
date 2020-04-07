@@ -58,7 +58,7 @@ class NEALPlaceSystem(object):
         self.cogmap.createObjects(nobjects)
         self.cogmap.connectObjects()
         self.cogmap.createPlaces(nplaces)
-        self.connectPlaces()
+        self.cogmap.connectPlaces()
         self.cogmap.setupCogMapRecording()
         self.cogmap.makeLearningSynapses()
         self.cogmap.connectAutomaton()
