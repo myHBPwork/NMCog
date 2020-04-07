@@ -23,7 +23,7 @@ copyright = '2020, Lungsi'
 author = 'Lungsi'
 
 # The full version, including alpha/beta/rc tags
-release = '0.0.15 3-Alpha'
+release = '0.2.0 3-Alpha'
 
 
 # -- General configuration ---------------------------------------------------
