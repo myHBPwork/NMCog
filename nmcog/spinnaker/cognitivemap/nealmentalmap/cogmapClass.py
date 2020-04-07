@@ -1,22 +1,26 @@
-"""
-This is driven by an FSA that manages the binding and the retrievals.
-Initially, (startState) it waits for a binding event.  It then
-tryToBind, which uses a timer since it takes time to bind.  If it
-succeeds it goes to bindOnState
-bindOn turns on the bindingTimer
-the bindingTimer turns on bindDone state
-bindDone -> start via bindDoneTimer.
+# ~/nmcog/spinnaker/cognitivemap/nealmentalmap/cogmapClass.py
+#
+# Documentation by Lungsi 6 April 2020
+#
+#This is driven by an FSA that manages the binding and the retrievals.
+#Initially, (startState) it waits for a binding event.  It then
+#tryToBind, which uses a timer since it takes time to bind.  If it
+#succeeds it goes to bindOnState
+#bindOn turns on the bindingTimer
+#the bindingTimer turns on bindDone state
+#bindDone -> start via bindDoneTimer.
+#
+#Fail states occurs with bindFailState twoPlacesFact, twoObjectsFact,
+#and notEnoughPlaceObjectsFact.
+#
+#retrievePlaceState is turned on externally by a query.
+#It turns off start.  It allows the binding nets to fire, and when a place
+#fires, it turns on the placeRetrievedFact (extra neurons in the automaton net).
+#Together these turn on retrievePlaceDone, which then goes back to startState
+#
+#A similar mechanism is used for retrieveObject.
+#
 
-Fail states occurs with bindFailState twoPlacesFact, twoObjectsFact,
-and notEnoughPlaceObjectsFact.
-
-retrievePlaceState is turned on externally by a query.
-It turns off start.  It allows the binding nets to fire, and when a place
-fires, it turns on the placeRetrievedFact (extra neurons in the automaton net).
-Together these turn on retrievePlaceDone, which then goes back to startState
-
-A similar mechanism is used for retrieveObject.
-"""
 from nmcog.spinnaker.specialfunction.neal.nealCoverClass import NealCoverFunctions
 from nmcog.spinnaker.specialfunction.neal.timerClass import TimerClass
 
@@ -25,6 +29,7 @@ import spynnaker8 as sim
 from nmcog.spinnaker.specialfunction.neal.stateMachineClass import FSAHelperFunctions
 
 class CogmapBaseClass:
+    """."""
     numberAutomatonStates = 15
     numberObjects = -1
     numberPlaces = -1
@@ -46,7 +51,7 @@ class CogmapBaseClass:
         # this instantiates the three timers but the timercells are not created here
         # they are created in self.createTimers where default values are used for the
         # number of states but user can pass custom values.
-        # however, self.creteTimers is called by self.createAutomaton therefore
+        # however, self.createTimers is called by self.createAutomaton therefore
         # these custom values must be passed into this function which takes effect on
         # the self.createTimers function.
         #
@@ -75,7 +80,78 @@ class CogmapBaseClass:
     #Note that 2 of either will turn it on as will more than one of each.
     #These are handled elsewhere to convert to the bindFailState
     def setupObjectPlaceFacts(self):
-        print(self.numberObjects)
+        """
+        This function connects objects and places with the automaton (see :py:meth:`.createAutomaton`).
+        
+        Below show the connection for one object and one place. But note that the connections are made
+        for all objects and all places with the automaton.
+
+        ::
+        
+            wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+            w                      An Object                      w
+          xxwxxxxxxxxxxxxxxxxxxxxxxxxxxx                          w
+          x w                          x                          w
+          x w   oooooooooooooo   oooooooooooooo   oooooooooooooo  w
+          x w   o    binds   o   o   binds    o   o   binds    o  w
+          x w   o    cells   o   o  on-cells  o   o done-cells o  w
+          x w   oooooooooooooo   oooooooooooooo   oooooooooooooo  w
+          x w                                                     w
+          x w   oooooooooooooo   oooooooooooooo                   w
+          x w   o  inquire   o   o   answer   o                   w
+          x w   o  on-cells  o   o about cell o                   w
+          x w   oooooooooooooo   oooooooooooooo                   w
+          x w                                                     w
+          x w                                                     w
+          x wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+          x 
+          x 
+          x 
+          x aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          x a                               Automaton                                     a
+          x a                                                                             a
+          x a  oooooooooooooo   oooooooooooooooo   ooooooooooooooooo   ooooooooooooooooo  a
+          x a  o startState o   o tryBindState o   o bindFailState o   o bindDoneState o  a
+          x a  oooooooooooooo   oooooooooooooooo   ooooooooooooooooo   ooooooooooooooooo  a
+          xxaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                                           a
+            a  ooooooooooooooooooooooooooo x  x oooooooooooooooooooooooooo                a
+            a  o retrieveObjectDoneState o x  x o retrievePlaceDoneState o                a
+            a  ooooooooooooooooooooooooooo x  x oooooooooooooooooooooooooo                a
+            a                <1/2-ON> Vxxxxx  V <1/2-ON>                                  a
+            a  ooooooooooooooooooooooooo   ooooooooooooooo                                a
+            a  o onePlaceOneObjectFact o   o bindOnState o                                a
+            a  ooooooooooooooooooooooooo   ooooooooooooooo                                a
+            a                         ^       ^                                           a
+            a                <1/2-ON> x       x <1/2-ON>                                  a
+            a                         xxxxxxxxx                                           a
+            a                                 x                                           a
+            aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                                              x
+                                              x
+                                              x         
+            ppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+            p                       A Place   x                   p
+            p                                 x                   p
+            p   oooooooooooooo   oooooooooooooo   oooooooooooooo  p
+            p   o    binds   o   o   binds    o   o   binds    o  p
+            p   o    cells   o   o  on-cells  o   o done-cells o  p
+            p   oooooooooooooo   oooooooooooooo   oooooooooooooo  p
+            p                                                     p
+            p   oooooooooooooo   oooooooooooooo                   p
+            p   o  inquire   o   o   answer   o                   p
+            p   o  on-cells  o   o about cell o                   p
+            p   oooooooooooooo   oooooooooooooo                   p
+            p                                                     p
+            p                                                     p
+            ppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+        
+        **NOTE:**
+        
+        * All the states of an automaton are **not** shown in the above illustration.
+        * See :ref:`FSAHelperFunctions` ``.stateHalfTurnsOnState``
+        
+        """
+        #print(self.numberObjects)
         for objectNumber in range (0,self.numberObjects):
             self.fsa.stateHalfTurnsOnState(self.objectBindOnCells,objectNumber,
                             self.automatonCells,self.onePlaceOneObjectFact)
@@ -90,20 +166,118 @@ class CogmapBaseClass:
 
     #---Make the fsa that governs the map.  
     def stateStopsPlaceDone(self,stateNumber):
+        """
+        The given state of the automaton (see :py:meth:`.createAutomaton`) turns-off the
+        ``self.placeBindDoneCells`` for all the places, i.e. over all ``self.numberPlaces``.
+        
+        Below shows the ``startState`` of the automaton turning-off the state represented by
+        ``self.placeBindDoneCells`` of just one place. Note that this will be done for all the
+        places in ``self.numberPlaces``.
+
+        ::
+        
+            aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+            a                               Automaton                                     a
+          xxaxxxxxxxx                                                                     a
+          x a       x                                                                     a
+          x a  oooooooooooooo   oooooooooooooooo   ooooooooooooooooo   ooooooooooooooooo  a
+          x a  o startState o   o tryBindState o   o bindFailState o   o bindDoneState o  a
+          x a  oooooooooooooo   oooooooooooooooo   ooooooooooooooooo   ooooooooooooooooo  a
+          x a                                                                             a
+          x a  ooooooooooooooooooooooooooo   oooooooooooooooooooooooooo                   a
+          x a  o retrieveObjectDoneState o   o retrievePlaceDoneState o                   a
+          x a  ooooooooooooooooooooooooooo   oooooooooooooooooooooooooo                   a
+          x a                                                                             a
+          x a                                                                             a
+          x a                                                                             a
+          x aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          x
+          xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx <OFF>
+                                                        x            
+            ppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+            p                       A Place             x         p
+            p                                           V         p
+            p   oooooooooooooo   oooooooooooooo   oooooooooooooo  p
+            p   o    binds   o   o   binds    o   o   binds    o  p
+            p   o    cells   o   o  on-cells  o   o done-cells o  p
+            p   oooooooooooooo   oooooooooooooo   oooooooooooooo  p
+            p                                                     p
+            p   oooooooooooooo   oooooooooooooo                   p
+            p   o  inquire   o   o   answer   o                   p
+            p   o  on-cells  o   o about cell o                   p
+            p   oooooooooooooo   oooooooooooooo                   p
+            p                                                     p
+            p                                                     p
+            ppppppppppppppppppppppppppppppppppppppppppppppppppppppp
+        
+        **NOTE:**
+        
+        * All the states of an automaton are **not** shown in the above illustration.
+        * See :ref:`FSAHelperFunctions` ``.stateTurnsOffState``
+        
+        """
         for placeNumber in range (0,self.numberPlaces):
             self.fsa.stateTurnsOffState(self.automatonCells,stateNumber,
                             self.placeBindDoneCells,placeNumber)
 
     def stateStopsObjectDone(self,stateNumber):
+        """See :py:meth:`.stateStopsPlaceDone` but replace place for object."""
         for objectNumber in range (0,self.numberObjects):
             self.fsa.stateTurnsOffState(self.automatonCells,stateNumber,
                             self.objectBindDoneCells,objectNumber)
 
     def stateStopsDone(self,stateNumber):
-        self. stateStopsPlaceDone(stateNumber)
-        self. stateStopsObjectDone(stateNumber)
+        """See :py:meth:`.stateStopsPlaceDone` and :py:meth:`.stateStopsObjectDone`"""
+        self.stateStopsPlaceDone(stateNumber)
+        self.stateStopsObjectDone(stateNumber)
 
     def connectStartState(self):
+        """
+        Following the creation of ``self.automatonCells`` (:py:meth:`.createAutomaton`)
+        this function connects the states of the automaton.
+        
+        Connection for an automaton is done as follows
+        
+        ::
+        
+                        <OFF>
+                    xxxxxxxxxxxxxx
+                    x   <1/2-ON> x
+                    x    xxxxxx  x         xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                    \/   x   \/  x         x                                            x
+            oooooooooooooo   oooooooooooooooo   ooooooooooooooooo   ooooooooooooooooo   x
+            o startState o   o tryBindState o   o bindFailState o   o bindDoneState o   x
+            oooooooooooooo   oooooooooooooooo   ooooooooooooooooo   ooooooooooooooooo   x
+            x   x     x  x         <OFF>        /\                  /\                  x
+            x   x     x  xxxxxxxxxxxxxxxxxxxxxxxxx       <OFF>       x                  x
+            x   x     xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx                  x
+            x   xxxxxxxxxxxxxxxxxxxxxxxxxxx                                             x
+            \/<OFF>                       \/<OFF>                                       x
+            ooooooooooooooooooooooooooo   oooooooooooooooooooooooooo                    x
+            o retrieveObjectDoneState o   o retrievePlaceDoneState o                    x
+            ooooooooooooooooooooooooooo   oooooooooooooooooooooooooo                    x
+                                                                                        x
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            x                                                                   <OFF>
+            x
+            \/              tryToBindTimer
+            ooooooooooooo   ooooooooooooo   ooooooooooooo
+            o  state-0  o   o state-... o   o  state-k  o
+            ooooooooooooo   ooooooooooooo   ooooooooooooo
+                
+        Note that for the above illustration to be complete two more steps are required
+        
+        * see :py:meth:`.stateStopsDone`
+        * see :py:meth:`.statePreventsOutput`
+        * All the states of an automaton are **not** shown in the above illustration.
+        
+        Also see
+        
+        * :ref:`FSAHelperFunctions` ``.stateHalfTurnsOnState``
+        * :ref:`FSAHelperFunctions` ``.stateTurnsOffState``
+        * :ref:`TimerClass` ``.stateStartsTimer``
+        
+        """
         #the bind signal moves from start to tryBind
         self.fsa.stateHalfTurnsOnState(self.automatonCells,self.startState,
                                        self.automatonCells,self.tryBindState)
@@ -128,21 +302,128 @@ class CogmapBaseClass:
 
 
     def statePreventsPlaceOutput(self,stateNumber):
+        """See :py:meth:`.statePreventsObjectOutput` but replace object for place."""
         for placeNumber in range (0,self.numberPlaces):
             self.fsa.stateTurnsOffState(self.automatonCells,stateNumber,
                             self.answerPlaceCells,placeNumber)
 
     def statePreventsObjectOutput(self,stateNumber):
+        """
+        The given state of the automaton (see :py:meth:`.createAutomaton`) turns-off the
+        ``self.answerObjectCells`` for all the places, i.e. over all ``self.numberPlaces``.
+        
+        Below shows the ``startState`` of the automaton turning-off the state represented by
+        ``self.answerObjectCells`` of just one place. Note that this will be done for all the
+        places in ``self.numberPlaces``.
+
+        ::
+        
+            aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+            a                               Automaton                                     a
+          xxaxxxxxxxx                                                                     a
+          x a       x                                                                     a
+          x a  oooooooooooooo   oooooooooooooooo   ooooooooooooooooo   ooooooooooooooooo  a
+          x a  o startState o   o tryBindState o   o bindFailState o   o bindDoneState o  a
+          x a  oooooooooooooo   oooooooooooooooo   ooooooooooooooooo   ooooooooooooooooo  a
+          x a                                                                             a
+          x a  ooooooooooooooooooooooooooo   oooooooooooooooooooooooooo                   a
+          x a  o retrieveObjectDoneState o   o retrievePlaceDoneState o                   a
+          x a  ooooooooooooooooooooooooooo   oooooooooooooooooooooooooo                   a
+          x a                                                                             a
+          x a                                                                             a
+          x a                                                                             a
+          x aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+          x
+          xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+                                                                       x           
+            wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww    x
+            w                      An Object                      w    x
+            w                                                     w    x
+            w   oooooooooooooo   oooooooooooooo   oooooooooooooo  w    x
+            w   o    binds   o   o   binds    o   o   binds    o  w    x
+            w   o    cells   o   o  on-cells  o   o done-cells o  w    x
+            w   oooooooooooooo   oooooooooooooo   oooooooooooooo  w    x
+            w                                                     w    x
+            w   oooooooooooooo   oooooooooooooo                   w    x
+            w   o  inquire   o   o   answer   o <xxxxxxxxxxxxxxxxxpxxxxx  <OFF>
+            w   o  on-cells  o   o about cell o                   w
+            w   oooooooooooooo   oooooooooooooo                   w
+            w                                                     w
+            w                                                     w
+            wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+        
+        **NOTE:**
+        
+        * All the states of an automaton are **not** shown in the above illustration.
+        * See :ref:`FSAHelperFunctions` ``.stateTurnsOffState``
+        
+        """
         for objectNumber in range (0,self.numberObjects):
             self.fsa.stateTurnsOffState(self.automatonCells,stateNumber,
                             self.answerObjectCells,objectNumber)
 
     def statePreventsOutput(self,stateNumber):
-        self. statePreventsPlaceOutput(stateNumber)
-        self. statePreventsObjectOutput(stateNumber)
+        """See :py:meth:`.statePreventsPlaceOutput` and :py:meth:`.statePreventsObjectOutput`"""
+        self.statePreventsPlaceOutput(stateNumber)
+        self.statePreventsObjectOutput(stateNumber)
 
     #-----Connect States----
     def connectBindOnState(self):
+        """
+        The given state of the automaton (see :py:meth:`.createAutomaton`) turns-off the
+        ``self.answerObjectCells`` for all the places, i.e. over all ``self.numberPlaces``.
+        
+        Below shows the ``startState`` of the automaton turning-off the state represented by
+        ``self.answerObjectCells`` of just one place. Note that this will be done for all the
+        places in ``self.numberPlaces``.
+
+        ::
+        
+            aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+            a                               Automaton                                     a
+            a                                                                             a
+            a  oooooooooooooo   oooooooooooooooo   ooooooooooooooooo   ooooooooooooooooo  a
+            a  o startState o   o tryBindState o   o bindFailState o   o bindDoneState o  a
+            a  oooooooooooooo   oooooooooooooooo   ooooooooooooooooo   ooooooooooooooooo  a
+            a                              x  ^ <OFF>                                     a
+            a  ooooooooooooooooooooooooooo x  x oooooooooooooooooooooooooo                a
+            a  o retrieveObjectDoneState o x  x o retrievePlaceDoneState o                a
+            a  ooooooooooooooooooooooooooo x  x oooooooooooooooooooooooooo                a
+            a                     <1/2-ON> V  x                                           a
+            a  ooooooooooooooooooooooooo   ooooooooooooooo                                a
+            a  o onePlaceOneObjectFact o   o bindOnState o                                a
+            a  ooooooooooooooooooooooooo   ooooooooooooooo                                a
+            a                    ^   x        ^  x   ;;;;;                                a
+            a              <OFF> x   x <STIM> x  x   ;;;;;                                a
+            a                    x   xxxxxxxxxx  x   ;;;;;                                a
+            a                    xxxxxxxxxxxxxxxxx   ;;;;;                                a
+            aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+                                                     ;;;;;
+                                                     ;;;;;
+                                                   ..;;;;;..
+                                                    ':::::'
+                                                      ':`
+            ttttttttttttttttttttttttttttttttttttttttttttttttttt
+            t               tryToBindTimer                    t
+            t  ooooooooooooo   ooooooooooooo   ooooooooooooo  t
+            t  o  state-0  o   o state-... o   o  state-k  o  t
+            t  ooooooooooooo   ooooooooooooo   ooooooooooooo  t
+            t                                                 t
+            ttttttttttttttttttttttttttttttttttttttttttttttttttt
+        
+        Note that for the above illustration to be complete the automaton must be connected to
+        
+        * all the objects and places as shown in :py:meth:`.setupObjectPlaceFacts`
+        * see :py:meth:`.statePreventsOutput` but with ``self.bindOnState`` of the automaton, unlike the example in :py:meth:`.statePreventsOutput`
+        
+        Also,
+        
+        * All the states of an automaton are **not** shown in the above illustration.
+        * See :ref:`FSAHelperFunctions` ``.stateHalfTurnsOnState``
+        * See :ref:`FSAHelperFunctions` ``.stateStimulatesState``
+        * See :ref:`FSAHelperFunctions` ``.stateTurnsOffState``
+        * See :ref:`TimerClass` ``.stateStopsTimer``
+        """
         #1p1o fact moves from tryBind to bindOn
         self.fsa.stateHalfTurnsOnState(self.automatonCells,self.tryBindState,
                                        self.automatonCells,self.bindOnState)
@@ -168,6 +449,7 @@ class CogmapBaseClass:
         self.statePreventsOutput(self.bindOnState)
         
     def connectBindFailState(self):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         #2p, 2o, or timer goes to bindFail 
         self.fsa.stateHalfTurnsOnState(self.automatonCells,self.tryBindState,
                                        self.automatonCells,self.bindFailState)
@@ -204,6 +486,7 @@ class CogmapBaseClass:
                             self.automatonCells,self.startState)
 
     def bindFailStopsPlaceObjectOn(self):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         for placeNumber in range (0,self.numberPlaces):
             self.fsa.stateTurnsOffState(self.automatonCells,self.bindFailState,
                             self.placeBindOnCells,placeNumber)
@@ -212,6 +495,7 @@ class CogmapBaseClass:
                             self.objectBindOnCells,objectNumber)
 
     def bindOnPrimesPlaceAndObjectBind(self):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         for placeNumber in range (0,self.numberPlaces):
             self.fsa.stateHalfTurnsOnState(self.automatonCells,self.bindOnState,
                             self.placeBindCells,placeNumber)
@@ -220,14 +504,16 @@ class CogmapBaseClass:
                             self.objectBindCells,objectNumber)
 
     def stopPlaceAndObjectBind(self,stateNumber):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         for placeNumber in range (0,self.numberPlaces):
             self.fsa.stateTurnsOffState(self.automatonCells,stateNumber,
                             self.placeBindCells,placeNumber)
         for objectNumber in range (0,self.numberObjects):
             self.fsa.stateTurnsOffState(self.automatonCells,stateNumber,
                             self.objectBindCells,objectNumber)
-packages calling internal function
+
     def connectBindDoneState(self):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         #timer moves to binddone
         self.bindingTimer.stateStartsTimer(self.automatonCells, 
                                             self.bindOnState)
@@ -252,16 +538,19 @@ packages calling internal function
 
 
     def retrieveObjectPrimesPlaceBind(self):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         for placeNumber in range (0,self.numberPlaces):
             self.fsa.stateHalfTurnsOnState(self.automatonCells,
                     self.retrieveObjectState,self.placeBindCells,placeNumber)
 
     def answerPlaceStartsPlaceRetrievedFact(self):
+        """."""
         for placeNumber in range (0,self.numberPlaces):
             self.fsa.stateTurnsOnState(self.answerPlaceCells,placeNumber,
                     self.automatonCells,self.placeRetrievedFact)
 
     def connectRetrieveObjectState(self):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.stateHalfTurnsOnState(self.automatonCells,self.startState,
                         self.automatonCells,self.retrieveObjectState)
         self.retrieveObjectPrimesPlaceBind()
@@ -271,6 +560,7 @@ packages calling internal function
                 self.retrieveObjectState,self.automatonCells,self.startState)
 
     def connectRetrieveObjectDoneState(self):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.stateHalfTurnsOnState(self.automatonCells,
             self.retrieveObjectState,self.automatonCells,
                                        self.retrieveObjectDoneState)
@@ -289,16 +579,19 @@ packages calling internal function
                                        self.startState)
 
     def retrievePlacePrimesObjectBind(self):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         for objectNumber in range (0,self.numberObjects):
             self.fsa.stateHalfTurnsOnState(self.automatonCells,
                     self.retrievePlaceState,self.objectBindCells,objectNumber)
 
     def answerObjectStartsObjectRetrievedFact(self):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         for objectNumber in range (0,self.numberObjects):
             self.fsa.stateTurnsOnState(self.answerObjectCells,objectNumber,
                     self.automatonCells,self.objectRetrievedFact)
 
     def connectRetrievePlaceState(self):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.stateHalfTurnsOnState(self.automatonCells,self.startState,
                         self.automatonCells,self.retrievePlaceState)
         self.retrievePlacePrimesObjectBind()
@@ -308,6 +601,7 @@ packages calling internal function
                 self.retrievePlaceState,self.automatonCells,self.startState)
 
     def connectRetrievePlaceDoneState(self):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.stateHalfTurnsOnState(self.automatonCells,
             self.retrievePlaceState,self.automatonCells,
                                        self.retrievePlaceDoneState)
@@ -326,6 +620,7 @@ packages calling internal function
                                        self.startState)
 
     def connectAutomaton(self):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.connectStartState()
         self.connectBindOnState()
         self.connectBindFailState()
@@ -344,6 +639,38 @@ packages calling internal function
         #self.bindDoneTimer = TimerClass(self.simName,self.sim,self.neal,
         #                                self.spinnVersion,self.fsa,6)
     def createTimers(self, tryToBindStates=10, bindingStates=10, bindDoneStates=6):
+        """
+        Given the arguments ``tryToBindStates``, ``bindingStates``, and ``bindDoneStates`` this function creates three timers,
+        
+        * ``self.tryToBindTimer`` for its given number of states ``tryToBindStates``
+        
+            - a timer for accounting the time taken for a binding event
+        
+        * ``self.bindingTimer`` for its given number of states ``bindingStates``
+        
+            - a timer for binding
+        
+        * ``self.bindDoneTimer`` for its given number of states ``bindDoneStates``
+        
+            - a timer for when the binding is achieved
+        
+        A timer is a collection of cell assemblies such that
+        
+        * the number of cell assemblies for a timer correspond to the number of possible states of the timer
+        * its cell assemblies are connected using :ref:`TimerClass` ``.makeStopNoRestartTimerSynapses``
+        
+            - the timer goes from state to state and the last stops on its own
+            - if the state that turns it ON remains ON, this timer will not restart until its done
+        
+        Regardless of the state, i.e. the cell assembly, the
+        
+        * ``self.tryToBindTimer.timerCells``,
+        * ``self.bindingTimer.timerCells``, and
+        * ``self.bindDoneTimer.timerCells``
+        
+        are its `neuron population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ for the above timers.
+        
+        """
         # modified for nmcog
         self.tryToBindTimer.createNeurons( tryToBindStates ) # although default values are set
         self.bindingTimer.createNeurons( bindingStates )     # user can pass custom number of states
@@ -355,6 +682,28 @@ packages calling internal function
 
     #def createAutomaton(self): # commented out for nmcog
     def createAutomaton(self, tryToBindStates=10, bindingStates=10, bindDoneStates=6):
+        """
+        Given the arguments ``tryToBindStates``, ``bindingStates``, and ``bindDoneStates`` this function creates,
+        
+        * cell assemblies, and
+        * three timers (see :py:meth:`.createTimers`)
+        
+        The cell assemblies are created using :ref:`FSAHelperFunctions` ``.makeCA``. An automaton with five states will therefore have five corresponding cell assemblies as shown below
+        
+        ::
+        
+            ooooooooooooo   ooooooooooooo   ooooooooooooo   ooooooooooooo   ooooooooooooo
+            o Automaton o   o Automaton o   o Automaton o   o Automaton o   o Automaton o
+            o  state-0  o   o  state-1  o   o  state-2  o   o  state-3  o   o  state-4  o
+            ooooooooooooo   ooooooooooooo   ooooooooooooo   ooooooooooooo   ooooooooooooo
+            
+        * the number of cell assemblies for *an* automaton is determined by ``self.numberAutomatonStates`` (default = 15)
+        * the number of `neuron populations <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ within a cell assembly is given by :ref:`FSAHelperFunctions` ``.CA_SIZE`` (default = 10)
+        * the number of neuron units within a population is ``CA_SIZE * numberAutomatonStates`` (default = 150)
+        
+        This function returns the automaton cells, the prototype `neuron populations <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_ used in constructing the above cell assemblies.
+        
+        """
         numNeurons = self.fsa.CA_SIZE * self.numberAutomatonStates
         
         cells=self.sim.Population(numNeurons,self.sim.IF_cond_exp,self.fsa.CELL_PARAMS)
@@ -367,6 +716,59 @@ packages calling internal function
         return cells
 
     def createObjects(self, numberObjects):
+        """For a given ``numberObjects`` this function creates five cell assemblies using :ref:`FSAHelperFunctions` ``.makeCA``
+        
+        * functionally, one cell assembly each for
+        
+            - binding the cells
+            - binding the on-cells ("on" state of the cells)
+            - binding the done-cells ("done" state of the cells)
+            - inquiring about the on-cells
+            - answering about the cells
+        
+        * all cell assemblies
+        
+            - have ``numberObjects`` times :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource`` cells in a `population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_
+            - uses the same cell type, `IF_cond_exp <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#pyNN.standardmodels.cells.IF_cond_exp>`_
+        
+        Therefore each object is represented by five cell assemblies.
+        
+        ::
+    
+            oooooooooooooooooo   oooooooooooooooooo   oooooooooooooooooo
+            o   CA to bind   o   o   CA to bind   o   o   CA to bind   o
+            o object's cells o   o  the on-cells  o   o the done-cells o
+            oooooooooooooooooo   oooooooooooooooooo   oooooooooooooooooo
+            
+            oooooooooooooooooo   oooooooooooooooooo
+            o CA to inquire  o   o  CA to answer  o
+            o    on-cells    o   o about the cell o
+            oooooooooooooooooo   oooooooooooooooooo
+
+        For a population of :math:`n \\times 10` cells the cell assembly comprises of ten such population.
+        
+        ::
+        
+            oooooooooooooooooooooooooooooooooooooooooooooooo
+            o                                              o
+            o   .-.      .-.      .-.      .-.      .-.    o
+            o  ( 0 )    ( 2 )    ( 4 )    ( 6 )    ( 8 )   o
+            o   '-'      '-'      '-'      '-'      '-'    o
+            o                                              o
+            o        cell assembly of CA_SIZE = 10         o
+            o                                              o
+            o   .-.      .-.      .-.      .-.      .-.    o
+            o  ( 1 )    ( 3 )    ( 5 )    ( 7 )    ( 9 )   o
+            o   '-'      '-'      '-'      '-'      '-'    o
+            o                                              o
+            oooooooooooooooooooooooooooooooooooooooooooooooo
+        
+        **NOTE:**
+        
+        * The value 10 is the default value for :ref:`FSAHelperFunctions` ``.CA_SIZE`
+        * See :ref:`FSAHelperFunctions` ``.getCAConnectors` for how the ten populations are connected.
+        
+        """
         self.numberObjects = numberObjects
         #print 'objects',numberObjects
         numberObjectCells = self.numberObjects*self.fsa.CA_SIZE
@@ -389,6 +791,35 @@ packages calling internal function
             self.fsa.makeCA(self.answerObjectCells,objectNumber)
 
     def connectObjects(self):
+        """Connects the objects created using :py:meth:`.createObjects`
+        
+        Connection for an object is done as follows
+        
+        ::
+    
+                            <1/2-ON>           <OFF>
+            xxxxxxxxx    xxxxxxxxxxxxxx   xxxxxxxxxxxxxxxx
+            x       x   \/            x  \/              x
+            x   oooooooooooooo   oooooooooooooo   oooooooooooooo
+            x   o    binds   o   o   binds    o   o   binds    o
+            x   o    cells   o   o  on-cells  o   o done-cells o
+            x   oooooooooooooo   oooooooooooooo   oooooooooooooo
+            x       /\   x           <ON>               /\
+            x       x    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+            x       x <1/2-ON>
+            x   oooooooooooooo   oooooooooooooo
+            x   o  inquire   o   o   answer   o
+            x   o  on-cells  o   o about cell o
+            x   oooooooooooooo   oooooooooooooo
+            x                          /\
+            x          <ON>             x
+            xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        
+        * for <1/2-ON> see :ref:`FSAHelperFunctions` ``.stateHalfTurnsOnState``
+        * for <ON> see :ref:`FSAHelperFunctions` ``.stateTurnsOnState``
+        * for <OFF> see :ref:`FSAHelperFunctions` ``.stateTurnsOffState``
+        
+        """
         for objectNumber in range (0,self.numberObjects):
             self.fsa.stateHalfTurnsOnState(self.objectBindOnCells,objectNumber,
                                        self.objectBindCells,objectNumber)
@@ -403,6 +834,7 @@ packages calling internal function
 
     #Create neurons for each place and make them CAs.
     def createPlaces(self, numberPlaces):
+        """See :py:meth:`.createObjects`"""
         self.numberPlaces = numberPlaces
         print('places',numberPlaces)
         numberPlaceCells = self.numberPlaces*self.fsa.CA_SIZE
@@ -425,6 +857,7 @@ packages calling internal function
             self.fsa.makeCA(self.answerPlaceCells,placeNumber)
 
     def connectPlaces(self):
+        """See :py:meth:`.connectObjects`"""
         for placeNumber in range (0,self.numberPlaces):
             self.fsa.stateHalfTurnsOnState(self.placeBindOnCells,placeNumber,
                                        self.placeBindCells,placeNumber)
@@ -438,6 +871,25 @@ packages calling internal function
                                        self.answerPlaceCells,placeNumber)
 
     def setupCogMapRecording(self):
+        """Record spikes for
+        
+        +-----------------------------------------------+---------------------------------------------+
+        | cell assemblies (i.e. state) within an Object | cell assemblies (i.e. state) within a Place |
+        +===============================================+=============================================+
+        | ``self.objectBindCells``                      | ``self.placeBindCells``                     |
+        +-----------------------------------------------+---------------------------------------------+
+        | ``self.objectBindOnCells``                    | ``self.placeBindOnCells``                   |
+        +-----------------------------------------------+---------------------------------------------+
+        | ``self.objectBindDoneCells``                  | ``self.placeBindDoneCells``                 |
+        +-----------------------------------------------+---------------------------------------------+
+        | ``self.queryOnObjectCells``                   | ``self.queryOnPlaceCells``                  |
+        +-----------------------------------------------+---------------------------------------------+
+        | ``self.answerObjectCells``                    | ``self.answerPlaceCells``                   |
+        +-----------------------------------------------+---------------------------------------------+
+        
+        and also for ``self.automatonCells``
+        
+        """
         self.placeBindCells.record({'spikes'})
         self.objectBindCells.record({'spikes'})
         self.automatonCells.record({'spikes'})
@@ -451,6 +903,7 @@ packages calling internal function
         self.answerObjectCells.record({'spikes'})
 
     def getWellConnectedConn(self,fromSize,toSize,weight):
+        """."""
         connector = []
         for fromNeuron in range (0,fromSize):
             for toNeuron in range (0, toSize):
@@ -459,6 +912,7 @@ packages calling internal function
         return connector
 
     def makeLearningSynapses(self):
+        """See :ref:`FSAHelperFunctions` ``.CA_SIZE``"""
         numberPlaceBindCells = self.numberPlaces*self.fsa.CA_SIZE
         numberObjectBindCells = self.numberObjects*self.fsa.CA_SIZE
         synWeight = 0.0
@@ -500,52 +954,76 @@ packages calling internal function
 
     #---Defs for turning things on and off with spike sources.
     def sourceTurnsOnPlace(self, placeNumber, source):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.turnOnStateFromSpikeSource(source,self.placeBindCells,
                                             placeNumber)
     def sourceTurnsOffPlace(self, placeNumber, source):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.turnOffStateFromSpikeSource(source,self.placeBindCells,
                                             placeNumber)
 
     def sourceTurnsOnObject(self, objectNumber, source):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.turnOnStateFromSpikeSource(source,self.objectBindCells,
                                             objectNumber)
     def sourceTurnsOffObject(self, objectNumber, source):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.turnOffStateFromSpikeSource(source,self.objectBindCells,
                                             objectNumber)
 
     def sourceTurnsOnBind(self, source):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.halfTurnOnStateFromSpikeSource(source,self.automatonCells,
                                                 self.tryBindState)
 
     def sourceTurnsOnObjectOn(self, objectNumber, source):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.turnOnStateFromSpikeSource(source,self.objectBindOnCells,
                                             objectNumber)
 
     def sourceTurnsOnPlaceOn(self, placeNumber, source):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.turnOnStateFromSpikeSource(source,self.placeBindOnCells,
                                             placeNumber)
 
     def sourceStartsAutomaton(self, source):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.turnOnStateFromSpikeSource(source,self.automatonCells,
                                              self.startState)
 
     def sourceTurnOnRetrieveObjectFromPlace(self, source):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.halfTurnOnStateFromSpikeSource(source,self.automatonCells,
                                                 self.retrieveObjectState)
 
     def sourceTurnOnRetrievePlaceFromObject(self, source):
+        """See :ref:`FSAHelperFunctions` ``.halfTurnOnStateFromSpikeSource``"""
         self.fsa.halfTurnOnStateFromSpikeSource(source,self.automatonCells,
                                                 self.retrievePlaceState)
 
     def sourceTurnsOnPlaceQuery(self, source,placeNumber):
+        """See :ref:`FSAHelperFunctions` ``.turnOnStateFromSpikeSource``
+        This is meant for place cells unlike :py:meth:`.sourceTurnsOnObjectQuery`"""
         self.fsa.turnOnStateFromSpikeSource(source,self.queryOnPlaceCells,
                                             placeNumber)
 
     def sourceTurnsOnObjectQuery(self, source,objectNumber):
+        """Given a `spikeSource <http://neuralensemble.org/docs/PyNN/reference/neuronmodels.html#spike-sources>`_ ,
+        this method turns **ON** the state of the object cells; the cells are collectively in the form of a
+        `PyNN population <http://neuralensemble.org/docs/PyNN/reference/populations.html>`_.
+        
+        The object cells collectively is part of an object identified by its ``objectNumber``
+        
+        **NOTE:**
+        
+        * See :ref:`FSAHelperFunctions` ``.turnOnStateFromSpikeSource``
+        * Althought
+        * This is meant for objects unlike :py:meth:`.sourceTurnsOnPlaceQuery`"""
         self.fsa.turnOnStateFromSpikeSource(source,self.queryOnObjectCells,
                                             objectNumber)
 
     def printCogMapNets(self):
+        """."""
         suffix = '.pkl'
         self.placeBindCells.write_data('results/cmPlaceBind'+suffix)
         self.objectBindCells.write_data('results/cmObjectBind'+suffix)

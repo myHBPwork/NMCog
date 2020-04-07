@@ -7,3 +7,4 @@ Base functions for Neuromorphic Embodied Agents that Learn `(NEAL) <http://www.c
    
    spinnaker/specialfunction/neal/nealCoverClass.rst
    spinnaker/specialfunction/neal/stateMachineClass.rst
+   spinnaker/specialfunction/neal/timerClass.rst
