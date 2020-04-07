@@ -1,4 +1,4 @@
-# ~/nmcog/spinnaker/cognitivemap/nealmentalmap/cogmapClass.py
+# ~/nmcog/spinnaker/cognitivemap/nealmentalmap/placecellsysClass.py
 #
 # Documentation by Lungsi 6 April 2020
 #
@@ -28,7 +28,7 @@ from nmcog.spinnaker.specialfunction.neal.timerClass import TimerClass
 import spynnaker8 as sim
 from nmcog.spinnaker.specialfunction.neal.stateMachineClass import FSAHelperFunctions
 
-class CogmapBaseClass:
+class PlaceCellSystemClass:
     """."""
     numberAutomatonStates = 15
     numberObjects = -1
