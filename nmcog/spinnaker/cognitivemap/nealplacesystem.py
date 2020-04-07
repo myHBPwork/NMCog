@@ -96,7 +96,7 @@ class NEALPlaceSystem(object):
         return inputTimes
     
     # Private function
-    def __object_place_tuple_list(self, objectTOplaces):
+    def __object_place_tuple_list(self, objectsTOplaces):
         """Not all the objects in the ``objectTOplaces`` are in a place.
         Return a list of tuple that only includes objects in a place."""
         oTp = []
