@@ -69,18 +69,9 @@ class PlaceCellSystemClass:
     |               | to query on     | - ``self.queryOnPlaceCells``   |
     |               | to answer       | - ``self.answerPlaceCells``    |
     +---------------+-----------------+--------------------------------+
-    | The Automaton |                 | - ``self.automatonCells``      |
+    | The Automaton |      15         | - ``self.automatonCells``      |
     +---------------+-----------------+--------------------------------+
-    | :py:meth:`.connectObjects`       | -                              |
-    +----------------------------------+--------------------------------+
-    | :py:meth:`.connectPlaces`        | -                              |
-    +----------------------------------+--------------------------------+
-    | :py:meth:`.connectAutomaton`     | -                              |
-    +----------------------------------+--------------------------------+
-    | :py:meth:`.setupCogMapRecording` | -                              |
-    +----------------------------------+--------------------------------+
-    | :py:meth:`.makeLearningSynapses` | -                              |
-    +----------------------------------+--------------------------------+
+
     
     
     +-------------------------------+-------------------+-----------------------------------------------------+
@@ -834,7 +825,8 @@ class PlaceCellSystemClass:
         #self.createTimers() # commented out for nmcog
         self.createTimers(tryToBindStates=tryToBindStates, bindingStates=bindingStates,
                           bindDoneStates=bindDoneStates)
-        return cells
+        #return cells               # replaced for nmcog
+        self.automatonCells = cells # with this (i.e, createAutomaton() no longer called in __init__()
 
     def createObjects(self, numberObjects):
         """For a given ``numberObjects`` this function creates five cell assemblies using :ref:`FSAHelperFunctions` ``.makeCA``
