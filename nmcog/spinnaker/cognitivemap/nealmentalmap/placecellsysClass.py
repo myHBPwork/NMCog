@@ -21,12 +21,12 @@
 #A similar mechanism is used for retrieveObject.
 #
 
-from nmcog.spinnaker.specialfunction.neal.nealCoverClass import NealCoverFunctions
-from nmcog.spinnaker.specialfunction.neal.timerClass import TimerClass
+from nmcog.spinnaker.specialfunction.neal import NealCoverFunctions
+from nmcog.spinnaker.specialfunction.neal import TimerClass
 
 # added for nmcog
 import spynnaker8 as sim
-from nmcog.spinnaker.specialfunction.neal.stateMachineClass import FSAHelperFunctions
+from nmcog.spinnaker.specialfunction.neal import FSAHelperFunctions
 
 class PlaceCellSystemClass:
     """
