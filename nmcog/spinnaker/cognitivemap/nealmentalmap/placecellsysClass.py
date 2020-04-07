@@ -165,7 +165,7 @@ class PlaceCellSystemClass:
         # added for nmcog
         self.tryToBindTimer = TimerClass(simName = simName,
                                          spinnVersion = spinnVersion)
-        self.bindingTimer = TimerClass(simName=self.simName,
+        self.bindingTimer = TimerClass(simName = simName,
                                        spinnVersion = spinnVersion)
         self.bindDoneTimer = TimerClass(simName = simName,
                                         spinnVersion = spinnVersion)
