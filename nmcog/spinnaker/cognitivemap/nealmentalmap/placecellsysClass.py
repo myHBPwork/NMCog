@@ -159,18 +159,16 @@ class PlaceCellSystemClass:
     
     #def __init__(self,simName,sim,neal,spinnVersion,fsa):
     def __init__(self,simName="spinnaker",spinnVersion=8):
-        self.simName = simName
         self.sim = sim
         self.neal = NealCoverFunctions()
-        self.spinnVersion = spinnVersion
         self.fsa = FSAHelperFunctions()
         # added for nmcog
-        self.tryToBindTimer = TimerClass(self.simName,self.sim,self.neal,
-                                         self.spinnVersion,self.fsa)
-        self.bindingTimer = TimerClass(self.simName,self.sim,self.neal,
-                                       self.spinnVersion,self.fsa)
-        self.bindDoneTimer = TimerClass(self.simName,self.sim,self.neal,
-                                        self.spinnVersion,self.fsa)
+        self.tryToBindTimer = TimerClass(simName = simName,
+                                         spinnVersion = spinnVersion)
+        self.bindingTimer = TimerClass(simName=self.simName,
+                                       spinnVersion = spinnVersion)
+        self.bindDoneTimer = TimerClass(simName = simName,
+                                        spinnVersion = spinnVersion)
         # this instantiates the three timers but the timercells are not created here
         # they are created in self.createTimers where default values are used for the
         # number of states but user can pass custom values.
