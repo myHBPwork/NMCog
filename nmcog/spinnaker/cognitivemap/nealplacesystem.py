@@ -42,7 +42,7 @@ class NEALPlaceSystem(object):
         self.__createCogmap( nobjects, nplaces )
         self.cogmap.sourceStartsAutomaton( self.spikeSource[0] )
         #
-        self.bindObjectsToPlaces( objectsTOplaces )
+        self.__bindObjectsToPlaces( objectsTOplaces )
         self.retrievePlaceForObject( findPlaceFor )
         self.retrieveObjectForPlace( findObjectFor )
         #
@@ -103,7 +103,8 @@ class NEALPlaceSystem(object):
         [oTp.append(tupl) for tupl in objectsTOplaces if len(tupl)!=1]
         return oTp
     
-    def bindObjectsToPlaces(self, objectsTOplaces):
+    # Private function
+    def __bindObjectsToPlaces(self, objectsTOplaces):
         """."""
         if objectsTOplaces is not None:
             oTp = self.__object_place_tuple_list(objectsTOplaces)
