@@ -104,7 +104,7 @@ class NEALPlaceSystem(object):
     
     def bindObjectsToPlaces(self, objectsTOplaces):
         
-        if objectsTOplaces in not None:
+        if objectsTOplaces is not None:
             oTp = self.__object_place_tuple_list(objectsTOplaces)
             for i in range( len(oTp) ):
                 sourceIndx = i+1 # first,0, spike source is reserved for automaton
