@@ -41,7 +41,7 @@ Cognitive Maps
    :maxdepth: 1
    :caption: Available cognitive map functions:
    
-..   spinnaker/cognitivemap/nealcogmap.rst
+   spinnaker/cognitivemap/contents_nealplacesystem.rst
    
 Cognitive Planning
 ==================
