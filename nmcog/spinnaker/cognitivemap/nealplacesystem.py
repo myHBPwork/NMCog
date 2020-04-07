@@ -53,7 +53,7 @@ class NEALPlaceSystem(object):
         #sim.end()
     
     def __createCogmap(self, nobjects, nplaces):
-        """."""
+        """Creates the cognitive map for the place cell system using :ref:`PlaceCellSystemClass`."""
         self.cogmap = PlaceCellSystemClass()
         self.cogmap.createAutomaton()
         self.cogmap.createObjects(nobjects)
@@ -74,7 +74,7 @@ class NEALPlaceSystem(object):
         return spikeGens
     
     # Private function
-    def __generateSpikeTimes(self, ojectsTOplaces):
+    def __generateSpikeTimes(self, objectsTOplaces):
         """Creates array of spike times required for making spike source.
         
         * The first spike time is for starting the automaton.
@@ -105,7 +105,8 @@ class NEALPlaceSystem(object):
     
     # Private function
     def __bindObjectsToPlaces(self, objectsTOplaces):
-        """."""
+        """Binds objects to place using :ref:`PlaceCellSystemClass` ``.sourceTurnsOnBind``, :ref:`PlaceCellSystemClass` ``.sourceTurnsOnPlaceOn``, and
+        :ref:`PlaceCellSystemClass` ``.sourceTurnsOnObjectOn``."""
         if objectsTOplaces is not None:
             oTp = self.__object_place_tuple_list(objectsTOplaces)
             for i in range( len(oTp) ):
