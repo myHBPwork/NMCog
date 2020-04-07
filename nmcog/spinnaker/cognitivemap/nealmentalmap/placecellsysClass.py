@@ -919,24 +919,25 @@ class PlaceCellSystemClass:
         Connection for an object is done as follows
         
         ::
-    
+            
                             <1/2-ON>           <OFF>
             xxxxxxxxx    xxxxxxxxxxxxxx   xxxxxxxxxxxxxxxx
-            x       x   \/            x  \/              x
+            x       x    V            x   V              x
             x   oooooooooooooo   oooooooooooooo   oooooooooooooo
             x   o    binds   o   o   binds    o   o   binds    o
             x   o    cells   o   o  on-cells  o   o done-cells o
             x   oooooooooooooo   oooooooooooooo   oooooooooooooo
-            x       /\   x           <ON>              /\
+            x       ^    x           <ON>               ^
             x       x    xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
             x       x <1/2-ON>
             x   oooooooooooooo   oooooooooooooo
             x   o  inquire   o   o   answer   o
             x   o  on-cells  o   o about cell o
             x   oooooooooooooo   oooooooooooooo
-            x                          /\
+            x                           ^
             x          <ON>             x
             xxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+        
         
         * for <1/2-ON> see :ref:`FSAHelperFunctions` ``.stateHalfTurnsOnState``
         * for <ON> see :ref:`FSAHelperFunctions` ``.stateTurnsOnState``
