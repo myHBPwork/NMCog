@@ -42,7 +42,7 @@ class NEALPlaceSystem(object):
         #
         self.inputTimes = self.__generateSpikeTimes( objectsTOplaces )
         self.answers = self.__run(find="for-object")
-        self.answers.update( self.__run(find="for-place") )
+        self.answers.update( self.__run( objectsTOplaces, find="for-place" ) )
         #self.spikeSource = self.__makeSpikeSource( inputTimes )
         #self.__createCogmap( self.nobjects, self.nplaces )
         #self.cogmap.sourceStartsAutomaton( self.spikeSource[0] )
@@ -57,7 +57,7 @@ class NEALPlaceSystem(object):
         #self.cogmap.printCogMapNets()
         #sim.end()
     
-    def __run(self, find=None):
+    def __run(self, objectsTOplaces, find=None):
         """Given a key, "for-object" or "for-place" this function runs
         for all its respective elements and returns a dictionary."""
         if find=="for-object":
@@ -84,7 +84,7 @@ class NEALPlaceSystem(object):
             #
             answers.update( { find: { str(findFor): spks } } )
             #
-            neal.nealApplyProjections()
+            self.neal.nealApplyProjections()
             sim.run( inputTimes[-1]+500 )
             #
             sim.end()
