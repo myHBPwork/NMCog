@@ -436,6 +436,7 @@ class NEAL3Way(object):
         * ``propname`` in bottom subplot for object, color is blue
         
         """
+        #plt.close() # close any previous figure
         fig, ((sp1),
               (sp2),
               (sp3)) = plt.subplots(3,1, sharex=True)

@@ -8,8 +8,8 @@ import spynnaker8 as sim
 
 #import quantities as pq
 # for plotting
-#import matplotlib.pyplot as plt
-#import matplotlib.patches as mpatches
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
 #from matplotlib import gridspec
 #from matplotlib import cm
 
@@ -41,9 +41,12 @@ class NEALPlaceSystem(object):
         #
         self.inputTimes = self.__generateSpikeTimes( objectsTOplaces )
         if find=="all":
-            self.answers = self.__run( objectsTOplaces, find="for-object" )
-            self.answers.update( self.__run( objectsTOplaces, find="for-place" ) )
+            [self.questions, self.answers] = self.__run_all( objectsTOplaces, find="for-object" )
+            qes, ans = self.__run_all( objectsTOplaces, find="for-place" )
+            self.questions.update( qes )
+            self.answers.update( ans )
         else:
+            self.questions = {}
             self.answers = {}
             for findkey, findval in find.items():
                 sim.setup( timestep = self.neal.DELAY, min_delay = self.neal.DELAY, max_delay = self.neal.DELAY, debug=0)
@@ -54,12 +57,15 @@ class NEALPlaceSystem(object):
                 self.__bindObjectsToPlaces( objectsTOplaces )
                 if findkey=="for-object":
                     self.__retrievePlaceForObject( findval )
-                    spks = self.cogmap.answerPlaceCells.get_data( variables=["spikes"] )
+                    spks_qes = self.cogmap.queryOnObjectCells.get_data( variables=["spikes"] )
+                    spks_ans = self.cogmap.answerPlaceCells.get_data( variables=["spikes"] )
                 else: # findkey=="for-place"
                     self.__retrieveObjectForPlace( findval )
-                    spks = self.cogmap.answerObjectCells.get_data( variables=["spikes"] )
+                    spks_qes = self.cogmap.queryOnPlaceCells.get_data( variables=["spikes"] )
+                    spks_ans = self.cogmap.answerObjectCells.get_data( variables=["spikes"] )
                 #
-                self.answers.update( { findkey: { str(findval): spks } } )
+                self.questions.update( {findkey: { str(findval): spks_qes } } )
+                self.answers.update( { findkey: { str(findval): spks_ans } } )
                 #
                 neal.nealApplyProjections()
                 sim.run( self.inputTimes[-1]+500 )
@@ -67,7 +73,7 @@ class NEALPlaceSystem(object):
                 #self.cogmap.printCogMapNets()
                 sim.end()
     
-    def __run(self, objectsTOplaces, find=None):
+    def __run_all(self, objectsTOplaces, find=None):
         """Given a key, "for-object" or "for-place" this function runs
         for all its respective elements and returns a dictionary."""
         if find=="for-object":
@@ -75,6 +81,7 @@ class NEALPlaceSystem(object):
         elif find=="for-place":
             allfinds = self.nplaces
         #
+        questions = {}
         answers = {}
         for findFor in range(allfinds):
             sim.setup( timestep = self.neal.DELAY,
@@ -87,21 +94,25 @@ class NEALPlaceSystem(object):
             self.__bindObjectsToPlaces( objectsTOplaces )
             if find=="for-object":
                 self.__retrievePlaceForObject( findFor )
-                spks = self.cogmap.answerPlaceCells.get_data( variables=["spikes"] )
+                spks_qes = self.cogmap.queryOnObjectCells.get_data( variables=["spikes"] )
+                spks_ans = self.cogmap.answerPlaceCells.get_data( variables=["spikes"] )
             else: # find=="for-place"
                 self.__retrieveObjectForPlace( findFor )
-                spks = self.cogmap.answerObjectCells.get_data( variables=["spikes"] )
+                spks_qes = self.cogmap.queryOnPlaceCells.get_data( variables=["spikes"] )
+                spks_ans = self.cogmap.answerObjectCells.get_data( variables=["spikes"] )
             #
             if findFor==0:
-                answers.update( { find: { str(findFor): spks } } )
+                questions.update( { find: { str(findFor): spks_qes } } )
+                answers.update( { find: { str(findFor): spks_ans } } )
             else:
-                answers[find].update( { str(findFor): spks } )
+                questions[find].update( { str(findFor): spks_qes } )
+                answers[find].update( { str(findFor): spks_ans } )
             #
             self.neal.nealApplyProjections()
             sim.run( self.inputTimes[-1]+500 )
             #
             sim.end()
-        return answers
+        return [questions, answers]
     
     def __createCogmap(self, nobjects, nplaces):
         """Creates the cognitive map for the place cell system using :ref:`PlaceCellSystemClass`."""
@@ -171,16 +182,48 @@ class NEALPlaceSystem(object):
     
     def __retrievePlaceForObject(self, findPlaceFor):
         """Where is the object?"""
-        if findPlaceFor is not None:
-            self.cogmap.sourceTurnOnRetrievePlaceFromObject( self.spikeSource[-1] )
-            self.cogmap.sourceTurnsOnObjectQuery( self.spikeSource[-1], findPlaceFor )
-        else:
-            pass
+        self.cogmap.sourceTurnOnRetrievePlaceFromObject( self.spikeSource[-1] )
+        self.cogmap.sourceTurnsOnObjectQuery( self.spikeSource[-1], findPlaceFor )
             
     def __retrieveObjectForPlace(self, findObjectFor):
         """What object are in the place?"""
-        if findObjectFor is not None:
-            self.cogmap.sourceTurnOnRetrieveObjectFromPlace( self.spikeSource[-1] )
-            self.cogmap.sourceTurnsOnPlaceQuery( self.spikeSource[-1], findObjectFor )
-        else:
-            pass
+        self.cogmap.sourceTurnOnRetrieveObjectFromPlace( self.spikeSource[-1] )
+        self.cogmap.sourceTurnsOnPlaceQuery( self.spikeSource[-1], findObjectFor )
+    
+    # Private function
+    def __generate_range(self, n):
+        r = []
+        for i in range(n):
+            if i==0:
+                indx_start = 0
+                indx_end = self.cogmap.fsa.CA_SIZE
+            else:
+                indx_start = indx_end
+                indx_end = indx_end + self.cogmap.fsa.CA_SIZE
+            r.append( [indx_start, indx_end] )
+        return r
+    
+    def plot(self, obj=None, pla=None):
+        plt.close() # close any previous figure
+        allrange_nplace = self.__generate_range( self.nplaces )
+        allrange_nobjects = self.__generate_range( self.nobjects )
+        if obj is not None:
+            fig, ( allsps ) = plt.subplots(self.nplaces, 2, sharex=True)
+            for i in range(self.nplaces): # second column of subplots for places
+                for j in range( allrange_nplace[i][0], allrange_nplace[i][1] ):
+                    allsps[i][1].eventplot( self.answers["for-objects"][str(obj)].segments[0].spiketrains[j] )
+            #
+            for i in range(self.nobjects): # first column of subplots for objects
+                for j in range( allrange_nobjects[i][0], allrange_nobjects[i][1] ):
+                    allsps[i][0].eventplot( self.questions["for-objects"][str(obj)].segments[0].spiketrains[j] )
+            plt.show()
+        elif pla is not None:
+            fig, ( allsps ) = plt.subplots(self.nobjects, 2, sharex=True)
+            for i in range(self.nobjects): # second column of subplots for objects
+                for j in range( allrange_nobjects[i][0], allrange_nobjects[i][1] ):
+                    allsps[i][1].eventplot( self.answers["for-places"][str(pla)].segments[0].spiketrains[j] )
+            #
+            for i in range(self.nplaces): # first column of subplots for places
+                for j in range( allrange_nplaces[i][0], allrange_nplaces[i][1] ):
+                    allsps[i][0].eventplot( self.questions["for-places"][str(pla)].segments[0].spiketrains[j] )
+            plt.show()
