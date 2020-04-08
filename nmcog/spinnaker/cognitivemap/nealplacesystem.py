@@ -50,7 +50,7 @@ class NEALPlaceSystem(object):
         sim.run( inputTimes[-1]+500 )
         #
         #self.cogmap.printCogMapNets()
-        #sim.end()
+        sim.end()
     
     def __createCogmap(self, nobjects, nplaces):
         """Creates the cognitive map for the place cell system using :ref:`PlaceCellSystemClass`."""
@@ -113,7 +113,7 @@ class NEALPlaceSystem(object):
                 sourceIndx = i+1 # first,0, spike source is reserved for automaton
                 objPlacePair = oTp[i]
                 self.cogmap.sourceTurnsOnBind( self.spikeSource[sourceIndx] )
-                self.cogmap.sourceTurnsOnPlaceOn( objPlacePair[-1], self.spikeSource[sourceIndx] )
+                self.cogmap.sourceTurnsOnPlaceOn( objPlacePair[1], self.spikeSource[sourceIndx] )
                 self.cogmap.sourceTurnsOnObjectOn( objPlacePair[0], self.spikeSource[sourceIndx] )
         else:
             pass
@@ -129,7 +129,7 @@ class NEALPlaceSystem(object):
     def retrieveObjectForPlace(self, findObjectFor):
         """What object are in the place?"""
         if findObjectFor is not None:
-            self.cogmap.sourceTurnOnRetrievePlaceFromPlace( self.spikeSource[-1] )
+            self.cogmap.sourceTurnOnRetrieveObjectFromPlace( self.spikeSource[-1] )
             self.cogmap.sourceTurnsOnPlaceQuery( self.spikeSource[-1], findObjectFor )
         else:
             pass

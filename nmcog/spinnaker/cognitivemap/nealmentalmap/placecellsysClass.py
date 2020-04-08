@@ -1132,12 +1132,14 @@ class PlaceCellSystemClass:
         
         * See :ref:`FSAHelperFunctions` ``.turnOnStateFromSpikeSource``
         * Althought
-        * This is meant for objects unlike :py:meth:`.sourceTurnsOnPlaceQuery`"""
+        * This is meant for objects unlike :py:meth:`.sourceTurnsOnPlaceQuery`
+        
+        """
         self.fsa.turnOnStateFromSpikeSource(source,self.queryOnObjectCells,
                                             objectNumber)
 
     def printCogMapNets(self):
-        """."""
+        """Legacy."""
         suffix = '.pkl'
         self.placeBindCells.write_data('results/cmPlaceBind'+suffix)
         self.objectBindCells.write_data('results/cmObjectBind'+suffix)
