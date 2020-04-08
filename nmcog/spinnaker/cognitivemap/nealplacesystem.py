@@ -76,10 +76,10 @@ class NEALPlaceSystem(object):
             #
             self.__bindObjectsToPlaces( objectsTOplaces )
             if find=="for-object":
-                self.retrievePlaceForObject( findFor )
+                self.__retrievePlaceForObject( findFor )
                 spks = self.cogmap.answerPlaceCells.get_data( variables=["spikes"] )
             else: # find=="for-place"
-                self.retrieveObjectForPlace( findFor )
+                self.__retrieveObjectForPlace( findFor )
                 spks = self.cogmap.answerObjectCells.get_data( variables=["spikes"] )
             #
             answers.update( { find: { str(findFor): spks } } )
