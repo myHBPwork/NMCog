@@ -37,7 +37,7 @@ class NEALPlaceSystem(object):
         self.nobjects = nobjects
         self.nplaces = nplaces
         #
-        neal = NealCoverFunctions()
+        self.neal = NealCoverFunctions()
         #sim.setup(timestep=neal.DELAY, min_delay=neal.DELAY, max_delay=neal.DELAY, debug=0)
         #
         self.inputTimes = self.__generateSpikeTimes( objectsTOplaces )
@@ -67,7 +67,9 @@ class NEALPlaceSystem(object):
         #
         answers = {}
         for findFor in range(allfinds):
-            sim.setup(timestep=neal.DELAY, min_delay=neal.DELAY, max_delay=neal.DELAY, debug=0)
+            sim.setup( timestep = self.neal.DELAY,
+                       min_delay = self.neal.DELAY,
+                       max_delay = self.neal.DELAY, debug=0 )
             self.spikeSource = self.__makeSpikeSource( self.inputTimes )
             self.__createCogmap( self.nobjects, self.nplaces )
             self.cogmap.sourceStartsAutomaton( self.spikeSource[0] )
@@ -75,10 +77,10 @@ class NEALPlaceSystem(object):
             self.__bindObjectsToPlaces( objectsTOplaces )
             if find=="for-object":
                 self.retrievePlaceForObject( findFor )
-                spks = self.cogmap.answerPlaceCells.get_data(variables=["spikes"])
+                spks = self.cogmap.answerPlaceCells.get_data( variables=["spikes"] )
             else: # find=="for-place"
                 self.retrieveObjectForPlace( findFor )
-                spks = self.cogmap.answerObjectCells.get_data(variables=["spikes"])
+                spks = self.cogmap.answerObjectCells.get_data( variables=["spikes"] )
             #
             answers.update( { find: { str(findFor): spks } } )
             #
