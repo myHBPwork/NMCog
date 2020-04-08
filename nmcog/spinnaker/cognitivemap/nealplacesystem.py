@@ -211,19 +211,19 @@ class NEALPlaceSystem(object):
             fig, ( allsps ) = plt.subplots(self.nplaces, 2, sharex=True)
             for i in range(self.nplaces): # second column of subplots for places
                 for j in range( allrange_nplace[i][0], allrange_nplace[i][1] ):
-                    allsps[i][1].eventplot( self.answers["for-objects"][str(obj)].segments[0].spiketrains[j] )
+                    allsps[i][1].eventplot( self.answers["for-object"][str(obj)].segments[0].spiketrains[j] )
             #
             for i in range(self.nobjects): # first column of subplots for objects
                 for j in range( allrange_nobjects[i][0], allrange_nobjects[i][1] ):
-                    allsps[i][0].eventplot( self.questions["for-objects"][str(obj)].segments[0].spiketrains[j] )
+                    allsps[i][0].eventplot( self.questions["for-object"][str(obj)].segments[0].spiketrains[j] )
             plt.show()
         elif pla is not None:
             fig, ( allsps ) = plt.subplots(self.nobjects, 2, sharex=True)
             for i in range(self.nobjects): # second column of subplots for objects
                 for j in range( allrange_nobjects[i][0], allrange_nobjects[i][1] ):
-                    allsps[i][1].eventplot( self.answers["for-places"][str(pla)].segments[0].spiketrains[j] )
+                    allsps[i][1].eventplot( self.answers["for-place"][str(pla)].segments[0].spiketrains[j] )
             #
             for i in range(self.nplaces): # first column of subplots for places
                 for j in range( allrange_nplaces[i][0], allrange_nplaces[i][1] ):
-                    allsps[i][0].eventplot( self.questions["for-places"][str(pla)].segments[0].spiketrains[j] )
+                    allsps[i][0].eventplot( self.questions["for-place"][str(pla)].segments[0].spiketrains[j] )
             plt.show()
