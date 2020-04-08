@@ -85,7 +85,7 @@ class NEALPlaceSystem(object):
             answers.update( { find: { str(findFor): spks } } )
             #
             self.neal.nealApplyProjections()
-            sim.run( inputTimes[-1]+500 )
+            sim.run( self.inputTimes[-1]+500 )
             #
             sim.end()
         return answers
