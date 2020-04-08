@@ -67,7 +67,7 @@ class NEALPlaceSystem(object):
                 self.questions.update( {findkey: { str(findval): spks_qes } } )
                 self.answers.update( { findkey: { str(findval): spks_ans } } )
                 #
-                neal.nealApplyProjections()
+                self.neal.nealApplyProjections()
                 sim.run( self.inputTimes[-1]+500 )
                 #
                 #self.cogmap.printCogMapNets()
