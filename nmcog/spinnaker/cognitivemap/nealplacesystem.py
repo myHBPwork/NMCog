@@ -34,23 +34,26 @@ class NEALPlaceSystem(object):
     
     """
     def __init__(self, nobjects=2, nplaces=3, objectsTOplaces=None, findPlaceFor=None, findObjectFor=None):
+        self.nobjects = nobjects
+        self.nplaces = nplaces
+        #
         neal = NealCoverFunctions()
         sim.setup(timestep=neal.DELAY, min_delay=neal.DELAY, max_delay=neal.DELAY, debug=0)
         #
         inputTimes = self.__generateSpikeTimes( objectsTOplaces )
         self.spikeSource = self.__makeSpikeSource( inputTimes )
-        self.__createCogmap( nobjects, nplaces )
+        self.__createCogmap( self.nobjects, self.nplaces )
         self.cogmap.sourceStartsAutomaton( self.spikeSource[0] )
         #
         self.__bindObjectsToPlaces( objectsTOplaces )
-        self.retrievePlaceForObject( findPlaceFor )
-        self.retrieveObjectForPlace( findObjectFor )
+        self.__retrievePlaceForObject( findPlaceFor )
+        self.__retrieveObjectForPlace( findObjectFor )
         #
         neal.nealApplyProjections()
         sim.run( inputTimes[-1]+500 )
         #
         #self.cogmap.printCogMapNets()
-        sim.end()
+        #sim.end()
     
     def __createCogmap(self, nobjects, nplaces):
         """Creates the cognitive map for the place cell system using :ref:`PlaceCellSystemClass`."""
@@ -118,7 +121,7 @@ class NEALPlaceSystem(object):
         else:
             pass
     
-    def retrievePlaceForObject(self, findPlaceFor):
+    def __retrievePlaceForObject(self, findPlaceFor):
         """Where is the object?"""
         if findPlaceFor is not None:
             self.cogmap.sourceTurnOnRetrievePlaceFromObject( self.spikeSource[-1] )
@@ -126,7 +129,7 @@ class NEALPlaceSystem(object):
         else:
             pass
             
-    def retrieveObjectForPlace(self, findObjectFor):
+    def __retrieveObjectForPlace(self, findObjectFor):
         """What object are in the place?"""
         if findObjectFor is not None:
             self.cogmap.sourceTurnOnRetrieveObjectFromPlace( self.spikeSource[-1] )
