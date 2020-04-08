@@ -33,29 +33,39 @@ class NEALPlaceSystem(object):
     +------------------+---------------------+------------------+-----------------+
     
     """
-    def __init__(self, nobjects=2, nplaces=3, objectsTOplaces=None, findPlaceFor=None, findObjectFor=None):
+    def __init__(self, nobjects=2, nplaces=3, objectsTOplaces=None, find="all"):
         self.nobjects = nobjects
         self.nplaces = nplaces
         #
         self.neal = NealCoverFunctions()
-        #sim.setup(timestep=neal.DELAY, min_delay=neal.DELAY, max_delay=neal.DELAY, debug=0)
         #
         self.inputTimes = self.__generateSpikeTimes( objectsTOplaces )
-        self.answers = self.__run( objectsTOplaces, find="for-object" )
-        self.answers.update( self.__run( objectsTOplaces, find="for-place" ) )
-        #self.spikeSource = self.__makeSpikeSource( inputTimes )
-        #self.__createCogmap( self.nobjects, self.nplaces )
-        #self.cogmap.sourceStartsAutomaton( self.spikeSource[0] )
-        #
-        #self.__bindObjectsToPlaces( objectsTOplaces )
-        #self.__retrievePlaceForObject( findPlaceFor )
-        #self.__retrieveObjectForPlace( findObjectFor )
-        #
-        #neal.nealApplyProjections()
-        #sim.run( inputTimes[-1]+500 )
-        #
-        #self.cogmap.printCogMapNets()
-        #sim.end()
+        if find=="all":
+            self.answers = self.__run( objectsTOplaces, find="for-object" )
+            self.answers.update( self.__run( objectsTOplaces, find="for-place" ) )
+        else:
+            self.answers = {}
+            for findkey, findval in find.items():
+                sim.setup( timestep = self.neal.DELAY, min_delay = self.neal.DELAY, max_delay = self.neal.DELAY, debug=0)
+                self.spikeSource = self.__makeSpikeSource( self.inputTimes )
+                self.__createCogmap( self.nobjects, self.nplaces )
+                self.cogmap.sourceStartsAutomaton( self.spikeSource[0] )
+                #
+                self.__bindObjectsToPlaces( objectsTOplaces )
+                if findkey=="for-object":
+                    self.__retrievePlaceForObject( findval )
+                    spks = self.cogmap.answerPlaceCells.get_data( variables=["spikes"] )
+                else: # findkey=="for-place"
+                    self.__retrieveObjectForPlace( findval )
+                    spks = self.cogmap.answerObjectCells.get_data( variables=["spikes"] )
+                #
+                self.answers.update( { findkey: { str(findval): spks } } )
+                #
+                neal.nealApplyProjections()
+                sim.run( self.inputTimes[-1]+500 )
+                #
+                #self.cogmap.printCogMapNets()
+                sim.end()
     
     def __run(self, objectsTOplaces, find=None):
         """Given a key, "for-object" or "for-place" this function runs
@@ -82,7 +92,10 @@ class NEALPlaceSystem(object):
                 self.__retrieveObjectForPlace( findFor )
                 spks = self.cogmap.answerObjectCells.get_data( variables=["spikes"] )
             #
-            answers.update( { find: { str(findFor): spks } } )
+            if findFor==0:
+                answers.update( { find: { str(findFor): spks } } )
+            else:
+                answers[find].update( { str(findFor): spks } )
             #
             self.neal.nealApplyProjections()
             sim.run( self.inputTimes[-1]+500 )
