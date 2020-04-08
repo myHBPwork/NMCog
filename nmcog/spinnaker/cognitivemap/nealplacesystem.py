@@ -41,7 +41,7 @@ class NEALPlaceSystem(object):
         #sim.setup(timestep=neal.DELAY, min_delay=neal.DELAY, max_delay=neal.DELAY, debug=0)
         #
         self.inputTimes = self.__generateSpikeTimes( objectsTOplaces )
-        self.answers = self.__run(find="for-object")
+        self.answers = self.__run( objectsTOplaces, find="for-object" )
         self.answers.update( self.__run( objectsTOplaces, find="for-place" ) )
         #self.spikeSource = self.__makeSpikeSource( inputTimes )
         #self.__createCogmap( self.nobjects, self.nplaces )
