@@ -38,22 +38,55 @@ class NEALPlaceSystem(object):
         self.nplaces = nplaces
         #
         neal = NealCoverFunctions()
-        sim.setup(timestep=neal.DELAY, min_delay=neal.DELAY, max_delay=neal.DELAY, debug=0)
+        #sim.setup(timestep=neal.DELAY, min_delay=neal.DELAY, max_delay=neal.DELAY, debug=0)
         #
-        inputTimes = self.__generateSpikeTimes( objectsTOplaces )
-        self.spikeSource = self.__makeSpikeSource( inputTimes )
-        self.__createCogmap( self.nobjects, self.nplaces )
-        self.cogmap.sourceStartsAutomaton( self.spikeSource[0] )
+        self.inputTimes = self.__generateSpikeTimes( objectsTOplaces )
+        self.answers = self.__run(find="for-object")
+        self.answers.update( self.__run(find="for-place") )
+        #self.spikeSource = self.__makeSpikeSource( inputTimes )
+        #self.__createCogmap( self.nobjects, self.nplaces )
+        #self.cogmap.sourceStartsAutomaton( self.spikeSource[0] )
         #
-        self.__bindObjectsToPlaces( objectsTOplaces )
-        self.__retrievePlaceForObject( findPlaceFor )
-        self.__retrieveObjectForPlace( findObjectFor )
+        #self.__bindObjectsToPlaces( objectsTOplaces )
+        #self.__retrievePlaceForObject( findPlaceFor )
+        #self.__retrieveObjectForPlace( findObjectFor )
         #
-        neal.nealApplyProjections()
-        sim.run( inputTimes[-1]+500 )
+        #neal.nealApplyProjections()
+        #sim.run( inputTimes[-1]+500 )
         #
         #self.cogmap.printCogMapNets()
         #sim.end()
+    
+    def __run(self, find=None):
+        """Given a key, "for-object" or "for-place" this function runs
+        for all its respective elements and returns a dictionary."""
+        if find=="for-object":
+            allfinds = self.nobjects
+        elif find=="for-place":
+            allfinds = self.nplaces
+        #
+        answers = {}
+        for findFor in range(allfinds):
+            sim.setup(timestep=neal.DELAY, min_delay=neal.DELAY, max_delay=neal.DELAY, debug=0)
+            self.spikeSource = self.__makeSpikeSource( self.inputTimes )
+            self.__createCogmap( self.nobjects, self.nplaces )
+            self.cogmap.sourceStartsAutomaton( self.spikeSource[0] )
+            #
+            self.__bindObjectsToPlaces( objectsTOplaces )
+            if find=="for-object":
+                self.retrievePlaceForObject( findFor )
+                spks = self.cogmap.answerPlaceCells.get_data(variables=["spikes"])
+            else: # find=="for-place"
+                self.retrieveObjectForPlace( findFor )
+                spks = self.cogmap.answerObjectCells.get_data(variables=["spikes"])
+            #
+            answers.update( { find: { str(findFor): spks } } )
+            #
+            neal.nealApplyProjections()
+            sim.run( inputTimes[-1]+500 )
+            #
+            sim.end()
+        return answers
     
     def __createCogmap(self, nobjects, nplaces):
         """Creates the cognitive map for the place cell system using :ref:`PlaceCellSystemClass`."""
