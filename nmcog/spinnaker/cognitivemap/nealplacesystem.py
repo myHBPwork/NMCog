@@ -9,7 +9,7 @@ import spynnaker8 as sim
 # for plotting
 import quantities as pq
 import matplotlib.pyplot as plt
-import matplotlib.patches as mpatches
+#import matplotlib.patches as mpatches
 #from matplotlib import gridspec
 #from matplotlib import cm
 
@@ -195,6 +195,7 @@ class NEALPlaceSystem(object):
         return r
     
     def plot(self, obj=None, pla=None):
+        """."""
         plt.close() # close any previous figure
         allrange_nplaces = self.__generate_range( self.nplaces )
         allrange_nobjects = self.__generate_range( self.nobjects )
