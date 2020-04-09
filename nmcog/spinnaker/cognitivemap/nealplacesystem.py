@@ -57,21 +57,16 @@ class NEALPlaceSystem(object):
             allfinds = self.nobjects
         elif findkey=="for-place":
             allfinds = self.nplaces
-        #
         questions = {}
         answers = {}
         for findFor in range(allfinds):
-            #
             q_dict, a_dict = self.__run( findkey, findFor )
-            #
-            if findFor==0:
+            if findFor==0: # create initial dictionary for respective findkey
                 questions.update( q_dict )
                 answers.update( a_dict )
-            else:
+            else: # append on previously created dictionary for respective findkey
                 questions[findkey].update( q_dict[findkey] )
                 answers[findkey].update( a_dict[findkey] )
-            #
-            #sim.end()
         return questions, answers
     
     def __run(self, findkey, findval):
@@ -164,8 +159,6 @@ class NEALPlaceSystem(object):
                 self.cogmap.sourceTurnsOnBind( self.spikeSource[sourceIndx] )
                 self.cogmap.sourceTurnsOnPlaceOn( objPlacePair[1], self.spikeSource[sourceIndx] )
                 self.cogmap.sourceTurnsOnObjectOn( objPlacePair[0], self.spikeSource[sourceIndx] )
-        else:
-            pass
     
     def __retrievePlaceForObject(self, findPlaceFor):
         """Where is the object?"""
@@ -185,7 +178,7 @@ class NEALPlaceSystem(object):
             spks_qes = self.cogmap.queryOnPlaceCells.get_data( variables=["spikes"] )
             spks_ans = self.cogmap.answerObjectCells.get_data( variables=["spikes"] )
         q_dict = { findkey: { str(findval): spks_qes } }
-        a_dict = { findkey: { str(findval): sps_ans } }
+        a_dict = { findkey: { str(findval): spks_ans } }
         return q_dict, a_dict
     
     # Private function
