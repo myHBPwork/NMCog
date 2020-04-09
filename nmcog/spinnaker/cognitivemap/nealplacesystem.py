@@ -93,7 +93,7 @@ class NEALPlaceSystem(object):
         self.neal.nealApplyProjections()
         sim.run( self.inputTimes[-1]+500 )
         #
-        q_dict, a_dict = self.__getdata(self, findkey, findval)
+        q_dict, a_dict = self.__getdata( findkey, findval )
         #
         #self.cogmap.printCogMapNets()
         #sim.end()
