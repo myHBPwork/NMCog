@@ -950,7 +950,7 @@ class PlaceCellSystemClass:
     def createPlaces(self, numberPlaces):
         """See :py:meth:`.createObjects`"""
         self.numberPlaces = numberPlaces
-        print('places',numberPlaces)
+        #print('places',numberPlaces)
         numberPlaceCells = self.numberPlaces*self.fsa.CA_SIZE
         self.placeBindCells = self.sim.Population(numberPlaceCells,
                 self.sim.IF_cond_exp,self.fsa.CELL_PARAMS)

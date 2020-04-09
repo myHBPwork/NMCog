@@ -6,8 +6,8 @@
 # =============================================================================
 import spynnaker8 as sim
 
-#import quantities as pq
 # for plotting
+import quantities as pq
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
 #from matplotlib import gridspec
@@ -202,7 +202,7 @@ class NEALPlaceSystem(object):
             fig, ( allsps ) = plt.subplots(self.nplaces, 2, sharex=True)
             for i in range(self.nplaces): # second column of subplots for places
                 for j in range( allrange_nplace[i][0], allrange_nplace[i][1] ): # shift the spike train by subtracting with last inputTime
-                    allsps[i][1].eventplot( self.answers["for-object"][str(obj)].segments[0].spiketrains[j] - self.inputTimes[-1] )
+                    allsps[i][1].eventplot( self.answers["for-object"][str(obj)].segments[0].spiketrains[j] - self.inputTimes[-1]*pq.ms )
                 allsps[i][1].title.set_text('Place-'+str(i))
                 allsps[i][1].set_yticks( [] )
                 if i==(self.nplaces-1):
@@ -210,7 +210,7 @@ class NEALPlaceSystem(object):
             #
             for i in range(self.nobjects): # first column of subplots for objects
                 for j in range( allrange_nobjects[i][0], allrange_nobjects[i][1] ): # shift the spike train by subtracting with last inputTime
-                    allsps[i][0].eventplot( self.questions["for-object"][str(obj)].segments[0].spiketrains[j] - self.inputTimes[-1] )
+                    allsps[i][0].eventplot( self.questions["for-object"][str(obj)].segments[0].spiketrains[j] - self.inputTimes[-1]*pq.ms )
                 allsps[i][0].title.set_text('Object-'+str(i))
                 allsps[i][0].set_yticks( [] )
                 if i==(self.nobjects-1):
@@ -221,7 +221,7 @@ class NEALPlaceSystem(object):
             fig, ( allsps ) = plt.subplots(self.nobjects, 2, sharex=True)
             for i in range(self.nobjects): # second column of subplots for objects
                 for j in range( allrange_nobjects[i][0], allrange_nobjects[i][1] ): # shift the spike train by subtracting with last inputTime
-                    allsps[i][1].eventplot( self.answers["for-place"][str(pla)].segments[0].spiketrains[j] - self.inputTimes[-1] )
+                    allsps[i][1].eventplot( self.answers["for-place"][str(pla)].segments[0].spiketrains[j] - self.inputTimes[-1]*pq.ms )
                 allsps[i][1].title.set_text('Object-'+str(i))
                 allsps[i][1].set_yticks( [] )
                 if i==(self.nobjects-1):
@@ -229,7 +229,7 @@ class NEALPlaceSystem(object):
             #
             for i in range(self.nplaces): # first column of subplots for places
                 for j in range( allrange_nplaces[i][0], allrange_nplaces[i][1] ): # shift the spike train by subtracting with last inputTime
-                    allsps[i][0].eventplot( self.questions["for-place"][str(pla)].segments[0].spiketrains[j] - self.inputTimes[-1] )
+                    allsps[i][0].eventplot( self.questions["for-place"][str(pla)].segments[0].spiketrains[j] - self.inputTimes[-1]*pq.ms )
                 allsps[i][0].title.set_text('Place-'+str(i))
                 allsps[i][0].set_yticks( [] )
                 if i==(self.nplaces-1):
