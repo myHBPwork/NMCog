@@ -33,7 +33,7 @@ class NEALPlaceSystem(object):
     +------------------+---------------------+------------------+-----------------+
     
     """
-    def __init__(self, nobjects=2, nplaces=3, objectsTOplaces=None, find="all"):
+    def __init__(self, nobjects=None, nplaces=None, objectsTOplaces=None, find="all"):
         self.nobjects = nobjects
         self.nplaces = nplaces
         #
@@ -59,7 +59,7 @@ class NEALPlaceSystem(object):
                     self.__retrievePlaceForObject( findval )
                     spks_qes = self.cogmap.queryOnObjectCells.get_data( variables=["spikes"] )
                     spks_ans = self.cogmap.answerPlaceCells.get_data( variables=["spikes"] )
-                else: # findkey=="for-place"
+                elif findkey=="for-place":
                     self.__retrieveObjectForPlace( findval )
                     spks_qes = self.cogmap.queryOnPlaceCells.get_data( variables=["spikes"] )
                     spks_ans = self.cogmap.answerObjectCells.get_data( variables=["spikes"] )
@@ -71,7 +71,7 @@ class NEALPlaceSystem(object):
                 sim.run( self.inputTimes[-1]+500 )
                 #
                 #self.cogmap.printCogMapNets()
-                sim.end()
+                #sim.end()
     
     def __run_all(self, objectsTOplaces, find=None):
         """Given a key, "for-object" or "for-place" this function runs
@@ -212,18 +212,36 @@ class NEALPlaceSystem(object):
             for i in range(self.nplaces): # second column of subplots for places
                 for j in range( allrange_nplace[i][0], allrange_nplace[i][1] ):
                     allsps[i][1].eventplot( self.answers["for-object"][str(obj)].segments[0].spiketrains[j] )
+                allsps[i][1].title.set_text('Place-'+str(i))
+                allsps[i][1].set_yticks( [] )
+                if i==(self.nplaces-1):
+                    allsps[i][1].set(xlabel="time (ms)")
             #
             for i in range(self.nobjects): # first column of subplots for objects
                 for j in range( allrange_nobjects[i][0], allrange_nobjects[i][1] ):
                     allsps[i][0].eventplot( self.questions["for-object"][str(obj)].segments[0].spiketrains[j] )
+                allsps[i][0].title.set_text('Object-'+str(i))
+                allsps[i][0].set_yticks( [] )
+                if i==(self.objects-1):
+                    allsps[i][0].set(xlabel="time (ms)")
+            plt.subplots_adjust( hspace=.5 ) # spacing for the each subplot title
             plt.show()
         elif pla is not None:
             fig, ( allsps ) = plt.subplots(self.nobjects, 2, sharex=True)
             for i in range(self.nobjects): # second column of subplots for objects
                 for j in range( allrange_nobjects[i][0], allrange_nobjects[i][1] ):
                     allsps[i][1].eventplot( self.answers["for-place"][str(pla)].segments[0].spiketrains[j] )
+                allsps[i][1].title.set_text('Object-'+str(i))
+                allsps[i][1].set_yticks( [] )
+                if i==(self.objects-1):
+                    allsps[i][1].set(xlabel="time (ms)")
             #
             for i in range(self.nplaces): # first column of subplots for places
                 for j in range( allrange_nplaces[i][0], allrange_nplaces[i][1] ):
                     allsps[i][0].eventplot( self.questions["for-place"][str(pla)].segments[0].spiketrains[j] )
+                allsps[i][0].title.set_text('Place-'+str(i))
+                allsps[i][0].set_yticks( [] )
+                if i==(self.nplaces-1):
+                    allsps[i][0].set(xlabel="time (ms)")
+            plt.subplots_adjust( hspace=.5 ) # spacing for the each subplot title
             plt.show()
