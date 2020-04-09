@@ -196,7 +196,7 @@ class NEALPlaceSystem(object):
     
     def plot(self, obj=None, pla=None):
         plt.close() # close any previous figure
-        allrange_nplace = self.__generate_range( self.nplaces )
+        allrange_nplaces = self.__generate_range( self.nplaces )
         allrange_nobjects = self.__generate_range( self.nobjects )
         if obj is not None:
             fig, ( allsps ) = plt.subplots(self.nplaces, 2, sharex=True)
