@@ -220,7 +220,7 @@ class NEALPlaceSystem(object):
         if obj is not None:
             fig, ( allsps ) = plt.subplots(self.nplaces, 2, sharex=True)
             for i in range(self.nplaces): # second column of subplots for places
-                for j in range( allrange_nplaces[i][0], allrange_nplace[i][1] ): # shift the spike train by subtracting with last inputTime
+                for j in range( allrange_nplaces[i][0], allrange_nplaces[i][1] ): # shift the spike train by subtracting with last inputTime
                     allsps[i][1].eventplot( self.answers["for-object"][str(obj)].segments[0].spiketrains[j] - self.inputTimes[-1]*pq.ms )
                 allsps[i][1].title.set_text('Place-'+str(i))
                 allsps[i][1].set_yticks( [] )
