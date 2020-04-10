@@ -79,7 +79,7 @@ class NEALPlaceSystem(object):
         self.__createCogmap()
         self.cogmap.sourceStartsAutomaton( self.spikeSource[0] )
         #
-        self.__bindObjectsToPlaces()
+        self.__bindObjectsToPlaces( {findkey: findval} )
         if findkey=="for-object":
             self.__retrievePlaceForObject( findval )
         elif findkey=="for-place":
@@ -148,14 +148,32 @@ class NEALPlaceSystem(object):
         return oTp
     
     # Private function
-    def __bindObjectsToPlaces(self):
+    def __rearrange_oTp_for_findval(self, find, oTp):
+        """This step is needed otherwise Chris Huyk et al's function does not behave as
+        advertised, i.e. after about two objects querying the succeeding objects does
+        not result in answers eventhough by definition these objects are bound to a place.
+        I found that for any object (or place) in question if they are moved up the list
+        i.e. the will receive the spikesource[1] (the first is reserved for initiating the
+        automaton) then querying any bound object will return an answer."""
+        y = []; tmp = [] # first and temporary list
+        for findkey, findval in find.items():
+            if findkey=="for-object":
+                indx = 0 # first index of a tupl
+            elif findkey=="for-place":
+                indx = 1 # second index of a tupl
+            [y.append(tupl) if tupl[indx]==findval else tmp.append(tupl) for tupl in oTp]
+        return y+tmp
+    
+    # Private function
+    def __bindObjectsToPlaces(self, find):
         """Binds objects to place using :ref:`PlaceCellSystemClass` ``.sourceTurnsOnBind``, :ref:`PlaceCellSystemClass` ``.sourceTurnsOnPlaceOn``, and
         :ref:`PlaceCellSystemClass` ``.sourceTurnsOnObjectOn``."""
         if self.objectsTOplaces is not None:
             oTp = self.__object_place_tuple_list( self.objectsTOplaces )
-            for i in range( len(oTp) ):
+            reordered_oTp = self.__rearrange_oTp_for_findval(find, oTp)
+            for i in range( len(reordered_oTp) ):
                 sourceIndx = i+1 # first,0, spike source is reserved for automaton
-                objPlacePair = oTp[i]
+                objPlacePair = reordered_oTp[i]
                 self.cogmap.sourceTurnsOnBind( self.spikeSource[sourceIndx] )
                 self.cogmap.sourceTurnsOnPlaceOn( objPlacePair[1], self.spikeSource[sourceIndx] )
                 self.cogmap.sourceTurnsOnObjectOn( objPlacePair[0], self.spikeSource[sourceIndx] )
