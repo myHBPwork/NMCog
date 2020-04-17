@@ -8,7 +8,8 @@ Notebook examples
    :maxdepth: 1
    :caption: Contents:
    
-   notebooks/runningBuoMerz.ipynb
+   notebooks/ntbkEg-BuoMerz.ipynb
+   notebooks/ntbkEg-NEAL3Way.ipynb
    
 
 Available functions
